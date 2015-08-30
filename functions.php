@@ -13,6 +13,9 @@ function get_assistiti() {
 }
 
 function inserisci_assistito($params) {
+
+	echo("inserisci_assistito - params=".print_r($params,true));
+
 	global $db,$config;
 	$date_pieces=split("/", $params['data_di_nascita']);
 	$new_date=$date_pieces[2]."-".$date_pieces[0]."-".$date_pieces[1];
@@ -26,7 +29,6 @@ function inserisci_assistito($params) {
 	$id_assistito=$r->id;
 	echo "id_assistito ".$id_assistito;
 
-	print_r($params);
 	foreach ($params['chi_lo_invia'] as $chi) {
 		$sql3="insert into inviato (`id`, `id_assistito`, `chi`) VALUES ('', ".$id_assistito.", '".$chi."')";
 		echo $sql3;
@@ -35,13 +37,22 @@ function inserisci_assistito($params) {
 
 	foreach ($params['documenti'] as $doc) {
 
+		if ($doc=="altro") {
+			$tipo_doc = $params["descrizione_altro"];
+		}
+		else {
+			$tipo_doc = $doc;
+		}
+
 		$data_rilascio_pieces=split("/", $params["rilascio_".$doc]);
 		$data_rilascio_formatted=$data_rilascio_pieces[2]."-".$data_rilascio_pieces[0]."-".$data_rilascio_pieces[1];
 
 		$data_scadenza_pieces=split("/", $params["scadenza_".$doc]);
 		$data_scadenza_formatted=$data_scadenza_pieces[2]."-".$data_scadenza_pieces[0]."-".$data_scadenza_pieces[1];
 
-		$sql4="insert into DOCUMENTI_ASSISTITO (`id`, `id_assistito`, `tipo_doc`,`numero_doc`,`data_rilascio_doc`,`data_scadenza_doc`) VALUES ('', ".$id_assistito.", '".$doc."','".$params["numero_".$doc]."','".$data_rilascio_formatted."','".$data_scadenza_formatted."')";
+		$fotocopia = ($params["fotocopia_".$doc] == "on" ? true : false);
+
+		$sql4="insert into DOCUMENTI_ASSISTITO (`id`, `id_assistito`, `tipo_doc`,`numero_doc`,`data_rilascio_doc`,`data_scadenza_doc`,`fotocopia`) VALUES ('', ".$id_assistito.", '".$tipo_doc."','".$params["numero_".$doc]."','".$data_rilascio_formatted."','".$data_scadenza_formatted."','".$fotocopia."')";
 		echo "<br>".$sql4;
 		$res4=mysql_query($sql4);
 	}

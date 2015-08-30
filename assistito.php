@@ -16,15 +16,15 @@ include "top_nav.php";
 					<div class="title_right">
 						<div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
 							<div class="input-group">
-								
+
 							</div>
 						</div>
 					</div>
 				</div>
 
                 <div class="row">
-				
-				
+
+
 
 <?php
 if ($_POST['action'] != 'register') {
@@ -52,7 +52,7 @@ if ($_POST['action'] != 'register') {
 							</div>
 							<div class="x_content">
 								<br />
-<!--								
+<!--
 								<form class="form-horizontal form-label-left">
 
 									<div class="form-group">
@@ -87,8 +87,8 @@ if ($_POST['action'] != 'register') {
 										<div class="col-md-6 col-sm-6 col-xs-12">
 											<input type="email" id="email" class="form-control col-md-7 col-xs-12" name="email" data-parsley-trigger="change" required />
 										</div>
-									</div>	
-									<div class="form-group">	
+									</div>
+									<div class="form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Gender *:</label>
 										<div class="col-md-6 col-sm-6 col-xs-12">
 											<p>
@@ -97,7 +97,7 @@ if ($_POST['action'] != 'register') {
 												<input type="radio" class="flat" name="gender" id="genderF" value="F" />
 											</p>
 										</div>
-									</div>	
+									</div>
 									<div class="form-group">
 										<label class="control-label col-md-3 col-sm-3 col-xs-12">Data di nascita <span class="required">*</span>
 										</label>
@@ -118,7 +118,7 @@ if ($_POST['action'] != 'register') {
 												<option value="7">Divorziato</option>
 											</select>
 										</div>
-									</div>				
+									</div>
 									<div class="ln_solid"></div>
 									<div class="form-group">
 										<div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
@@ -162,7 +162,7 @@ if ($_POST['action'] != 'register') {
 											<input id="luogo_di_nascita" class="form-control col-md-7 col-xs-12" name="luogo_di_nascita" type="text">
 										</div>
 									</div>
-									<div class="item form-group">	
+									<div class="item form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Sesso </label>
 										<div class="col-md-6 col-sm-6 col-xs-12">
 											<p>
@@ -178,14 +178,14 @@ if ($_POST['action'] != 'register') {
 											<input id="nazionalita" class="form-control col-md-7 col-xs-12" name="nazionalita" type="text">
 										</div>
 									</div>
-<!--									
+<!--
 									<div class="item form-group">
 										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">Email  </label>
 										<div class="col-md-6 col-sm-6 col-xs-12">
 											<input type="email" id="email" name="email" class="form-control col-md-7 col-xs-12">
 										</div>
 									</div>
--->									
+-->
 									<div class="item form-group">
 										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">Cellulare </label>
 										<div class="col-md-6 col-sm-6 col-xs-12">
@@ -206,8 +206,8 @@ if ($_POST['action'] != 'register') {
 												<option value="7">Divorziato</option>
 											</select>
 										</div>
-									</div>	
-									
+									</div>
+
 									<span class="section">Residenza</span>
 									<div class="item form-group">
 										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="citta_residenza">Città </label>
@@ -233,10 +233,10 @@ if ($_POST['action'] != 'register') {
 											<input id="nazione_residenza" class="form-control col-md-7 col-xs-12" name="nazione_residenza" type="text">
 										</div>
 									</div>
-									
+
 									<span class="section">Documenti</span>
 <?php
-$docs=array("identita"=>"Carta d'identità", 
+$docs=array("identita"=>"Carta d'identità",
 			"passaporto"=>"Passaporto",
 			"patente"=>"Patente",
 			"smarrimento"=>"Denuncia di smarrimento",
@@ -248,15 +248,15 @@ $docs=array("identita"=>"Carta d'identità",
 			"nessuno"=>"Nessun documento"
 			);
 foreach ($docs as $key=>$value) {
-?>									
-									<div class="item form-group" style="min-height:34px;">									
+?>
+									<div class="item form-group" style="min-height:34px;">
 										<div class="col-md-3 col-sm-3 col-xs-12" style="float:left;">
 											<div class="checkbox">
 												<span id="<?php echo $key;?>">
-														<input type="checkbox" class="flat" name="documenti[]" value="<?php echo $key;?>"> 
+														<input type="checkbox" class="flat" name="documenti[]" value="<?php echo $key;?>">
 														<label style="cursor:default;"><?php echo $value;?></label>
-												</span>	
-											</div>	
+												</span>
+											</div>
 										</div>
 										<div id="info_<?php echo $key;?>" class="col-md-9 col-sm-9 col-xs-12" style="display:none;">
 											<div class="col-md-3 col-sm-3 col-xs-12">
@@ -274,36 +274,36 @@ foreach ($docs as $key=>$value) {
 											</div>
 											<div class="checkbox col-md-2 col-sm-2 col-xs-12">
 												<label>
-													<input type="checkbox" class="flat" name="fotocopia_<?php echo $key;?>" value="conoscenti"> Fotocopia
+													<input type="checkbox" class="flat" name="fotocopia_<?php echo $key;?>"> Fotocopia
 												</label>
 											</div>
-										</div>	
+										</div>
 									</div>
-									
+
 <?php
 }
 ?>
-									<div class="item form-group" style="min-height:34px;">									
+									<div class="item form-group" style="min-height:34px;">
 										<div class="col-md-3 col-sm-3 col-xs-12">
 											<div class="checkbox" >
 												<span id="altro">
 													<div style="float:left; width:24px;">
-													<input type="checkbox" class="flat" name="documenti[]" value="altro" > 
+													<input type="checkbox" class="flat" name="documenti[]" value="altro" >
 													</div>
 													<label id="label_altro">Altro</label>
 													<div id="div_descrizione_altro" style="display:none; margin-left:35px; margin-top:-7px;">
 														<input type="text" placeholder="tipo documento" name="descrizione_altro" class="form-control checkbox" id="descrizione_altro">
 													</div>
-												</span>	
-								
-											</div>	
+												</span>
 
-	
+											</div>
+
+
 										</div>
-												
+
 										<div id="info_altro" class="col-md-9 col-sm-9 col-xs-12" style="display:none;">
 											<div class="col-md-3 col-sm-3 col-xs-12">
-												<input id="numero_altro" placeholder="numero" name="numero_<?php echo $key;?>" class="form-control" type="text">
+												<input id="numero_altro" placeholder="numero" name="numero_altro" class="form-control" type="text">
 											</div>
 											<div class="col-md-3 col-sm-3 col-xs-12">
 												<input type="text" placeholder="data di rilascio" name="rilascio_altro" class="form-control has-feedback-left" id="single_cal4" aria-describedby="inputSuccess2Status4">
@@ -317,22 +317,22 @@ foreach ($docs as $key=>$value) {
 											</div>
 											<div class="checkbox col-md-2 col-sm-2 col-xs-12">
 												<label>
-													<input type="checkbox" class="flat" name="fotocopia_altro" value="conoscenti"> Fotocopia
+													<input type="checkbox" class="flat" name="fotocopia_altro"> Fotocopia
 												</label>
 											</div>
-										</div>	
+										</div>
 									</div>
-									
+
 <!--
-									<div class="item form-group" style="min-height:34px;">									
+									<div class="item form-group" style="min-height:34px;">
 										<div class="col-md-3 col-sm-3 col-xs-12" style="float:left;">
 											<div class="checkbox">
 												<span id="identita">
 													<label>
 														<input type="checkbox" class="flat" name="documenti[]" value="identita"> Carta di identità
 													</label>
-												</span>	
-											</div>	
+												</span>
+											</div>
 										</div>
 										<div id="info_identita" class="col-md-9 col-sm-9 col-xs-12" style="display:none;">
 											<div class="col-md-3 col-sm-3 col-xs-12">
@@ -350,69 +350,69 @@ foreach ($docs as $key=>$value) {
 													<input type="checkbox" class="flat" name="fotocopia_identita" value="conoscenti"> Fotocopia
 												</label>
 											</div>
-										</div>	
+										</div>
 									</div>
--->									
-									
+-->
+
 									<span class="section">Chi lo invia</span>
 									<div class="item form-group">
 										<div class="checkbox">
 											<label>
 												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="conoscenti"> Conoscenti/connazionali
 											</label>
-										</div>	
-										<div class="checkbox">	
+										</div>
+										<div class="checkbox">
 											<label>
 												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="spontaneo"> Spontaneo
 											</label>
-										</div>	
-										<div class="checkbox">	
+										</div>
+										<div class="checkbox">
 											<label>
 												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="asl"> Asl/ospedali
 											</label>
 										</div>
-										<div class="checkbox">	
+										<div class="checkbox">
 											<label>
 												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="attori_di_stazioni"> Attori di stazioni
 											</label>
 										</div>
-										<div class="checkbox">	
+										<div class="checkbox">
 											<label>
 												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="caritas"> Caritas
 											</label>
 										</div>
-										<div class="checkbox">	
+										<div class="checkbox">
 											<label>
 												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="ufficio_immigrazioni"> Ufficio immigrazioni
 											</label>
 										</div>
-										<div class="checkbox">	
+										<div class="checkbox">
 											<label>
 												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="enti"> Enti/associazioni
 											</label>
 										</div>
-										<div class="checkbox">	
+										<div class="checkbox">
 											<label>
 												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="servizi_sociali"> Servizi sociali
 											</label>
 										</div>
-										<div class="checkbox">	
+										<div class="checkbox">
 											<label>
 												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="sert"> SERT
 											</label>
 										</div>
-										<div class="checkbox">	
+										<div class="checkbox">
 											<label>
 												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="privati"> Privati cittadini
 											</label>
 										</div>
-										<div class="checkbox">	
+										<div class="checkbox">
 											<label>
 												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="polfer"> Polfer
 											</label>
 										</div>
-									</div>	
-									
+									</div>
+
 									<div class="ln_solid"></div>
 									<div class="form-group">
 										<div class="col-md-6 col-md-offset-3">
@@ -420,29 +420,29 @@ foreach ($docs as $key=>$value) {
 											<button id="send" type="submit" class="btn btn-success">Inserisci</button>
 										</div>
 									</div>
-								</form>		
-							</div>		
-						</div>		
-					</div>	
-								
-							
-								
+								</form>
+							</div>
+						</div>
+					</div>
+
+
+
 <!--
 <form action="assistito.php" method="post">
 	<div class="mandatory">I campi contrassegnati con * sono obbligatori</div><br />
 	<input type="hidden" name="action" value="register" />
-        
+
     <label for="user">Nome<i>*</i></label>
     <input type="text" name="nome" id="nome" class="input" value="" autocomplete="off" /><br />
-	
+
 	<label for="user">Cognome<i>*</i></label>
     <input type="text" name="cognome" id="cognome" class="input" value="" autocomplete="off" /><br />
-	
+
 	<label for="phone">Cellulare<i>*</i></label>
 	<input type="text" name="cellulare" id="cellulare" class="input" maxlength="10" value="" /><br />
 
 
-<label for="stato_civile">Stato civile<i>*</i></label>			
+<label for="stato_civile">Stato civile<i>*</i></label>
 <div class="input">
 	    <select name="stato_civile" id="stato_civile" class="stato_civile">
 			<option value="">Selezionare</option>
@@ -456,9 +456,9 @@ foreach ($docs as $key=>$value) {
 					</select>
     </div><br />
     </div>
-	
+
 <input type="submit" name="submit" value="Inserisci assistito" class="bluebutton rad3" />
-</form>	
+</form>
 -->
 <?php
 } else {
@@ -504,8 +504,8 @@ print_r($assistiti);
             }, function (start, end, label) {
                 console.log(start.toISOString(), end.toISOString(), label);
             });
-			
-			
+
+
 
 
         });
@@ -565,7 +565,7 @@ print_r($assistiti);
             if (this.checked)
                 $('form .alert').remove();
         }).prop('checked', false);
-	
+
     </script>
 
 <?php
