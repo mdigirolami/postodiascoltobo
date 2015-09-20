@@ -1,12 +1,12 @@
 <?php
-function get_assistiti() {
+function get_assistiti() { 
 	global $db,$config;
 	$result = array();
 
 	$sql="SELECT * FROM assistiti";
 	$res=mysql_query($sql);
 	while($r=mysql_fetch_assoc($res)) {
-			$result=$r;
+			$result[]=$r;
 	}
 
 	return $result;

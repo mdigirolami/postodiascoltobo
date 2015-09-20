@@ -2,8 +2,8 @@
 
                 <footer>
                     <div class="">
-                        <p class="pull-right">Gentelella Alela! a Bootstrap 3 template by <a>Kimlabs</a>. |
-                            <span class="lead"> <i class="fa fa-paw"></i> Gentelella Alela!</span>
+                        <p class="pull-right">realizzato da <a>IperWeb</a> |
+                            <span class="lead">Posto di Ascolto e Indirizzo Città di Bologna</span>
                         </p>
                     </div>
                     <div class="clearfix"></div>
