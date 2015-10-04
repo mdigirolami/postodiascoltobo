@@ -13,7 +13,7 @@ $assistiti = get_assistiti();
             <div class="right_col" role="main">
 				<div class="page-title">
 					<div class="title_left">
-						<h3>Lista assistiti</h3>
+						<h3>Gestisci assistiti</h3>
 					</div>
 					<div class="title_right">
 						<div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
@@ -29,7 +29,7 @@ $assistiti = get_assistiti();
 					<div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="x_panel">
                                 <div class="x_title">
-                                    <h2>Assisititi attualmente serviti</h2>
+                                    <h2>Assistiti attualmente serviti</h2>
                                     <ul class="nav navbar-right panel_toolbox">
                                         <li><a href="#"><i class="fa fa-chevron-up"></i></a>
                                         </li>
@@ -57,7 +57,6 @@ $assistiti = get_assistiti();
                                                 <th>Nome</th>
                                                 <th>Cognome</th>
                                                 <th>Nazionalità</th>
-                                                <th>Indirizzo</th>
                                                 <th>Cellulare</th>
                                                 <th>Nucleo familiare</th>
                                                 <th class=" no-link last"><span class="nobr">Azione</span>
@@ -73,7 +72,6 @@ $assistiti = get_assistiti();
 													echo '<td class=" ">'.$a["nome"].'</td>';
 													echo '<td class=" ">'.$a["cognome"].'</td>';
 													echo '<td class=" ">'.$a["nazionalita"].'</td>';
-													echo '<td class=" ">'.$a["citta_residenza"].'</td>';
 													echo '<td class=" ">'.$a["cellulare"].'</td>';
 													echo '<td class=" ">4 persone</td>';
 													echo '<td class=" ">Modifica</td>';
@@ -93,17 +91,7 @@ $assistiti = get_assistiti();
 
                     </div>
                 </div>	
-<script src="js/bootstrap.min.js"></script>
 
-        <!-- chart js -->
-        <script src="js/chartjs/chart.min.js"></script>
-        <!-- bootstrap progress js -->
-        <script src="js/progressbar/bootstrap-progressbar.min.js"></script>
-        <script src="js/nicescroll/jquery.nicescroll.min.js"></script>
-        <!-- icheck -->
-        <script src="js/icheck/icheck.min.js"></script>
-
-        <script src="js/custom.js"></script>
 <!-- Datatables -->
         <script src="js/datatables/js/jquery.dataTables.js"></script>
         <script src="js/datatables/tools/js/dataTables.tableTools.js"></script>

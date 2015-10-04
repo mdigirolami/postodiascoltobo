@@ -70,5 +70,3 @@
 -->						
                     </div>
                     <!-- /menu prile quick info -->
-					<br /><br />
-					<br />
