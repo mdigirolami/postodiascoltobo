@@ -2,7 +2,7 @@
                     <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
 
                         <div class="menu_section">
-<!--						
+<!--
                             <h3>General</h3>
 -->
                             <ul class="nav side-menu">
@@ -14,16 +14,12 @@
                                         </li>
                                     </ul>
                                 </li>
-                                <li><a><i class="fa fa-edit"></i> Interventi <span class="fa fa-chevron-down"></span></a>
-                                    <ul class="nav child_menu" style="display: none">
-                                        <li><a href="form.html">Lista</a>
-                                        </li>
-                                        <li><a href="form_advanced.html">Pacchi alimentari</a>
-                                        </li>
-                                        <li><a href="form_validation.html">Inserisci nuovo</a>
-                                        </li>
-                                    </ul>
-                                </li>
+								<li class="nv active">
+									<a href="lista_servizi.php"><i class="fa fa-edit"></i> Servizi</a>
+								</li>
+								<li class="nv active">
+									<a href="#"><i class="fa fa-bar-chart-o"></i> Statistiche</a>
+								</li>
                             </ul>
                         </div>
 

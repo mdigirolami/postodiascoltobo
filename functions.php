@@ -59,4 +59,49 @@ function inserisci_assistito($params) {
 
 
 }
+
+function get_servizi() { 
+	global $db,$config;
+	$result = array();
+
+	$sql="SELECT cat_servizi.nome AS tipo, servizi_erogati.data, assistiti.nome AS nome, assistiti.cognome
+FROM cat_servizi
+JOIN servizi_erogati ON cat_servizi.id = servizi_erogati.id_servizio
+JOIN assistiti ON servizi_erogati.id_assistito = assistiti.id order by data desc, tipo";
+	$res=mysql_query($sql);
+	while($r=mysql_fetch_assoc($res)) {
+			$result[]=$r;
+	}
+
+	return $result;
+}
+
+function get_servizi_assistito($id) { 
+	global $db,$config;
+	$result = array();
+
+	$sql="SELECT cat_servizi.nome AS tipo, servizi_erogati.data, assistiti.nome AS nome, assistiti.cognome
+FROM cat_servizi
+JOIN servizi_erogati ON cat_servizi.id = servizi_erogati.id_servizio
+JOIN assistiti ON servizi_erogati.id_assistito = assistiti.id where assistiti.id=".$id." order by data desc, tipo";
+	$res=mysql_query($sql);
+	while($r=mysql_fetch_assoc($res)) {
+			$result[]=$r;
+	}
+
+	return $result;
+}
+
+function get_assistito($id) { 
+	global $db,$config;
+	$result = array();
+
+	$sql="SELECT nome, cognome FROM assistiti where assistiti.id=".$id;
+	$res=mysql_query($sql);
+	while($r=mysql_fetch_assoc($res)) {
+			$result=$r;
+	}
+
+	return $result;
+}
 ?>

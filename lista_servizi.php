@@ -6,14 +6,14 @@ include "header.php";
 include "menu.php";
 include "top_nav.php";
 
-$assistiti = get_assistiti();
+$servizi = get_servizi();
 ?>
 
 <!-- page content -->
             <div class="right_col" role="main">
 				<div class="page-title">
 					<div class="title_left">
-						<h3>Gestisci assistiti</h3>
+						<h3>Lista servizi</h3>
 					</div>
           <!--
 					<div class="title_right">
@@ -32,7 +32,7 @@ $assistiti = get_assistiti();
                             <div class="x_panel">
 
                                 <div class="x_title">
-                                    <h2>Assistiti attualmente serviti</h2>
+                                    <h2>Servizi erogati</h2>
                                     <!--
                                     <ul class="nav navbar-right panel_toolbox">
                                         <li><a href="#"><i class="fa fa-chevron-up"></i></a>
@@ -61,11 +61,9 @@ $assistiti = get_assistiti();
                                                 <th>
                                                     <input type="checkbox" class="tableflat">
                                                 </th>
-                                                <th>Nome</th>
-                                                <th>Cognome</th>
-                                                <th>Nazionalità</th>
-                                                <th>Cellulare</th>
-                                                <th>Nucleo familiare</th>
+                                                <th>Tipo</th>
+                                                <th>Destinatario</th>
+                                                <th>Data</th>
                                                 <th class=" no-link last"><span class="nobr">Azione</span>
                                                 </th>
                                             </tr>
@@ -73,15 +71,13 @@ $assistiti = get_assistiti();
 
                                         <tbody>
 										    <?php
-												foreach ($assistiti as $a) {
+												foreach ($servizi as $a) {
 													echo '<tr class=""even pointer">';
 													echo '<td class="a-center "><input type="checkbox" class="tableflat"></td>';
-													echo '<td class=" ">'.$a["nome"].'</td>';
-													echo '<td class=" ">'.$a["cognome"].'</td>';
-													echo '<td class=" ">'.$a["nazionalita"].'</td>';
-													echo '<td class=" ">'.$a["cellulare"].'</td>';
-													echo '<td class=" ">4 persone</td>';
-													echo '<td class=" ">Modifica</td>';
+													echo '<td class=" ">'.$a["tipo"].'</td>';
+													echo '<td class=" ">'.$a["cognome"]." ".$a["nome"].'</td>';
+													echo '<td class=" ">'.$a["data"].'</td>';
+													echo '<td class=" ">Dettagli</td>';
 													echo '</tr>';
 												}
 											?>
