@@ -1,9 +1,9 @@
 <?php
-function get_assistiti() { 
+function get_assistiti() {
 	global $db,$config;
 	$result = array();
 
-	$sql="SELECT * FROM assistiti";
+	$sql="SELECT * FROM assistiti where valid=1";
 	$res=mysql_query($sql);
 	while($r=mysql_fetch_assoc($res)) {
 			$result[]=$r;
@@ -19,7 +19,7 @@ function inserisci_assistito($params) {
 	global $db,$config;
 	$date_pieces=split("/", $params['data_di_nascita']);
 	$new_date=$date_pieces[2]."-".$date_pieces[0]."-".$date_pieces[1];
-    $sql="insert into assistiti (`id`, `nome`, `cognome`, `data_di_nascita`, `luogo_di_nascita`, `sesso`, `nazionalita`, `cellulare`, `stato_civile`, `citta_residenza`, `via_residenza`, `numero_residenza`, `nazione_residenza`) VALUES ('', '".$params['nome']."', '".$params['cognome']."', '".$new_date."', '".$params['luogo_di_nascita']."', '".$params['sesso']."', '".$params['nazionalita']."', '".$params['cellulare']."', '".$params['stato_civile']."', '".$params['citta_residenza']."', '".$params['via_residenza']."', '".$params['numero_residenza']."', '".$params['nazione_residenza']."')";
+    $sql="insert into assistiti (`id`, `valid`, `nome`, `cognome`, `data_di_nascita`, `luogo_di_nascita`, `sesso`, `nazionalita`, `cellulare`, `stato_civile`, `citta_residenza`, `via_residenza`, `numero_residenza`, `nazione_residenza`) VALUES ('', 1,'".$params['nome']."', '".$params['cognome']."', '".$new_date."', '".$params['luogo_di_nascita']."', '".$params['sesso']."', '".$params['nazionalita']."', '".$params['cellulare']."', '".$params['stato_civile']."', '".$params['citta_residenza']."', '".$params['via_residenza']."', '".$params['numero_residenza']."', '".$params['nazione_residenza']."')";
     echo $sql;
 	$res=mysql_query($sql);
 
@@ -60,7 +60,7 @@ function inserisci_assistito($params) {
 
 }
 
-function get_servizi() { 
+function get_servizi() {
 	global $db,$config;
 	$result = array();
 
@@ -76,7 +76,7 @@ JOIN assistiti ON servizi_erogati.id_assistito = assistiti.id order by data desc
 	return $result;
 }
 
-function get_servizi_assistito($id) { 
+function get_servizi_assistito($id) {
 	global $db,$config;
 	$result = array();
 
@@ -92,11 +92,11 @@ JOIN assistiti ON servizi_erogati.id_assistito = assistiti.id where assistiti.id
 	return $result;
 }
 
-function get_assistito($id) { 
+function get_assistito($id) {
 	global $db,$config;
 	$result = array();
 
-	$sql="SELECT nome, cognome FROM assistiti where assistiti.id=".$id;
+	$sql="SELECT * FROM assistiti where assistiti.id=".$id;
 	$res=mysql_query($sql);
 	while($r=mysql_fetch_assoc($res)) {
 			$result=$r;
@@ -104,4 +104,31 @@ function get_assistito($id) {
 
 	return $result;
 }
+
+function get_documenti_assistito($id_assistito) {
+	global $db,$config;
+	$result = array();
+
+	$sql="SELECT * FROM DOCUMENTI_ASSISTITO where id_assistito=".$id_assistito;
+	$res=mysql_query($sql);
+	while($r=mysql_fetch_assoc($res)) {
+			$result[]=$r;
+	}
+
+	return $result;
+}
+
+function get_chi_lo_invia_assistito($id_assistito) {
+	global $db,$config;
+	$result = array();
+
+	$sql="SELECT * FROM inviato where id_assistito=".$id_assistito;
+	$res=mysql_query($sql);
+	while($r=mysql_fetch_assoc($res)) {
+			$result[]=$r;
+	}
+
+	return $result;
+}
+
 ?>

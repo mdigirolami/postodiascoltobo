@@ -30,8 +30,8 @@ $assistiti = get_assistiti();
 
 					<div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="x_panel">
-
                                 <div class="x_title">
+                                    <br/>
                                     <h2>Assistiti attualmente serviti</h2>
                                     <!--
                                     <ul class="nav navbar-right panel_toolbox">
@@ -49,9 +49,9 @@ $assistiti = get_assistiti();
                                         <li><a href="#"><i class="fa fa-close"></i></a>
                                         </li>
                                     </ul>
-
-                                    <div class="clearfix"></div>
                                     -->
+                                    <div class="clearfix"></div>
+
                                 </div>
 
                                 <div class="x_content">
@@ -66,8 +66,7 @@ $assistiti = get_assistiti();
                                                 <th>Nazionalità</th>
                                                 <th>Cellulare</th>
                                                 <th>Nucleo familiare</th>
-                                                <th class=" no-link last"><span class="nobr">Azione</span>
-                                                </th>
+                                                <th class="no-link last" data-sortable="true"><span class="nobr">Azione</span></th>
                                             </tr>
                                         </thead>
 
@@ -81,7 +80,12 @@ $assistiti = get_assistiti();
 													echo '<td class=" ">'.$a["nazionalita"].'</td>';
 													echo '<td class=" ">'.$a["cellulare"].'</td>';
 													echo '<td class=" ">4 persone</td>';
-													echo '<td class=" ">Modifica</td>';
+													echo '<td class=" ">
+                            <a href="visualizza_assistito.php?id_assistito='.$a["id"].'" title="Visualizza assistito"><span class="glyphicon glyphicon-assistiti-actions glyphicon-file" aria-hidden="true"></span></a>&nbsp;
+                            <a href="assistito.php?id_assistito='.$a["id"].'" title="Modifica assistito"><span class="glyphicon glyphicon-assistiti-actions glyphicon-pencil" aria-hidden="true"></span></a>&nbsp;
+                            <a href="servizi_assistito.php?id_assistito='.$a["id"].'" title="Servizi assistito"><span class="glyphicon glyphicon-assistiti-actions glyphicon-edit" aria-hidden="true"></span></a>&nbsp;
+                            <a href="rimuovi_assistito.php?id_assistito='.$a["id"].'" title="Rimuovi assistito"><span class="glyphicon glyphicon-assistiti-actions glyphicon-remove-circle" aria-hidden="true"></span></a>
+                            </td>';
 													echo '</tr>';
 												}
 											?>

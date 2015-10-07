@@ -6,8 +6,8 @@ include "header.php";
 include "menu.php";
 include "top_nav.php";
 
-if (isset($_GET['id'])) {
-	$id_assistito = $_GET['id'];
+if (isset($_GET['id_assistito'])) {
+	$id_assistito = $_GET['id_assistito'];
 	$assistito = get_assistito($id_assistito);
 	$servizi = get_servizi_assistito($id_assistito);
 ?>

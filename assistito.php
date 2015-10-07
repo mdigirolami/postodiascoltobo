@@ -28,6 +28,12 @@ include "top_nav.php";
 
 <?php
 if ($_POST['action'] != 'register') {
+
+  if (isset($_GET['id_assistito'])) {
+  	$id_assistito = $_GET['id_assistito'];
+  	$assistito = get_assistito($id_assistito);
+  }
+
 ?>
 					<div class="col-md-12 col-sm-12 col-xs-12">
 						<div class="x_panel">
