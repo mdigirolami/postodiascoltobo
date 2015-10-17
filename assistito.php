@@ -364,58 +364,269 @@ foreach ($docs as $key=>$value) {
 									<div class="item form-group">
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="conoscenti"> Conoscenti/connazionali
+												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="Conoscenti"> Conoscenti/connazionali
 											</label>
 										</div>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="spontaneo"> Spontaneo
+												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="Spontaneo"> Spontaneo
 											</label>
 										</div>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="asl"> Asl/ospedali
+												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="ASL"> Asl/ospedali
 											</label>
 										</div>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="attori_di_stazioni"> Attori di stazioni
+												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="Attori di stazioni"> Attori di stazioni
 											</label>
 										</div>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="caritas"> Caritas
+												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="Caritas"> Caritas
 											</label>
 										</div>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="ufficio_immigrazioni"> Ufficio immigrazioni
+												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="Ufficio immigrazioni"> Ufficio immigrazioni
 											</label>
 										</div>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="enti"> Enti/associazioni
+												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="Enti"> Enti/associazioni
 											</label>
 										</div>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="servizi_sociali"> Servizi sociali
+												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="Servizi sociali"> Servizi sociali
 											</label>
 										</div>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="sert"> SERT
+												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="Sert"> SERT
 											</label>
 										</div>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="privati"> Privati cittadini
+												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="Privati"> Privati cittadini
 											</label>
 										</div>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="polfer"> Polfer
+												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="Polfer"> Polfer
 											</label>
+										</div>
+									</div>
+									
+									<span class="section">Alloggio</span>
+									<div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Dimora stabile </label>
+										<div class="col-md-6 col-sm-6 col-xs-12">
+											<p>
+												<input type="radio" class="flat" name="alloggio" id="dimora_stabile" value="Dimora stabile" checked="" />
+											</p>
+										</div>
+									</div>	
+									<div class="item form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12">Centro accoglienza </label>
+										<div class="col-md-6 col-sm-6 col-xs-12">
+											<p>
+												<input type="radio" class="flat" name="alloggio" id="centro_accoglienza" value="Centro accoglienza" checked="" />
+											</p>
+										</div>	
+									</div>
+									<div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Casa occupata </label>
+										<div class="col-md-6 col-sm-6 col-xs-12">
+											<p>
+												<input type="radio" class="flat" name="alloggio" id="casa_occupata" value="Casa occupata" checked="" />
+											</p>
+										</div>
+									</div>	
+									<div class="item form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12">Stazione </label>
+										<div class="col-md-6 col-sm-6 col-xs-12">
+											<p>
+												<input type="radio" class="flat" name="alloggio" id="stazione" value="Stazione" checked="" />
+											</p>
+										</div>	
+									</div>
+									<div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Strada</label>
+										<div class="col-md-6 col-sm-6 col-xs-12">
+											<p>
+												<input type="radio" class="flat" name="alloggio" id="strada" value="Strada" checked="" />
+											</p>
+										</div>
+									</div>
+									
+									<span class="section">Lingue conosciute</span>
+									<div class="item form-group">
+										<div class="checkbox">
+											<label>
+												<input type="checkbox" class="flat" name="lingue[]" value="Inglese"> Inglese
+											</label>
+										</div>
+										<div class="checkbox">
+											<label>
+												<input type="checkbox" class="flat" name="lingue[]" value="Francese"> Francese
+											</label>
+										</div>
+										<div class="checkbox">
+											<label>
+												<input type="checkbox" class="flat" name="lingue[]" value="Spagnolo"> Spagnolo
+											</label>
+										</div>
+										<div class="checkbox">
+											<label>
+												<input type="checkbox" class="flat" name="lingue[]" value="Tedesco"> Tedesco
+											</label>
+										</div>
+										<div class="checkbox">
+											<label>
+												<input type="checkbox" class="flat" name="lingue[]" value="Russo"> Russo
+											</label>
+										</div>
+										<div class="checkbox">
+											<label>
+												<input type="checkbox" class="flat" name="lingue[]" value="Arabo"> Arabo
+											</label>
+										</div>
+										<div class="item form-group">
+											<label class="control-label col-md-3 col-sm-3 col-xs-12" for="lingua_madre">Lingua madre </label>
+											<div class="col-md-6 col-sm-6 col-xs-12">
+												<input id="lingua_madre" class="form-control col-md-7 col-xs-12" name="lingua_madre" type="text">
+											</div>
+										</div>
+									</div>	
+
+									<span class="section">Vulnerabilità</span>
+									<div class="item form-group">
+										<div class="checkbox">
+											<label>
+												<input type="checkbox" class="flat" name="vulnerabilita[]" value="Disabilità fisica"> Disabilità fisica
+											</label>
+										</div>
+										<div class="checkbox">
+											<label>
+												<input type="checkbox" class="flat" name="vulnerabilita[]" value="Disabilità psicologica"> Disabilità psicologica
+											</label>
+										</div>
+										<div class="checkbox">
+											<label>
+												<input type="checkbox" class="flat" name="vulnerabilita[]" value="Disagio abitativo"> Disagio abitativo
+											</label>
+										</div>
+										<div class="checkbox">
+											<label>
+												<input type="checkbox" class="flat" name="vulnerabilita[]" value="Fragilità lavorativa"> Fragilità lavorativa
+											</label>
+										</div>
+										<div class="checkbox">
+											<label>
+												<input type="checkbox" class="flat" name="vulnerabilita[]" value="Dipendenza droghe"> Dipendenza droghe
+											</label>
+										</div>
+										<div class="checkbox">
+											<label>
+												<input type="checkbox" class="flat" name="vulnerabilita[]" value="Dipendenza alcool"> Dipendenza alcool
+											</label>
+										</div>
+										<div class="checkbox">
+											<label>
+												<input type="checkbox" class="flat" name="vulnerabilita[]" value="Ex detenuto"> Ex detenuto
+											</label>
+										</div>
+										<div class="checkbox">
+											<label>
+												<input type="checkbox" class="flat" name="vulnerabilita[]" value="Rifugiato politico"> Rifugiato politico
+											</label>
+										</div>
+									</div>
+									
+									<span class="section">Risposte indirette</span>
+									<div class="item form-group">
+										<div class="checkbox">
+											<label>
+												<input type="checkbox" class="flat" name="risposte_indirette[]" value="Caritas"> Caritas
+											</label>
+										</div>
+										<div class="checkbox">
+											<label>
+												<input type="checkbox" class="flat" name="risposte_indirette[]" value="Politiche sociali"> Politiche sociali
+											</label>
+										</div>
+										<div class="checkbox">
+											<label>
+												<input type="checkbox" class="flat" name="risposte_indirette[]" value="SERT"> SERT
+											</label>
+										</div>
+										<div class="checkbox">
+											<label>
+												<input type="checkbox" class="flat" name="risposte_indirette[]" value="DSM"> DSM
+											</label>
+										</div>
+										<div class="checkbox">
+											<label>
+												<input type="checkbox" class="flat" name="risposte_indirette[]" value="Privati"> Privati
+											</label>
+										</div>
+										<div class="checkbox">
+											<label>
+												<input type="checkbox" class="flat" name="risposte_indirette[]" value="Associazioni"> Associazioni
+											</label>
+										</div>
+										<div class="checkbox">
+											<label>
+												<input type="checkbox" class="flat" name="risposte_indirette[]" value="Parrocchie"> Parrocchie
+											</label>
+										</div>
+										<div class="checkbox">
+											<label>
+												<input type="checkbox" class="flat" name="risposte_indirette[]" value="Antoniano"> Antoniano
+											</label>
+										</div>
+										<div class="checkbox">
+											<label>
+												<input type="checkbox" class="flat" name="risposte_indirette[]" value="Padre Marella"> Padre Marella
+											</label>
+										</div>
+										<div class="checkbox">
+											<label>
+												<input type="checkbox" class="flat" name="risposte_indirette[]" value="Suore M. Teresa di Calcutta"> Suore M. Teresa di Calcutta
+											</label>
+										</div>
+										<div class="checkbox">
+											<label>
+												<input type="checkbox" class="flat" name="risposte_indirette[]" value="Giovanni XXIII"> Giovanni XXIII
+											</label>
+										</div>
+									</div>
+									
+									<span class="section">Situazione lavorativa</span>
+									<div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Ha lavorato </label>
+										<div class="col-md-6 col-sm-6 col-xs-12">
+											<p>
+												Si <input type="radio" class="flat" name="ha_lavorato" id="ha_lavorato_si" value="Si" checked="" />
+												No <input type="radio" class="flat" name="ha_lavorato" id="ha_lavorato_no" value="No" />
+											</p>
+										</div>
+									</div>
+									<div class="item form-group">
+                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Lavora </label>
+										<div class="col-md-6 col-sm-6 col-xs-12">
+											<p>
+												Si <input type="radio" class="flat" name="lavora" id="lavora_si" value="Si" checked="" />
+												No <input type="radio" class="flat" name="lavora" id="lavora_no" value="No" />
+												<div class="item form-group">
+													<label class="control-label col-md-3 col-sm-3 col-xs-12" for="dove_lavora">Dove lavora </label>
+													<div class="col-md-6 col-sm-6 col-xs-12">
+														<input id="dove_lavora" class="form-control col-md-7 col-xs-12" name="dove_lavora" type="text">
+													</div>
+												</div>
+											</p>
 										</div>
 									</div>
 

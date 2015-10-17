@@ -19,7 +19,8 @@ function inserisci_assistito($params) {
 	global $db,$config;
 	$date_pieces=split("/", $params['data_di_nascita']);
 	$new_date=$date_pieces[2]."-".$date_pieces[0]."-".$date_pieces[1];
-    $sql="insert into assistiti (`id`, `valid`, `nome`, `cognome`, `data_di_nascita`, `luogo_di_nascita`, `sesso`, `nazionalita`, `cellulare`, `stato_civile`, `citta_residenza`, `via_residenza`, `numero_residenza`, `nazione_residenza`) VALUES ('', 1,'".$params['nome']."', '".$params['cognome']."', '".$new_date."', '".$params['luogo_di_nascita']."', '".$params['sesso']."', '".$params['nazionalita']."', '".$params['cellulare']."', '".$params['stato_civile']."', '".$params['citta_residenza']."', '".$params['via_residenza']."', '".$params['numero_residenza']."', '".$params['nazione_residenza']."')";
+    $sql='insert into assistiti (`id`, `valid`, `nome`, `cognome`, `data_di_nascita`, `luogo_di_nascita`, `sesso`, `nazionalita`, `cellulare`, `stato_civile`, `citta_residenza`, `via_residenza`, `numero_residenza`, `nazione_residenza`, `alloggio`, `lingua_madre`, `ha_lavorato`, `lavora`, `dove_lavora`) 
+	VALUES ("", 1,"'.$params["nome"].'", "'.$params["cognome"].'", "'.$new_date.'", "'.$params["luogo_di_nascita"].'", "'.$params["sesso"].'", "'.$params["nazionalita"].'", "'.$params["cellulare"].'", "'.$params["stato_civile"].'", "'.$params["citta_residenza"].'", "'.$params["via_residenza"].'", "'.$params["numero_residenza"].'", "'.$params["nazione_residenza"].'", "'.$params["alloggio"].'", "'.$params["lingua_madre"].'", "'.$params["ha_lavorato"].'", "'.$params["lavora"].'", "'.$params["dove_lavora"].'")';
     echo $sql;
 	$res=mysql_query($sql);
 
@@ -57,6 +58,23 @@ function inserisci_assistito($params) {
 		$res4=mysql_query($sql4);
 	}
 
+	foreach ($params['lingue'] as $lingua) {
+		$sql5="insert into lingue VALUES ('', ".$id_assistito.", '".$lingua."')";
+		echo $sql5;
+		$res5=mysql_query($sql5);
+	}
+	
+	foreach ($params['vulnerabilita'] as $vulnerabilita) {
+		$sql6="insert into vulnerabilita VALUES ('', ".$id_assistito.", '".$vulnerabilita."')";
+		echo $sql6;
+		$res6=mysql_query($sql6);
+	}
+	
+	foreach ($params['risposte_indirette'] as $risposta) {
+		$sql7="insert into risposte_indirette VALUES ('', ".$id_assistito.", '".$risposta."')";
+		echo $sql7;
+		$res7=mysql_query($sql7);
+	}
 
 }
 
@@ -64,7 +82,7 @@ function get_servizi() {
 	global $db,$config;
 	$result = array();
 
-	$sql="SELECT cat_servizi.nome AS tipo, servizi_erogati.data, assistiti.nome AS nome, assistiti.cognome
+	$sql="SELECT cat_servizi.nome AS tipo, servizi_erogati.data, servizi_erogati.id as id_servizio_erogato, assistiti.nome AS nome, assistiti.cognome, assistiti.id as id_assistito 
 FROM cat_servizi
 JOIN servizi_erogati ON cat_servizi.id = servizi_erogati.id_servizio
 JOIN assistiti ON servizi_erogati.id_assistito = assistiti.id order by data desc, tipo";
@@ -80,7 +98,7 @@ function get_servizi_assistito($id) {
 	global $db,$config;
 	$result = array();
 
-	$sql="SELECT cat_servizi.nome AS tipo, servizi_erogati.data, assistiti.nome AS nome, assistiti.cognome
+	$sql="SELECT cat_servizi.nome AS tipo, servizi_erogati.data, servizi_erogati.id as id_servizio_erogato, assistiti.nome AS nome, assistiti.cognome, assistiti.id as id_assistito 
 FROM cat_servizi
 JOIN servizi_erogati ON cat_servizi.id = servizi_erogati.id_servizio
 JOIN assistiti ON servizi_erogati.id_assistito = assistiti.id where assistiti.id=".$id." order by data desc, tipo";
