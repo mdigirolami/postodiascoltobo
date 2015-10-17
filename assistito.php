@@ -22,23 +22,47 @@ include "top_nav.php";
 					</div>
 				</div>
 
-                <div class="row">
+        <div class="row">
 
 
 
 <?php
-if ($_POST['action'] != 'register') {
 
-  if (isset($_GET['id_assistito'])) {
-  	$id_assistito = $_GET['id_assistito'];
-  	$assistito = get_assistito($id_assistito);
-  }
+if ($_POST['action'] == 'register_update') {
+  $page_mode='REGISTRA_MODIFICA';
+} else if ($_POST['action'] == 'register_insert') {
+  $page_mode='REGISTRA_INSERISCI';
+} else if (isset($_GET['id_assistito'])) {
+  $page_mode='VISUALIZZA_MODIFICA';
+} else {
+  $page_mode='VISUALIZZA_INSERISCI';
+}
+
+
+if ($page_mode=='VISUALIZZA_MODIFICA') {
+
+  $id_assistito=$_GET['id_assistito'];
+  $assistito = get_assistito($id_assistito);
+  print_r($assistito);
+
+  $page_title='Modifica';
+  $send_button_title='Modifica';
+  $form_action='register_update';
+
+} else if ($page_mode=='VISUALIZZA_INSERISCI') {
+  $page_title='Inserisci';
+  $send_button_title='Inserisci';
+  $form_action='register_insert';
+}
+
+if ($page_mode=='VISUALIZZA_INSERISCI' or $page_mode=='VISUALIZZA_MODIFICA') {
 
 ?>
 					<div class="col-md-12 col-sm-12 col-xs-12">
 						<div class="x_panel">
 							<div class="x_title">
-								<h2>Inserisci <small>(i campi contrassegnati con * sono obbligatori)</small></h2>
+								<h2><?php echo $page_title;?><small>(i campi contrassegnati con * sono obbligatori)</small></h2>
+                <!--
 								<ul class="nav navbar-right panel_toolbox">
 									<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
 									</li>
@@ -54,6 +78,7 @@ if ($_POST['action'] != 'register') {
 									<li><a class="close-link"><i class="fa fa-close"></i></a>
 									</li>
 								</ul>
+              -->
 								<div class="clearfix"></div>
 							</div>
 							<div class="x_content">
@@ -135,14 +160,15 @@ if ($_POST['action'] != 'register') {
 								</form>
 -->
 								<form action="assistito.php" method="post" class="form-horizontal form-label-left" novalidate>
-									<input type="hidden" name="action" value="register" />
+									<input type="hidden" name="action" value="<?php echo $form_action;?>" />
+                  <input type="hidden" name="id_assistito" value="<?php echo $id_assistito;?>" />
 									<span class="section">Dati personali</span>
 
 									<div class="item form-group">
 										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="nome">Nome <span class="required">*</span>
 										</label>
 										<div class="col-md-6 col-sm-6 col-xs-12">
-											<input id="nome" class="form-control col-md-7 col-xs-12" name="nome" required="required" type="text">
+											<input id="nome" class="form-control col-md-7 col-xs-12" name="nome" required="required" type="text" value="<?php echo $assistito["nome"];?>">
 										</div>
 									</div>
 									<div class="item form-group">
@@ -418,7 +444,7 @@ foreach ($docs as $key=>$value) {
 											</label>
 										</div>
 									</div>
-									
+
 									<span class="section">Alloggio</span>
 									<div class="item form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Dimora stabile </label>
@@ -427,14 +453,14 @@ foreach ($docs as $key=>$value) {
 												<input type="radio" class="flat" name="alloggio" id="dimora_stabile" value="Dimora stabile" checked="" />
 											</p>
 										</div>
-									</div>	
+									</div>
 									<div class="item form-group">
 										<label class="control-label col-md-3 col-sm-3 col-xs-12">Centro accoglienza </label>
 										<div class="col-md-6 col-sm-6 col-xs-12">
 											<p>
 												<input type="radio" class="flat" name="alloggio" id="centro_accoglienza" value="Centro accoglienza" checked="" />
 											</p>
-										</div>	
+										</div>
 									</div>
 									<div class="item form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Casa occupata </label>
@@ -443,14 +469,14 @@ foreach ($docs as $key=>$value) {
 												<input type="radio" class="flat" name="alloggio" id="casa_occupata" value="Casa occupata" checked="" />
 											</p>
 										</div>
-									</div>	
+									</div>
 									<div class="item form-group">
 										<label class="control-label col-md-3 col-sm-3 col-xs-12">Stazione </label>
 										<div class="col-md-6 col-sm-6 col-xs-12">
 											<p>
 												<input type="radio" class="flat" name="alloggio" id="stazione" value="Stazione" checked="" />
 											</p>
-										</div>	
+										</div>
 									</div>
 									<div class="item form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Strada</label>
@@ -460,7 +486,7 @@ foreach ($docs as $key=>$value) {
 											</p>
 										</div>
 									</div>
-									
+
 									<span class="section">Lingue conosciute</span>
 									<div class="item form-group">
 										<div class="checkbox">
@@ -499,7 +525,7 @@ foreach ($docs as $key=>$value) {
 												<input id="lingua_madre" class="form-control col-md-7 col-xs-12" name="lingua_madre" type="text">
 											</div>
 										</div>
-									</div>	
+									</div>
 
 									<span class="section">Vulnerabilità</span>
 									<div class="item form-group">
@@ -544,7 +570,7 @@ foreach ($docs as $key=>$value) {
 											</label>
 										</div>
 									</div>
-									
+
 									<span class="section">Risposte indirette</span>
 									<div class="item form-group">
 										<div class="checkbox">
@@ -603,7 +629,7 @@ foreach ($docs as $key=>$value) {
 											</label>
 										</div>
 									</div>
-									
+
 									<span class="section">Situazione lavorativa</span>
 									<div class="item form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Ha lavorato </label>
@@ -634,7 +660,7 @@ foreach ($docs as $key=>$value) {
 									<div class="form-group">
 										<div class="col-md-6 col-md-offset-3">
 											<button type="submit" class="btn btn-primary">Annulla</button>
-											<button id="send" type="submit" class="btn btn-success">Inserisci</button>
+											<button id="send" type="submit" class="btn btn-success"><?php echo $send_button_title;?></button>
 										</div>
 									</div>
 								</form>
@@ -678,20 +704,29 @@ foreach ($docs as $key=>$value) {
 </form>
 -->
 <?php
-} else {
-	$ins = inserisci_assistito($_POST);
-	echo "Assistito inserito";
+} else { //siamo in fase registrazione
+
+  if ($page_mode=='REGISTRA_INSERISCI') {
+    echo "chiamata a inserisci_assistito...";
+  	$ins = inserisci_assistito($_POST);
+  	echo "Assistito inserito correttamente";
+  }
+  else {
+    echo "chiamata a modifica_assistito...";
+    $ins = modifica_assistito($_POST);
+  	echo "Assistito modificato correttamente";
+  }
 }
 ?>
 
 
 
-
+<!--
 <?php
 $assistiti = get_assistiti();
-
 print_r($assistiti);
 ?>
+-->
 
 <!-- page content -->
 	   <!-- /datepicker -->
