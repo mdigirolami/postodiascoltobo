@@ -86,7 +86,7 @@ function modifica_assistito($params) {
 	global $db,$config;
 	$date_pieces=split("/", $params['data_di_nascita']);
 	$new_date=$date_pieces[2]."-".$date_pieces[0]."-".$date_pieces[1];
-  $sql='update assistiti set `data_modifica`=now(), `nome`="'.$params["nome"].'" where id='.$params["id_assistito"];
+  $sql='update assistiti set `data_modifica`=now(), `nome`="'.$params["nome"].'", `cognome`="'.$params["cognome"].'", `data_di_nascita`="'.$params["data_di_nascita"].'", `luogo_di_nascita`="'.$params["luogo_di_nascita"].'", `sesso`="'.$params["sesso"].'", `nazionalita`="'.$params["nazionalita"].'", `cellulare`="'.$params["cellulare"].'", `stato_civile`="'.$params["stato_civile"].'", `citta_residenza`="'.$params["citta_residenza"].'", `via_residenza`="'.$params["via_residenza"].'", `numero_residenza`="'.$params["numero_residenza"].'", `nazione_residenza`="'.$params["nazione_residenza"].'", `alloggio`="'.$params["alloggio"].'", `lingua_madre`="'.$params["lingua_madre"].'", `ha_lavorato`="'.$params["ha_lavorato"].'" where id='.$params["id_assistito"];
     echo $sql;
 	$res=mysql_query($sql);
 
@@ -146,6 +146,42 @@ function get_documenti_assistito($id_assistito) {
 	while($r=mysql_fetch_assoc($res)) {
 			$result[]=$r;
 	}
+
+function get_lingue_assistito($id_assistito) {
+		global $db,$config;
+		$result = array();
+
+		$sql="SELECT * FROM lingue where id_assistito=".$id_assistito;
+		$res=mysql_query($sql);
+		while($r=mysql_fetch_assoc($res)) {
+				$result[]=$r;
+		}
+
+	return $result;
+}
+
+function get_vulnerabilita_assistito($id_assistito) {
+		global $db,$config;
+		$result = array();
+
+		$sql="SELECT * FROM vulnerabilita where id_assistito=".$id_assistito;
+		$res=mysql_query($sql);
+		while($r=mysql_fetch_assoc($res)) {
+				$result[]=$r;
+		}
+
+	return $result;
+}
+
+function get_risposte_indirette_assistito($id_assistito) {
+		global $db,$config;
+		$result = array();
+
+		$sql="SELECT * FROM risposte_indirette where id_assistito=".$id_assistito;
+		$res=mysql_query($sql);
+		while($r=mysql_fetch_assoc($res)) {
+				$result[]=$r;
+		}
 
 	return $result;
 }
