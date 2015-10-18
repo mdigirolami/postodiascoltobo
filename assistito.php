@@ -43,11 +43,47 @@ if ($page_mode=='VISUALIZZA_MODIFICA') {
 
   $id_assistito=$_GET['id_assistito'];
   $assistito = get_assistito($id_assistito);
+  $documenti_assistito_array = get_documenti_assistito($id_assistito);
+	$chi_lo_invia_assistito_array = get_chi_lo_invia_assistito($id_assistito);
   print_r($assistito);
 
   $page_title='Modifica';
   $send_button_title='Modifica';
   $form_action='register_update';
+
+  if ("F"==$assistito["sesso"]) {
+    $sesso_F = 1;
+    $sesso_M = 0;
+  } else
+  {
+    $sesso_F = 0;
+    $sesso_M = 1;
+  }
+
+  $stato_civile_is_CELIBE=0;        //value=1
+  $stato_civile_is_NUBILE=0;        //value=2
+  $stato_civile_is_CONVIVENTE=0;    //value=3
+  $stato_civile_is_CONIUGATO=0;     //value=4
+  $stato_civile_is_VEDOVO=0;        //value=5
+  $stato_civile_is_SEPARATO=0;      //value=6
+  $stato_civile_is_DIVORZIATO=0;    //value=7
+  if ("1"==$assistito["stato_civile"]) {
+    $stato_civile_is_CELIBE=1;
+  } else if ("1"==$assistito["stato_civile"]) {
+    $stato_civile_is_NUBILE=1;
+  } else if ("2"==$assistito["stato_civile"]) {
+    $stato_civile_is_CONVIVENTE=1;
+  } else if ("3"==$assistito["stato_civile"]) {
+    $stato_civile_is_CONIUGATO=1;
+  } else if ("4"==$assistito["stato_civile"]) {
+    $stato_civile_is_CELIBE=1;
+  } else if ("5"==$assistito["stato_civile"]) {
+    $stato_civile_is_VEDOVO=1;
+  } else if ("6"==$assistito["stato_civile"]) {
+    $stato_civile_is_SEPARATO=1;
+  } else if ("7"==$assistito["stato_civile"]) {
+    $stato_civile_is_DIVORZIATO=1;
+  }
 
 } else if ($page_mode=='VISUALIZZA_INSERISCI') {
   $page_title='Inserisci';
@@ -175,14 +211,14 @@ if ($page_mode=='VISUALIZZA_INSERISCI' or $page_mode=='VISUALIZZA_MODIFICA') {
 										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="cognome">Cognome <span class="required">*</span>
 										</label>
 										<div class="col-md-6 col-sm-6 col-xs-12">
-											<input id="cognome" class="form-control col-md-7 col-xs-12" name="cognome" required="required" type="text">
+											<input id="cognome" class="form-control col-md-7 col-xs-12" name="cognome" required="required" type="text" value="<?php echo $assistito["cognome"];?>">
 										</div>
 									</div>
 									<div class="item form-group">
 										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="data_di_nascita">Data di nascita </label>
 										<div class="controls">
 											<div class="col-md-6 col-sm-6 col-xs-12">
-												<input type="text" name="data_di_nascita" class="form-control has-feedback-left" id="single_cal4" aria-describedby="inputSuccess2Status4">
+												<input type="text" name="data_di_nascita" class="form-control has-feedback-left" id="single_cal4" aria-describedby="inputSuccess2Status4" value="<?php echo $assistito["data_di_nascita"];?>">
 												<span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
 												<span id="inputSuccess2Status4" class="sr-only">(success)</span>
 											</div>
@@ -191,7 +227,7 @@ if ($page_mode=='VISUALIZZA_INSERISCI' or $page_mode=='VISUALIZZA_MODIFICA') {
 									<div class="item form-group">
 										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="luogo_di_nascita">Luogo di nascita </label>
 										<div class="col-md-6 col-sm-6 col-xs-12">
-											<input id="luogo_di_nascita" class="form-control col-md-7 col-xs-12" name="luogo_di_nascita" type="text">
+											<input id="luogo_di_nascita" class="form-control col-md-7 col-xs-12" name="luogo_di_nascita" type="text"  value="<?php echo $assistito["luogo_di_nascita"];?>">
 										</div>
 									</div>
 									<div class="item form-group">
@@ -199,15 +235,15 @@ if ($page_mode=='VISUALIZZA_INSERISCI' or $page_mode=='VISUALIZZA_MODIFICA') {
 										<div class="col-md-6 col-sm-6 col-xs-12">
 											<p>
 												M:
-												<input type="radio" class="flat" name="sesso" id="sessoM" value="M" checked="" /> F:
-												<input type="radio" class="flat" name="sesso" id="sessoF" value="F" />
+												<input type="radio" class="flat" name="sesso" id="sessoM" value="M" <?php if ($sesso_M==1) echo("checked");?> /> F:
+												<input type="radio" class="flat" name="sesso" id="sessoF" value="F" <?php if ($sesso_F==1) echo("checked");?>/>
 											</p>
 										</div>
 									</div>
 									<div class="item form-group">
 										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="nazionalita">Nazionalità </label>
 										<div class="col-md-6 col-sm-6 col-xs-12">
-											<input id="nazionalita" class="form-control col-md-7 col-xs-12" name="nazionalita" type="text">
+											<input id="nazionalita" class="form-control col-md-7 col-xs-12" name="nazionalita" type="text" value="<?php echo $assistito["nazionalita"];?>">
 										</div>
 									</div>
 <!--
@@ -221,7 +257,7 @@ if ($page_mode=='VISUALIZZA_INSERISCI' or $page_mode=='VISUALIZZA_MODIFICA') {
 									<div class="item form-group">
 										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">Cellulare </label>
 										<div class="col-md-6 col-sm-6 col-xs-12">
-											<input type="phone" id="cellulare" name="cellulare" class="form-control col-md-7 col-xs-12">
+											<input type="phone" id="cellulare" name="cellulare" class="form-control col-md-7 col-xs-12" value="<?php echo $assistito["cellulare"];?>">
 										</div>
 									</div>
 									<div class="item form-group">
@@ -229,13 +265,13 @@ if ($page_mode=='VISUALIZZA_INSERISCI' or $page_mode=='VISUALIZZA_MODIFICA') {
 										<div class="col-md-6 col-sm-6 col-xs-12">
 											<select name="stato_civile" class="select2_single form-control" tabindex="-1">
 												<option>Seleziona uno stato</option>
-												<option value="1">Celibe</option>
-												<option value="2">Nubile</option>
-												<option value="3">Convivente</option>
-												<option value="4">Coniugato/a</option>
-												<option value="5">Vedevo/a</option>
-												<option value="6">Separato/a</option>
-												<option value="7">Divorziato</option>
+												<option value="1" <?php if ($stato_civile_is_CELIBE==1) echo("selected");?>>Celibe</option>
+												<option value="2" <?php if ($stato_civile_is_NUBILE==1) echo("selected");?>>Nubile</option>
+												<option value="3" <?php if ($stato_civile_is_CONVIVENTE==1) echo("selected");?>>Convivente</option>
+												<option value="4" <?php if ($stato_civile_is_CONIUGATO==1) echo("selected");?>>Coniugato/a</option>
+												<option value="5" <?php if ($stato_civile_is_VEDOVO==1) echo("selected");?>>Vedevo/a</option>
+												<option value="6" <?php if ($stato_civile_is_SEPARATO==1) echo("selected");?>>Separato/a</option>
+												<option value="7" <?php if ($stato_civile_is_DIVORZIATO==1) echo("selected");?>>Divorziato</option>
 											</select>
 										</div>
 									</div>
@@ -244,25 +280,25 @@ if ($page_mode=='VISUALIZZA_INSERISCI' or $page_mode=='VISUALIZZA_MODIFICA') {
 									<div class="item form-group">
 										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="citta_residenza">Città </label>
 										<div class="col-md-6 col-sm-6 col-xs-12">
-											<input id="citta_residenza" class="form-control col-md-7 col-xs-12" name="citta_residenza" type="text">
+											<input id="citta_residenza" class="form-control col-md-7 col-xs-12" name="citta_residenza" type="text" value="<?php echo $assistito["residenza"];?>">
 										</div>
 									</div>
 									<div class="item form-group">
 										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="via_residenza">Via </label>
 										<div class="col-md-6 col-sm-6 col-xs-12">
-											<input id="via_residenza" class="form-control col-md-7 col-xs-12" name="via_residenza" type="text">
+											<input id="via_residenza" class="form-control col-md-7 col-xs-12" name="via_residenza" type="text" value="<?php echo $assistito["via_residenza"];?>">
 										</div>
 									</div>
 									<div class="item form-group">
 										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="numero_residenza">Numero civico </label>
 										<div class="col-md-6 col-sm-6 col-xs-12">
-											<input id="numero_residenza" class="form-control col-md-7 col-xs-12" name="numero_residenza" type="text">
+											<input id="numero_residenza" class="form-control col-md-7 col-xs-12" name="numero_residenza" type="text" value="<?php echo $assistito["numero_residenza"];?>">
 										</div>
 									</div>
 									<div class="item form-group">
 										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="nazione_residenza">Nazione </label>
 										<div class="col-md-6 col-sm-6 col-xs-12">
-											<input id="nazione_residenza" class="form-control col-md-7 col-xs-12" name="nazione_residenza" type="text">
+											<input id="nazione_residenza" class="form-control col-md-7 col-xs-12" name="nazione_residenza" type="text"  value="<?php echo $assistito["nazione_residenza"];?>">
 										</div>
 									</div>
 
