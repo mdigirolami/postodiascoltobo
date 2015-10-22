@@ -54,8 +54,7 @@ if ($page_mode=='VISUALIZZA_MODIFICA') {
   if ("F"==$assistito["sesso"]) {
     $sesso_F = 1;
     $sesso_M = 0;
-  } else
-  {
+  } else if ("M"==$assistito["sesso"]) {
     $sesso_F = 0;
     $sesso_M = 1;
   }

@@ -146,6 +146,7 @@ function get_documenti_assistito($id_assistito) {
 	while($r=mysql_fetch_assoc($res)) {
 			$result[]=$r;
 	}
+}	
 
 function get_lingue_assistito($id_assistito) {
 		global $db,$config;

@@ -11,6 +11,9 @@ if (isset($_GET['id_assistito'])) {
 	$assistito = get_assistito($id_assistito);
 	$documenti_assistito_array = get_documenti_assistito($id_assistito);
 	$chi_lo_invia_assistito_array = get_chi_lo_invia_assistito($id_assistito);
+	$lingue_assistito_array = get_lingue_assistito($id_assistito);
+	$vulnerabilita_assistito_array = get_vulnerabilita_assistito($id_assistito);
+	$risposte_indirette_assistito_array = get_risposte_indirette_assistito($id_assistito);
 ?>
 
 <!-- page content -->
@@ -72,7 +75,7 @@ if (isset($_GET['id_assistito'])) {
                       <div class="col-md-3"><label>Stato civile</label></div>
                       <div class="col-md-9"><?php echo $assistito["stato_civile"];?></div>
                   </div>
-
+				  <br /><br />
 
 									<span class="section">Dati residenza</span>
                   <div class="row">
@@ -91,11 +94,13 @@ if (isset($_GET['id_assistito'])) {
                       <div class="col-md-3"><label>Nazione</label></div>
                       <div class="col-md-9"><?php echo $assistito["nazione_residenza"];?></div>
                   </div>
+				  <br /><br />
 
 									<span class="section">Documenti</span>
 									<!--
 									<?php
 									foreach ($documenti_assistito_array as $documento_assistito) {
+										
 										echo '<div class="row">
 												    <div class="col-md-2">'.$documento_assistito["TIPO_DOC"].'</div>
 												    <div class="col-md-2">'.$documento_assistito["NUMERO_DOC"].'</div>
@@ -108,6 +113,11 @@ if (isset($_GET['id_assistito'])) {
 									?>
 									-->
 
+									<?php
+									if (sizeof($documenti_assistito_array)==0) {
+										echo '<div><label>Nessun documento inserito</label></div>';
+									} else {
+									?>	
 									<table class="table table-striped responsive-utilities jambo_table">
 										<thead>
 												<tr class="headings">
@@ -121,6 +131,9 @@ if (isset($_GET['id_assistito'])) {
 									  <tbody>
 									<?php
 									foreach ($documenti_assistito_array as $documento_assistito) {
+										if ($documento_assistito["FOTOCOPIA"]=="") {
+											$documento_assistito["FOTOCOPIA"]="NO";
+										}
 										echo '<tr class=""even pointer">';
 										echo '<td class=" ">'.$documento_assistito["TIPO_DOC"].'</td>';
 										echo '<td class=" ">'.$documento_assistito["NUMERO_DOC"].'</td>';
@@ -131,18 +144,84 @@ if (isset($_GET['id_assistito'])) {
 									}
 									?>
 									   </tbody>
-								  </table>
-
+								    </table>
+									<?php
+										}
+									?>	
+								  
+						<br /><br />
 									<span class="section">Chi lo invia</span>
 									<?php
-									foreach ($chi_lo_invia_assistito_array as $chi_lo_invia) {
-										echo '<div><label>'.$chi_lo_invia["chi"].'</label></div>';
+									if (sizeof($chi_lo_invia_assistito_array)==0) {
+										echo '<div><label>Nessuna scelta indicata</label></div>';
+									} else {
+										foreach ($chi_lo_invia_assistito_array as $chi_lo_invia) {
+											echo '<div><label>'.$chi_lo_invia["chi"].'</label></div>';
+										}
+									}
+									?>
+									<div class="ln_solid"></div>
+						<br />			
+									<span class="section">Alloggio</span>
+									<div><label>
+									<?php
+										$alloggio = $assistito["alloggio"];
+										if ($alloggio=="") $alloggio="Nessun alloggio indicato";
+										echo $alloggio; 
+									?>
+									</label></div>
+									<div class="ln_solid"></div>
+						<br />
+									<span class="section">Lingue conosciute</span>
+									<?php
+									if (sizeof($lingue_assistito_array)==0) {
+										echo '<div><label>Nessuna lingua indicata</label></div>';
+									} else {
+										foreach ($lingue_assistito_array as $lingua) {
+											echo '<div><label>'.$lingua["lingua"].'</label></div>';
+										}
+									}
+									$lingua_madre = $assistito["lingua_madre"];
+									if ($lingua_madre=="") {
+										echo "Nessuna lingua madre inserita";
+									} else {
+									?>	
+									<div class="row">
+										<div class="col-md-3"><label>Lingua madre</label></div>
+										<div class="col-md-9"><?php echo $lingua_madre;?></div>
+									</div>
+									<?php
+									}
+									?>
+									<div class="ln_solid"></div>
+						<br />
+									<span class="section">Vulnerabilità</span>
+									<?php
+									if (sizeof($vulnerabilita_assistito_array)==0) {
+										echo '<div><label>Nessuna scelta indicata</label></div>';
+									} else {
+										foreach ($vulnerabilita_assistito_array as $vulnerabilita) {
+											echo '<div><label>'.$vulnerabilita["vulnerabilita"].'</label></div>';
+										}
+									}
+									?>
+									<div class="ln_solid"></div>
+						<br />
+									<span class="section">Risposte indirette</span>
+									<?php
+									if (sizeof($risposte_indirette_assistito_array)==0) {
+										echo '<div><label>Nessuna scelta indicata</label></div>';
+									} else {
+										foreach ($risposte_indirette_assistito_array as $risposta) {
+											echo '<div><label>'.$risposta["risposta"].'</label></div>';
+										}
 									}
 									?>
 									<div class="ln_solid"></div>
 							</div>
 						</div>
 					</div>
+				</div>	
 
 <?php
 } else {
