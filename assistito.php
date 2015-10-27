@@ -7,24 +7,6 @@ include "menu.php";
 include "top_nav.php";
 ?>
 
-<!-- page content -->
-            <div class="right_col" role="main">
-				<div class="page-title">
-					<div class="title_left">
-						<h3>Scheda assistito</h3>
-					</div>
-					<div class="title_right">
-						<div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-							<div class="input-group">
-
-							</div>
-						</div>
-					</div>
-				</div>
-
-        <div class="row">
-
-
 
 <?php
 
@@ -42,15 +24,18 @@ if ($_POST['action'] == 'register_update') {
 if ($page_mode=='VISUALIZZA_MODIFICA') {
 
   $id_assistito=$_GET['id_assistito'];
-  $assistito = get_assistito($id_assistito);
-  $documenti_assistito_array = get_documenti_assistito($id_assistito);
 	$chi_lo_invia_assistito_array = get_chi_lo_invia_assistito($id_assistito);
-  print_r($assistito);
+
 
   $page_title='Modifica';
   $send_button_title='Modifica';
   $form_action='register_update';
 
+  //caricamento dati anagrafici
+  $assistito = get_assistito($id_assistito);
+//  print_r($assistito);
+  $sesso_F = 0;
+  $sesso_M = 0;
   if ("F"==$assistito["sesso"]) {
     $sesso_F = 1;
     $sesso_M = 0;
@@ -58,7 +43,6 @@ if ($page_mode=='VISUALIZZA_MODIFICA') {
     $sesso_F = 0;
     $sesso_M = 1;
   }
-
   $stato_civile_is_CELIBE=0;        //value=1
   $stato_civile_is_NUBILE=0;        //value=2
   $stato_civile_is_CONVIVENTE=0;    //value=3
@@ -84,15 +68,96 @@ if ($page_mode=='VISUALIZZA_MODIFICA') {
     $stato_civile_is_DIVORZIATO=1;
   }
 
+  //caricamento documenti
+  $documenti_assistito_array = get_documenti_assistito($id_assistito);
+//  print_r("numero documenti caricati: ".count($documenti_assistito_array));
+//  print_r($documenti_assistito_array);
+  foreach ($documenti_assistito_array as $loaded_doc) {
+//    echo "documento caricato:";print_r($loaded_doc);echo "\n";
+
+    $variable_name = "enabled_".$loaded_doc["TIPO_DOC"];
+    $$variable_name = "1";
+
+    $variable_name = "numero_".$loaded_doc["TIPO_DOC"];
+    $$variable_name = $loaded_doc["NUMERO_DOC"];
+
+    $variable_name = "rilascio_".$loaded_doc["TIPO_DOC"];
+    $$variable_name = $loaded_doc["DATA_RILASCIO_DOC"];
+
+    $variable_name = "scadenza_".$loaded_doc["TIPO_DOC"];
+    $$variable_name = $loaded_doc["DATA_SCADENZA_DOC"];
+
+    $variable_name = "fotocopia_".$loaded_doc["TIPO_DOC"];
+    $$variable_name = $loaded_doc["FOTOCOPIA"];
+  }
+/*  
+  echo "enabled_identita: ".$enabled_identita;
+  echo "numero_identita: ".$numero_identita;
+  echo "rilascio_identita: ".$rilascio_identita;
+  echo "scadenza_identita: ".$scadenza_identita;
+  echo "fotocopia_identita: ".$fotocopia_identita;
+*/
+  $var_name = "enabled_".$loaded_doc["TIPO_DOC"];
+//  echo "var_name=".$var_name;
+//  if (${$var_name}==1) echo "si identita"; else "no identita";
+
+
+
 } else if ($page_mode=='VISUALIZZA_INSERISCI') {
   $page_title='Inserisci';
   $send_button_title='Inserisci';
   $form_action='register_insert';
 }
-
-if ($page_mode=='VISUALIZZA_INSERISCI' or $page_mode=='VISUALIZZA_MODIFICA') {
-
 ?>
+
+<!-- page content -->
+            <div class="right_col" role="main">
+				<div class="page-title">
+					<div class="title_left">
+						<h3>Assistito <?php echo $assistito["cognome"]." ".$assistito["nome"]; ?></h3>
+					</div>
+					<div class="title_right">
+						<div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+							<div class="input-group">
+
+							</div>
+						</div>
+					</div>
+				</div>
+
+<?php
+if ($page_mode=='VISUALIZZA_INSERISCI' or $page_mode=='VISUALIZZA_MODIFICA') {
+    if ($page_mode=='VISUALIZZA_MODIFICA') {
+?>
+				<div class="x_content" style="height:46px;">	
+					<div class="" role="tabpanel" data-example-id="togglable-tabs">
+						<ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+							<li role="presentation" class=""><a href="visualizza_assistito.php?id_assistito=<?php echo $id_assistito; ?>" id="home-tab" aria-expanded="true">Visualizza</a>
+							</li>
+							<li role="presentation" class="active"><a href="assistito.php?id_assistito=<?php echo $id_assistito; ?>" id="profile-tab" aria-expanded="false">Modifica</a>
+							</li>
+							<li role="presentation" class=""><a href="servizio.php?id_assistito=<?php echo $id_assistito; ?>" id="profile-tab2" aria-expanded="false">Inserisci servizio</a>
+							</li>
+						</ul>
+					<!--	
+						<div id="myTabContent" class="tab-content">
+							<div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
+								<p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terr.</p>
+							</div>
+							<div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
+								<p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip</p>
+							</div>
+							<div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
+								<p>xxFood truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk </p>
+							</div>
+						</div>
+					-->	
+					</div>
+				</div>	
+<?php
+    }
+?>					
+				<div class="row">	
 					<div class="col-md-12 col-sm-12 col-xs-12">
 						<div class="x_panel">
 							<div class="x_title">
@@ -315,12 +380,20 @@ $docs=array("identita"=>"Carta d'identità",
 			"nessuno"=>"Nessun documento"
 			);
 foreach ($docs as $key=>$value) {
+
+  $enabled_var_name = "enabled_".$key;
+  //echo "var_name=".$var_name;
+  //if (${$enabled_var_name}==1) echo "si identita"; else "no identita";
+
+
 ?>
+
+                  <!-- documenti categorizzati -->
 									<div class="item form-group" style="min-height:34px;">
 										<div class="col-md-3 col-sm-3 col-xs-12" style="float:left;">
 											<div class="checkbox">
 												<span id="<?php echo $key;?>">
-														<input type="checkbox" class="flat" name="documenti[]" value="<?php echo $key;?>">
+														<input type="checkbox" class="flat" name="documenti[]" value="<?php echo $key;?>" <?php if (${$enabled_var_name}==1) echo("checked");?>>
 														<label style="cursor:default;"><?php echo $value;?></label>
 												</span>
 											</div>
@@ -350,6 +423,7 @@ foreach ($docs as $key=>$value) {
 <?php
 }
 ?>
+                  <!-- altro -->
 									<div class="item form-group" style="min-height:34px;">
 										<div class="col-md-3 col-sm-3 col-xs-12">
 											<div class="checkbox" >
@@ -703,7 +777,7 @@ foreach ($docs as $key=>$value) {
 						</div>
 					</div>
 
-
+</div>
 
 <!--
 <form action="assistito.php" method="post">

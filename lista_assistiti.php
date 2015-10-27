@@ -84,7 +84,7 @@ $assistiti = get_assistiti();
                             <a href="visualizza_assistito.php?id_assistito='.$a["id"].'" title="Visualizza assistito"><span class="glyphicon glyphicon-assistiti-actions glyphicon-file" aria-hidden="true"></span></a>&nbsp;
                             <a href="assistito.php?id_assistito='.$a["id"].'" title="Modifica assistito"><span class="glyphicon glyphicon-assistiti-actions glyphicon-pencil" aria-hidden="true"></span></a>&nbsp;
                             <a href="servizi_assistito.php?id_assistito='.$a["id"].'" title="Servizi assistito"><span class="glyphicon glyphicon-assistiti-actions glyphicon-edit" aria-hidden="true"></span></a>&nbsp;
-                            <a href="rimuovi_assistito.php?id_assistito='.$a["id"].'" title="Rimuovi assistito"><span class="glyphicon glyphicon-assistiti-actions glyphicon-remove-circle" aria-hidden="true"></span></a>
+                            <a href="rimuovi_assistito.php?id_assistito='.$a["id"].'" title="Rimuovi assistito" onclick="return confirm(\'Si sta per rimuovere l\\\'assistito '.$a["cognome"].' '.$a["nome"].'. I relativi dati non saranno più disponibili. Proseguire?\');"><span class="glyphicon glyphicon-assistiti-actions glyphicon-remove-circle" aria-hidden="true"></span></a>
                             </td>';
 													echo '</tr>';
 												}

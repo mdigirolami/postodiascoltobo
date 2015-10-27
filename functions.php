@@ -12,6 +12,7 @@ function get_assistiti() {
 	return $result;
 }
 
+
 function inserisci_assistito($params) {
 
 	echo("inserisci_assistito - params=".print_r($params,true));
@@ -78,6 +79,7 @@ function inserisci_assistito($params) {
 
 }
 
+
 function modifica_assistito($params) {
 
 	echo("modifica_assistito - params=".print_r($params,true));
@@ -92,6 +94,7 @@ function modifica_assistito($params) {
 
 }
 
+
 function get_servizi() {
 	global $db,$config;
 	$result = array();
@@ -99,7 +102,7 @@ function get_servizi() {
 	$sql="SELECT cat_servizi.nome AS tipo, servizi_erogati.data, servizi_erogati.id as id_servizio_erogato, assistiti.nome AS nome, assistiti.cognome, assistiti.id as id_assistito
 FROM cat_servizi
 JOIN servizi_erogati ON cat_servizi.id = servizi_erogati.id_servizio
-JOIN assistiti ON servizi_erogati.id_assistito = assistiti.id order by data desc, tipo";
+JOIN assistiti ON servizi_erogati.id_assistito = assistiti.id where servizi_erogati.valid=1 order by data desc, tipo";
 	$res=mysql_query($sql);
 	while($r=mysql_fetch_assoc($res)) {
 			$result[]=$r;
@@ -107,6 +110,7 @@ JOIN assistiti ON servizi_erogati.id_assistito = assistiti.id order by data desc
 
 	return $result;
 }
+
 
 function get_servizi_assistito($id) {
 	global $db,$config;
@@ -115,7 +119,7 @@ function get_servizi_assistito($id) {
 	$sql="SELECT cat_servizi.nome AS tipo, servizi_erogati.data, servizi_erogati.id as id_servizio_erogato, assistiti.nome AS nome, assistiti.cognome, assistiti.id as id_assistito
 FROM cat_servizi
 JOIN servizi_erogati ON cat_servizi.id = servizi_erogati.id_servizio
-JOIN assistiti ON servizi_erogati.id_assistito = assistiti.id where assistiti.id=".$id." order by data desc, tipo";
+JOIN assistiti ON servizi_erogati.id_assistito = assistiti.id where assistiti.id=".$id." and servizi_erogati.valid=1 order by data desc, tipo";
 	$res=mysql_query($sql);
 	while($r=mysql_fetch_assoc($res)) {
 			$result[]=$r;
@@ -124,11 +128,15 @@ JOIN assistiti ON servizi_erogati.id_assistito = assistiti.id where assistiti.id
 	return $result;
 }
 
-function get_assistito($id) {
+
+function get_servizio($id) {
 	global $db,$config;
 	$result = array();
 
-	$sql="SELECT * FROM assistiti where assistiti.id=".$id;
+	$sql="SELECT cat_servizi.nome AS tipo, servizi_erogati.data, servizi_erogati.note, assistiti.nome AS nome, assistiti.cognome, assistiti.id as id_assistito
+FROM cat_servizi
+JOIN servizi_erogati ON cat_servizi.id = servizi_erogati.id_servizio
+JOIN assistiti ON servizi_erogati.id_assistito = assistiti.id where servizi_erogati.id=".$id." and servizi_erogati.valid=1";
 	$res=mysql_query($sql);
 	while($r=mysql_fetch_assoc($res)) {
 			$result=$r;
@@ -137,16 +145,34 @@ function get_assistito($id) {
 	return $result;
 }
 
+
+function get_assistito($id) {
+	global $db,$config;
+	$result = array();
+
+	$sql="SELECT * FROM assistiti where assistiti.id=".$id." and valid=1";
+	$res=mysql_query($sql);
+	while($r=mysql_fetch_assoc($res)) {
+			$result=$r;
+	}
+
+	return $result;
+}
+
+
 function get_documenti_assistito($id_assistito) {
 	global $db,$config;
 	$result = array();
 
 	$sql="SELECT * FROM DOCUMENTI_ASSISTITO where id_assistito=".$id_assistito;
+	
 	$res=mysql_query($sql);
 	while($r=mysql_fetch_assoc($res)) {
 			$result[]=$r;
 	}
+	return $result;
 }	
+
 
 function get_lingue_assistito($id_assistito) {
 		global $db,$config;
@@ -161,6 +187,7 @@ function get_lingue_assistito($id_assistito) {
 	return $result;
 }
 
+
 function get_vulnerabilita_assistito($id_assistito) {
 		global $db,$config;
 		$result = array();
@@ -173,6 +200,7 @@ function get_vulnerabilita_assistito($id_assistito) {
 
 	return $result;
 }
+
 
 function get_risposte_indirette_assistito($id_assistito) {
 		global $db,$config;
@@ -187,6 +215,7 @@ function get_risposte_indirette_assistito($id_assistito) {
 	return $result;
 }
 
+
 function get_chi_lo_invia_assistito($id_assistito) {
 	global $db,$config;
 	$result = array();
@@ -198,6 +227,24 @@ function get_chi_lo_invia_assistito($id_assistito) {
 	}
 
 	return $result;
+}
+
+
+function delete_assistito($id) {
+	global $db,$config;
+	$result = array();
+	$sql="UPDATE assistiti SET valid=0, data_invalidazione='".date("Y-m-d H:i:s")."', data_modifica='".date("Y-m-d H:i:s")."' where id=".$id;
+
+	$res=mysql_query($sql);
+}
+
+
+function delete_servizio($id) {
+	global $db,$config;
+	$result = array();
+	$sql="UPDATE servizi_erogati SET valid=0, data_invalidazione='".date("Y-m-d H:i:s")."', data_modifica='".date("Y-m-d H:i:s")."' where id=".$id;
+
+	$res=mysql_query($sql);
 }
 
 ?>

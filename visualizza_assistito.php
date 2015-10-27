@@ -20,7 +20,7 @@ if (isset($_GET['id_assistito'])) {
             <div class="right_col" role="main">
 				<div class="page-title">
 					<div class="title_left">
-						<h3>Scheda assistito</h3>
+						<h3>Assistito <?php echo $assistito["cognome"]." ".$assistito["nome"]; ?></h3>
 					</div>
 					<div class="title_right">
 						<div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
@@ -31,6 +31,19 @@ if (isset($_GET['id_assistito'])) {
 					</div>
 				</div>
 
+				<div class="x_content" style="height:46px;">	
+					<div class="" role="tabpanel" data-example-id="togglable-tabs">
+						<ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+							<li role="presentation" class="active"><a href="visualizza_assistito.php?id_assistito=<?php echo $id_assistito; ?>" id="home-tab" aria-expanded="true">Visualizza</a>
+							</li>
+							<li role="presentation" class=""><a href="assistito.php?id_assistito=<?php echo $id_assistito; ?>" id="profile-tab" aria-expanded="false">Modifica</a>
+							</li>
+							<li role="presentation" class=""><a href="servizio.php?id_assistito=<?php echo $id_assistito; ?>" id="profile-tab2" aria-expanded="false">Inserisci servizio</a>
+							</li>
+						</ul>
+					</div>	
+				</div>
+				
                 <div class="row">
 
 					<div class="col-md-12 col-sm-12 col-xs-12">

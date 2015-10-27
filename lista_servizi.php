@@ -49,9 +49,9 @@ $servizi = get_servizi();
                                         <li><a href="#"><i class="fa fa-close"></i></a>
                                         </li>
                                     </ul>
-
+									-->
                                     <div class="clearfix"></div>
-                                    -->
+                                    
                                 </div>
 
                                 <div class="x_content">
@@ -77,7 +77,11 @@ $servizi = get_servizi();
 													echo '<td class=" ">'.$a["tipo"].'</td>';
 													echo '<td class=" ">'.$a["cognome"]." ".$a["nome"].'</td>';
 													echo '<td class=" ">'.$a["data"].'</td>';
-													echo '<td class=" ">Dettagli</td>';
+													echo '<td class=" ">
+                            <a href="dettagli_servizio.php?id_servizio='.$a["id_servizio_erogato"].'" title="Dettagli servizio"><span class="glyphicon glyphicon-assistiti-actions glyphicon-file" aria-hidden="true"></span></a>&nbsp;
+                            <a href="servizi_assistito.php?id_assistito='.$a["id_assistito"].'" title="Servizi assistito '.$a["cognome"]." ".$a["nome"].'"><span class="glyphicon glyphicon-assistiti-actions glyphicon-edit" aria-hidden="true"></span></a>&nbsp;
+							<a href="rimuovi_servizio.php?id_servizio='.$a["id_servizio_erogato"].'" title="Rimuovi servizio" onclick="return confirm(\'Si sta per rimuovere il servizio '.$a["tipo"].' per '.$a["cognome"].' '.$a["nome"].'. I dati relativi al servizio non saranno più disponibili. Proseguire?\');"><span class="glyphicon glyphicon-assistiti-actions glyphicon-remove-circle" aria-hidden="true"></span></a>
+                            </td>';
 													echo '</tr>';
 												}
 											?>
