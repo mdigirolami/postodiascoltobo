@@ -76,6 +76,16 @@ function inserisci_assistito($params) {
 		echo $sql7;
 		$res7=mysql_query($sql7);
 	}
+	
+	foreach ($params as $key => $value) {
+		if (substr($key, 0, -1)=="anno_nascita_" && $value!="") {
+			$number=substr($key, -1);
+			$parentela_key="parentela_".$number;
+			$sql8="insert into familiari (`id`, `id_capofamiglia`, `anno_di_nascita`, `parentela`) VALUES ('', ".$id_assistito.", ".$value.", '".$params[$parentela_key]."')";
+			echo $sql8;
+			$res8=mysql_query($sql8);
+		}
+	}
 
 }
 
@@ -230,6 +240,20 @@ function get_chi_lo_invia_assistito($id_assistito) {
 }
 
 
+function get_banco_alimentare_assistito($id_assistito,$anno) {
+	global $db,$config;
+	$result = array();
+
+	$sql="SELECT mese FROM banco_alimentare where id_assistito=".$id_assistito." and anno=".$anno;
+	$res=mysql_query($sql);
+	while($r=mysql_fetch_array($res)) {
+			$result[]=$r['mese'];
+	}
+
+	return $result;
+}
+
+
 function delete_assistito($id) {
 	global $db,$config;
 	$result = array();
@@ -243,6 +267,24 @@ function delete_servizio($id) {
 	global $db,$config;
 	$result = array();
 	$sql="UPDATE servizi_erogati SET valid=0, data_invalidazione='".date("Y-m-d H:i:s")."', data_modifica='".date("Y-m-d H:i:s")."' where id=".$id;
+
+	$res=mysql_query($sql);
+}
+
+
+function delete_ritiro($id_assistito,$mese,$anno) {
+	global $db,$config;
+	$result = array();
+	$sql="DELETE FROM banco_alimentare where id_assistito=".$id_assistito." and mese=".$mese." and anno=".$anno;
+
+	$res=mysql_query($sql);
+}
+
+
+function inserisci_ritiro($id_assistito,$mese,$anno) {
+	global $db,$config;
+	$result = array();
+	$sql="INSERT INTO banco_alimentare VALUES ('', ".$id_assistito.", ".$anno.", ".$mese.")";
 
 	$res=mysql_query($sql);
 }

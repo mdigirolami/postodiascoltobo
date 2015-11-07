@@ -339,6 +339,24 @@ if ($page_mode=='VISUALIZZA_INSERISCI' or $page_mode=='VISUALIZZA_MODIFICA') {
 											</select>
 										</div>
 									</div>
+									
+<?php
+//	foreach ($i=0; i<=20; $i++; as $key=>$value) {
+?>									
+									<div id="familiari">
+									<div class="item form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12">Familiare 1 </label>
+										<div class="col-md-3 col-sm-3 col-xs-6">
+											<input id="parentela_1" name="parentela_1" class="form-control col-md-7 col-xs-12" placeholder="Grado di parentela" value="<?php echo $assistito["cellulare"];?>">
+										</div>
+										<div class="col-md-3 col-sm-3 col-xs-6">
+											<input id="anno_nascita_1" name="anno_nascita_1" class="form-control col-md-7 col-xs-12" placeholder="Anno di nascita" value="<?php echo $assistito["cellulare"];?>">
+										</div>
+										<div>
+											<button class="btn btn-primary button_familiare" type="button" id="button_familiare_1">Aggiungi familiare</button>
+										</div>
+									</div>
+									</div>
 
 									<span class="section">Residenza</span>
 									<div class="item form-group">
@@ -840,7 +858,30 @@ print_r($assistiti);
 <!-- page content -->
 	   <!-- /datepicker -->
     <script type="text/javascript">
-        $(document).ready(function () {
+        
+			$(document).on('click', '.button_familiare', function (event) {
+//				alert(event.target.id);
+				$('#'+event.target.id+'').hide();
+				number=parseInt(event.target.id.slice(-1))+1;
+//				alert(number);
+				
+				new_html='<div class="item form-group">' +
+										'<label class="control-label col-md-3 col-sm-3 col-xs-12">Familiare '+number+' </label>' +
+										'<div class="col-md-3 col-sm-3 col-xs-6">' +
+											'<input id="parentela_'+number+'" name="parentela_'+number+'" class="form-control col-md-7 col-xs-12" placeholder="Grado di parentela" value="<?php echo $assistito["cellulare"];?>">' +
+										'</div>' +
+										'<div class="col-md-3 col-sm-3 col-xs-6">' +
+											'<input id="anno_nascita_'+number+'" name="anno_nascita_'+number+'" class="form-control col-md-7 col-xs-12" placeholder="Anno di nascita" value="<?php echo $assistito["cellulare"];?>">' +
+										'</div>' +
+										'<div>' +
+											'<button class="btn btn-primary button_familiare" type="button" id="button_familiare_'+number+'">Aggiungi familiare</button>' +
+										'</div>' +
+									'</div>';
+				$('#familiari').append(new_html);
+				
+			});	
+		
+		$(document).ready(function () {	
             $('#single_cal1').daterangepicker({
                 singleDatePicker: true,
                 calender_style: "picker_1"
