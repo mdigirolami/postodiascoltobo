@@ -31,7 +31,7 @@ if (isset($_GET['id_assistito'])) {
 					</div>
 				</div>
 
-				<div class="x_content" style="height:46px;">	
+				<div class="x_content" style="height:46px;">
 					<div class="" role="tabpanel" data-example-id="togglable-tabs">
 						<ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
 							<li role="presentation" class="active"><a href="visualizza_assistito.php?id_assistito=<?php echo $id_assistito; ?>" id="home-tab" aria-expanded="true">Visualizza</a>
@@ -41,9 +41,9 @@ if (isset($_GET['id_assistito'])) {
 							<li role="presentation" class=""><a href="servizio.php?id_assistito=<?php echo $id_assistito; ?>" id="profile-tab2" aria-expanded="false">Inserisci servizio</a>
 							</li>
 						</ul>
-					</div>	
+					</div>
 				</div>
-				
+
                 <div class="row">
 
 					<div class="col-md-12 col-sm-12 col-xs-12">
@@ -78,7 +78,7 @@ if (isset($_GET['id_assistito'])) {
                   </div>
 									<div class="row">
                       <div class="col-md-3"><label>Nazionalità</label></div>
-                      <div class="col-md-9"><?php echo $assistito["nazionalita"];?></div>
+                      <div class="col-md-9"><?php echo $assistito["nome_nazionalita"];?></div>
                   </div>
 									<div class="row">
                       <div class="col-md-3"><label>Cellulare</label></div>
@@ -113,7 +113,7 @@ if (isset($_GET['id_assistito'])) {
 									<!--
 									<?php
 									foreach ($documenti_assistito_array as $documento_assistito) {
-										
+
 										echo '<div class="row">
 												    <div class="col-md-2">'.$documento_assistito["TIPO_DOC"].'</div>
 												    <div class="col-md-2">'.$documento_assistito["NUMERO_DOC"].'</div>
@@ -130,7 +130,7 @@ if (isset($_GET['id_assistito'])) {
 									if (sizeof($documenti_assistito_array)==0) {
 										echo '<div><label>Nessun documento inserito</label></div>';
 									} else {
-									?>	
+									?>
 									<table class="table table-striped responsive-utilities jambo_table">
 										<thead>
 												<tr class="headings">
@@ -160,8 +160,8 @@ if (isset($_GET['id_assistito'])) {
 								    </table>
 									<?php
 										}
-									?>	
-								  
+									?>
+
 						<br /><br />
 									<span class="section">Chi lo invia</span>
 									<?php
@@ -174,13 +174,13 @@ if (isset($_GET['id_assistito'])) {
 									}
 									?>
 									<div class="ln_solid"></div>
-						<br />			
+						<br />
 									<span class="section">Alloggio</span>
 									<div><label>
 									<?php
 										$alloggio = $assistito["alloggio"];
 										if ($alloggio=="") $alloggio="Nessun alloggio indicato";
-										echo $alloggio; 
+										echo $alloggio;
 									?>
 									</label></div>
 									<div class="ln_solid"></div>
@@ -198,7 +198,7 @@ if (isset($_GET['id_assistito'])) {
 									if ($lingua_madre=="") {
 										echo "Nessuna lingua madre inserita";
 									} else {
-									?>	
+									?>
 									<div class="row">
 										<div class="col-md-3"><label>Lingua madre</label></div>
 										<div class="col-md-9"><?php echo $lingua_madre;?></div>
@@ -234,7 +234,7 @@ if (isset($_GET['id_assistito'])) {
 							</div>
 						</div>
 					</div>
-				</div>	
+				</div>
 
 <?php
 } else {

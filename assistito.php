@@ -90,7 +90,7 @@ if ($page_mode=='VISUALIZZA_MODIFICA') {
     $variable_name = "fotocopia_".$loaded_doc["TIPO_DOC"];
     $$variable_name = $loaded_doc["FOTOCOPIA"];
   }
-/*  
+/*
   echo "enabled_identita: ".$enabled_identita;
   echo "numero_identita: ".$numero_identita;
   echo "rilascio_identita: ".$rilascio_identita;
@@ -100,6 +100,9 @@ if ($page_mode=='VISUALIZZA_MODIFICA') {
   $var_name = "enabled_".$loaded_doc["TIPO_DOC"];
 //  echo "var_name=".$var_name;
 //  if (${$var_name}==1) echo "si identita"; else "no identita";
+
+
+$familiari_assistito_array = get_familiari_assistito($id_assistito);
 
 
 
@@ -127,9 +130,12 @@ if ($page_mode=='VISUALIZZA_MODIFICA') {
 
 <?php
 if ($page_mode=='VISUALIZZA_INSERISCI' or $page_mode=='VISUALIZZA_MODIFICA') {
-    if ($page_mode=='VISUALIZZA_MODIFICA') {
+
+  $elenco_nazioni = get_elenco_nazioni();
+
+  if ($page_mode=='VISUALIZZA_MODIFICA') {
 ?>
-				<div class="x_content" style="height:46px;">	
+				<div class="x_content" style="height:46px;">
 					<div class="" role="tabpanel" data-example-id="togglable-tabs">
 						<ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
 							<li role="presentation" class=""><a href="visualizza_assistito.php?id_assistito=<?php echo $id_assistito; ?>" id="home-tab" aria-expanded="true">Visualizza</a>
@@ -139,7 +145,7 @@ if ($page_mode=='VISUALIZZA_INSERISCI' or $page_mode=='VISUALIZZA_MODIFICA') {
 							<li role="presentation" class=""><a href="servizio.php?id_assistito=<?php echo $id_assistito; ?>" id="profile-tab2" aria-expanded="false">Inserisci servizio</a>
 							</li>
 						</ul>
-					<!--	
+					<!--
 						<div id="myTabContent" class="tab-content">
 							<div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
 								<p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terr.</p>
@@ -151,13 +157,13 @@ if ($page_mode=='VISUALIZZA_INSERISCI' or $page_mode=='VISUALIZZA_MODIFICA') {
 								<p>xxFood truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk </p>
 							</div>
 						</div>
-					-->	
+					-->
 					</div>
-				</div>	
+				</div>
 <?php
     }
-?>					
-				<div class="row">	
+?>
+				<div class="row">
 					<div class="col-md-12 col-sm-12 col-xs-12">
 						<div class="x_panel">
 							<div class="x_title">
@@ -304,10 +310,27 @@ if ($page_mode=='VISUALIZZA_INSERISCI' or $page_mode=='VISUALIZZA_MODIFICA') {
 											</p>
 										</div>
 									</div>
+                  <!--
 									<div class="item form-group">
 										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="nazionalita">Nazionalità </label>
 										<div class="col-md-6 col-sm-6 col-xs-12">
 											<input id="nazionalita" class="form-control col-md-7 col-xs-12" name="nazionalita" type="text" value="<?php echo $assistito["nazionalita"];?>">
+										</div>
+									</div>-->
+                  <div class="item form-group">
+										<label class="control-label col-md-3 col-sm-3 col-xs-12">Nazionalità </label>
+										<div class="col-md-6 col-sm-6 col-xs-12">
+											<select name="nazionalita" class="select2_single form-control" tabindex="-1">
+												<option>Seleziona una nazionalità</option>
+                        <?php
+                          foreach ($elenco_nazioni as $key=>$nazione) {
+                            if ($nazione[id]==$assistito["id_nazionalita"]) $is_selected_html = "selected";
+                            else $is_selected_html = "";
+                            echo '<option value="'.$nazione[id].'" '.$is_selected_html.' >'.$nazione[nome].'</option>';
+                          }
+                        ?>
+                        <!--<option value="2" <?php if ($stato_civile_is_NUBILE==1) echo("selected");?>>Nubile</option>-->
+											</select>
 										</div>
 									</div>
 <!--
@@ -339,23 +362,56 @@ if ($page_mode=='VISUALIZZA_INSERISCI' or $page_mode=='VISUALIZZA_MODIFICA') {
 											</select>
 										</div>
 									</div>
-									
+
 <?php
 //	foreach ($i=0; i<=20; $i++; as $key=>$value) {
-?>									
+?>
 									<div id="familiari">
-									<div class="item form-group">
-										<label class="control-label col-md-3 col-sm-3 col-xs-12">Familiare 1 </label>
-										<div class="col-md-3 col-sm-3 col-xs-6">
-											<input id="parentela_1" name="parentela_1" class="form-control col-md-7 col-xs-12" placeholder="Grado di parentela" value="<?php echo $assistito["cellulare"];?>">
-										</div>
-										<div class="col-md-3 col-sm-3 col-xs-6">
-											<input id="anno_nascita_1" name="anno_nascita_1" class="form-control col-md-7 col-xs-12" placeholder="Anno di nascita" value="<?php echo $assistito["cellulare"];?>">
-										</div>
-										<div>
-											<button class="btn btn-primary button_familiare" type="button" id="button_familiare_1">Aggiungi familiare</button>
-										</div>
-									</div>
+                    <?php
+                    if (!is_null($familiari_assistito_array)) {
+                      $keys  = array_keys($familiari_assistito_array);
+                    }
+
+                    for ($i = 0; $i < count($familiari_assistito_array)+1; ++$i) {
+                      $index = $keys[$i];
+                      $familiare = $familiari_assistito_array[$index];
+                    ?>
+                      <div class="item form-group" id="familiare_input_<?php echo $i;?>">
+                        <input type="hidden" name="familiare_<?php echo $i;?>_pk" value="<?php echo $familiare["id"];?>" />
+                        <!--<input type="hidden" id="familiare_toremove_<?php echo $i;?>" name="familiare_toremove_<?php echo $i;?>" value="0" />-->
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Familiare <?php echo ($i+1);?> </label>
+                        <div class="col-md-3 col-sm-3 col-xs-6">
+                          <input id="parentela_<?php echo $i;?>" name="parentela_<?php echo $i;?>" class="form-control col-md-7 col-xs-12" placeholder="Grado di parentela" value="<?php echo $familiare["parentela"];?>">
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-6">
+                          <input id="anno_nascita_<?php echo $i;?>" name="anno_nascita_<?php echo $i;?>" class="form-control col-md-7 col-xs-12" placeholder="Anno di nascita" value="<?php echo $familiare["anno_di_nascita"];?>">
+                        </div>
+                        <?php
+                        if ($i==count($familiari_assistito_array))
+                        {
+                        ?>
+                          <div>
+                            <button class="btn btn-primary button_remove_familiare" type="button" id="button_remove_familiare_<?php echo $i;?>" style="display:none;">X</button>
+                          </div>
+                          <div>
+                            <button class="btn btn-primary button_familiare" type="button" id="button_familiare_<?php echo $i;?>">Aggiungi familiare</button>
+                          </div>
+                        <?php
+                        }
+                        else {
+                        ?>
+                          <div>
+                            <button class="btn btn-primary button_remove_familiare" type="button" id="button_remove_familiare_<?php echo $i;?>">X</button>
+                          </div>
+                        <?php
+                        }
+                        ?>
+                      </div>
+                    <?php
+                    }
+                    ?>
+
+
 									</div>
 
 									<span class="section">Residenza</span>
@@ -835,14 +891,17 @@ foreach ($docs as $key=>$value) {
 
   if ($page_mode=='REGISTRA_INSERISCI') {
     echo "chiamata a inserisci_assistito...";
-  	$ins = inserisci_assistito($_POST);
+  	inserisci_assistito($_POST);
   	echo "Assistito inserito correttamente";
   }
   else {
     echo "chiamata a modifica_assistito...";
-    $ins = modifica_assistito($_POST);
-  	echo "Assistito modificato correttamente";
+    modifica_assistito($_POST);
+  	echo "Dati assistito modificati correttamente";
+
   }
+
+  header('Location: visualizza_assistito.php?id_assistito='.$id_assistito);
 }
 ?>
 
@@ -858,30 +917,59 @@ print_r($assistiti);
 <!-- page content -->
 	   <!-- /datepicker -->
     <script type="text/javascript">
-        
+
 			$(document).on('click', '.button_familiare', function (event) {
 //				alert(event.target.id);
 				$('#'+event.target.id+'').hide();
-				number=parseInt(event.target.id.slice(-1))+1;
+				//idx_familiare_clicked = parseInt(event.target.id.slice(-1));
+        idx_familiare_clicked = parseInt(event.target.id.substring(event.target.id.lastIndexOf('_') + 1));
+        idx_new_familiare = idx_familiare_clicked +1;
 //				alert(number);
-				
-				new_html='<div class="item form-group">' +
-										'<label class="control-label col-md-3 col-sm-3 col-xs-12">Familiare '+number+' </label>' +
+
+				new_html='<div class="item form-group" id="familiare_input_'+idx_new_familiare+'">' +
+                    '<input type="hidden" name="familiare_'+idx_new_familiare+'_pk"/>' +
+										'<label class="control-label col-md-3 col-sm-3 col-xs-12">Familiare '+(idx_new_familiare+1)+' </label>' +
 										'<div class="col-md-3 col-sm-3 col-xs-6">' +
-											'<input id="parentela_'+number+'" name="parentela_'+number+'" class="form-control col-md-7 col-xs-12" placeholder="Grado di parentela" value="<?php echo $assistito["cellulare"];?>">' +
+											'<input id="parentela_'+idx_new_familiare+'" name="parentela_'+idx_new_familiare+'" class="form-control col-md-7 col-xs-12" placeholder="Grado di parentela" >' +
 										'</div>' +
 										'<div class="col-md-3 col-sm-3 col-xs-6">' +
-											'<input id="anno_nascita_'+number+'" name="anno_nascita_'+number+'" class="form-control col-md-7 col-xs-12" placeholder="Anno di nascita" value="<?php echo $assistito["cellulare"];?>">' +
+											'<input id="anno_nascita_'+idx_new_familiare+'" name="anno_nascita_'+idx_new_familiare+'" class="form-control col-md-7 col-xs-12" placeholder="Anno di nascita" >' +
 										'</div>' +
+                    '<div>' +
+                      '<button class="btn btn-primary button_remove_familiare" type="button" id="button_remove_familiare_'+idx_new_familiare+'" style="display:none;">X</button>' +
+                    '</div>'+
 										'<div>' +
-											'<button class="btn btn-primary button_familiare" type="button" id="button_familiare_'+number+'">Aggiungi familiare</button>' +
+											'<button class="btn btn-primary button_familiare" type="button" id="button_familiare_'+idx_new_familiare+'">Aggiungi familiare</button>' +
 										'</div>' +
 									'</div>';
 				$('#familiari').append(new_html);
-				
-			});	
-		
-		$(document).ready(function () {	
+
+        var elem = document.getElementById('button_remove_familiare_'+idx_familiare_clicked);
+        elem.setAttribute("style", "display: inline;");
+
+			});
+      $(document).on('click', '.button_remove_familiare', function (event) {
+
+        idx_familiare_clicked = parseInt(event.target.id.substring(event.target.id.lastIndexOf('_') + 1));
+
+        //set the remove flag
+				new_html='<input type="hidden" name="familiare_'+idx_familiare_clicked+'_rimuovi" value="1" />';
+				$('#familiare_input_'+idx_familiare_clicked).append(new_html);
+
+        //$('#familiare_input_'+idx_familiare_clicked).setAttribute("style", "display: none;");
+
+        var elem = document.getElementById('familiare_input_'+idx_familiare_clicked);
+        elem.setAttribute("style", "display: none;");
+
+        //familiare_toremove_
+
+        //var d = document.getElementById('familiari');
+        //var olddiv = document.getElementById('familiare_input_'.$index);
+        //d.removeChild(olddiv);
+
+			});
+
+		$(document).ready(function () {
             $('#single_cal1').daterangepicker({
                 singleDatePicker: true,
                 calender_style: "picker_1"

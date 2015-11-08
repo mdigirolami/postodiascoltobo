@@ -20,7 +20,7 @@ function inserisci_assistito($params) {
 	global $db,$config;
 	$date_pieces=split("/", $params['data_di_nascita']);
 	$new_date=$date_pieces[2]."-".$date_pieces[0]."-".$date_pieces[1];
-    $sql='insert into assistiti (`id`, `valid`, `data_creazione`, `nome`, `cognome`, `data_di_nascita`, `luogo_di_nascita`, `sesso`, `nazionalita`, `cellulare`, `stato_civile`, `citta_residenza`, `via_residenza`, `numero_residenza`, `nazione_residenza`, `alloggio`, `lingua_madre`, `ha_lavorato`, `lavora`, `dove_lavora`)
+    $sql='insert into assistiti (`id`, `valid`, `data_creazione`, `nome`, `cognome`, `data_di_nascita`, `luogo_di_nascita`, `sesso`, `id_nazionalita`, `cellulare`, `stato_civile`, `citta_residenza`, `via_residenza`, `numero_residenza`, `nazione_residenza`, `alloggio`, `lingua_madre`, `ha_lavorato`, `lavora`, `dove_lavora`)
 	VALUES ("", 1,now(),"'.$params["nome"].'", "'.$params["cognome"].'", "'.$new_date.'", "'.$params["luogo_di_nascita"].'", "'.$params["sesso"].'", "'.$params["nazionalita"].'", "'.$params["cellulare"].'", "'.$params["stato_civile"].'", "'.$params["citta_residenza"].'", "'.$params["via_residenza"].'", "'.$params["numero_residenza"].'", "'.$params["nazione_residenza"].'", "'.$params["alloggio"].'", "'.$params["lingua_madre"].'", "'.$params["ha_lavorato"].'", "'.$params["lavora"].'", "'.$params["dove_lavora"].'")';
     echo $sql;
 	$res=mysql_query($sql);
@@ -76,7 +76,7 @@ function inserisci_assistito($params) {
 		echo $sql7;
 		$res7=mysql_query($sql7);
 	}
-	
+
 	foreach ($params as $key => $value) {
 		if (substr($key, 0, -1)=="anno_nascita_" && $value!="") {
 			$number=substr($key, -1);
@@ -94,13 +94,65 @@ function modifica_assistito($params) {
 
 	echo("modifica_assistito - params=".print_r($params,true));
 
+  modifica_dati_anagrafici_assistito($params);
+	modifica_familiari_assistito($params);
+}
+
+
+
+function modifica_dati_anagrafici_assistito($params) {
 
 	global $db,$config;
 	$date_pieces=split("/", $params['data_di_nascita']);
 	$new_date=$date_pieces[2]."-".$date_pieces[0]."-".$date_pieces[1];
-  $sql='update assistiti set `data_modifica`=now(), `nome`="'.$params["nome"].'", `cognome`="'.$params["cognome"].'", `data_di_nascita`="'.$params["data_di_nascita"].'", `luogo_di_nascita`="'.$params["luogo_di_nascita"].'", `sesso`="'.$params["sesso"].'", `nazionalita`="'.$params["nazionalita"].'", `cellulare`="'.$params["cellulare"].'", `stato_civile`="'.$params["stato_civile"].'", `citta_residenza`="'.$params["citta_residenza"].'", `via_residenza`="'.$params["via_residenza"].'", `numero_residenza`="'.$params["numero_residenza"].'", `nazione_residenza`="'.$params["nazione_residenza"].'", `alloggio`="'.$params["alloggio"].'", `lingua_madre`="'.$params["lingua_madre"].'", `ha_lavorato`="'.$params["ha_lavorato"].'" where id='.$params["id_assistito"];
-    echo $sql;
+  $sql='update assistiti set `data_modifica`=now(), `nome`="'.$params["nome"].'", `cognome`="'.$params["cognome"].'", `data_di_nascita`="'.$params["data_di_nascita"].'", `luogo_di_nascita`="'.$params["luogo_di_nascita"].'", `sesso`="'.$params["sesso"].'", `id_nazionalita`="'.$params["nazionalita"].'", `cellulare`="'.$params["cellulare"].'", `stato_civile`="'.$params["stato_civile"].'", `citta_residenza`="'.$params["citta_residenza"].'", `via_residenza`="'.$params["via_residenza"].'", `numero_residenza`="'.$params["numero_residenza"].'", `nazione_residenza`="'.$params["nazione_residenza"].'", `alloggio`="'.$params["alloggio"].'", `lingua_madre`="'.$params["lingua_madre"].'", `ha_lavorato`="'.$params["ha_lavorato"].'" where id='.$params["id_assistito"];
+  echo $sql;
 	$res=mysql_query($sql);
+}
+
+function modifica_familiari_assistito($params) {
+
+	global $db,$config;
+  echo "familiari:"."\r\n";
+	$familiare_index = 0;
+	foreach ($params as $key => $value) {
+
+		if (substr($key, 0, 10)=="familiare_") {
+
+			$number=substr($key, -1);
+			$familiare_pk="familiare_".$familiare_index."_pk";
+			$anno_nascita_key="anno_nascita_".$familiare_index;
+			$parentela_key="parentela_".$familiare_index;
+			$rimuovi_key="familiare_".$familiare_index."_rimuovi";
+			echo "familiare_pk=".$params[$familiare_pk]." anno_nascita=".$params[$anno_nascita_key]." parentela=".$params[$parentela_key]."\n";
+
+			if ($params[$familiare_pk]=="") {
+				//insert
+				if ( ($params[$anno_nascita_key]!="") OR ($params[$parentela_key]!="") ) {
+					$sql="insert into familiari (`id`, `id_capofamiglia`, `anno_di_nascita`, `parentela`) VALUES ('', ".$params["id_assistito"].", ".$params[$anno_nascita_key].", '".$params[$parentela_key]."')";
+					echo $sql;
+					mysql_query($sql);
+				}
+
+			} else {
+				$flag_to_remove = 0;
+				if ($params[$rimuovi_key]=="1") {
+
+					$sql='delete from familiari where id='.$params[$familiare_pk];
+					echo $sql;
+					mysql_query($sql);
+				} else {
+					//update
+					$sql='update familiari set `id_capofamiglia`="'.$params["id_assistito"].'", `anno_di_nascita`="'.$params[$anno_nascita_key].'", `parentela`="'.$params[$parentela_key].'" where id='.$params[$familiare_pk];
+					//$sql="update familiari (`id`, `id_capofamiglia`, `anno_di_nascita`, `parentela`) VALUES ('', ".$id_assistito.", ".$params[$anno_nascita_key].", '".$params[$parentela_key].'" where id='.$params["id_assistito"];
+					echo $sql;
+					mysql_query($sql);
+				}
+			}
+			$familiare_index++;
+	 }
+
+ }
 
 }
 
@@ -160,7 +212,7 @@ function get_assistito($id) {
 	global $db,$config;
 	$result = array();
 
-	$sql="SELECT * FROM assistiti where assistiti.id=".$id." and valid=1";
+	$sql="SELECT a.*, n.nome as nome_nazionalita FROM assistiti a INNER JOIN elenco_nazioni n ON n.id = a.id_nazionalita where a.id=".$id." and a.valid=1";
 	$res=mysql_query($sql);
 	while($r=mysql_fetch_assoc($res)) {
 			$result=$r;
@@ -175,13 +227,13 @@ function get_documenti_assistito($id_assistito) {
 	$result = array();
 
 	$sql="SELECT * FROM DOCUMENTI_ASSISTITO where id_assistito=".$id_assistito;
-	
+
 	$res=mysql_query($sql);
 	while($r=mysql_fetch_assoc($res)) {
 			$result[]=$r;
 	}
 	return $result;
-}	
+}
 
 
 function get_lingue_assistito($id_assistito) {
@@ -288,5 +340,32 @@ function inserisci_ritiro($id_assistito,$mese,$anno) {
 
 	$res=mysql_query($sql);
 }
+
+function get_familiari_assistito($id_assistito) {
+	global $db,$config;
+	$result = array();
+
+	$sql="SELECT * FROM familiari where id_capofamiglia=".$id_assistito;
+
+	$res=mysql_query($sql);
+	while($r=mysql_fetch_assoc($res)) {
+			$result[]=$r;
+	}
+	return $result;
+}
+
+function get_elenco_nazioni() {
+	global $db,$config;
+	$result = array();
+
+	$sql="SELECT * FROM elenco_nazioni where valid=1 order by nome asc";
+
+	$res=mysql_query($sql);
+	while($r=mysql_fetch_assoc($res)) {
+			$result[]=$r;
+	}
+	return $result;
+}
+
 
 ?>
