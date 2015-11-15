@@ -18,6 +18,9 @@
 									<a href="lista_servizi.php"><i class="fa fa-edit"></i> Servizi</a>
 								</li>
 								<li class="nv active">
+									<a href="scuole.php"><i class="fa fa-edit"></i> Scuole</a>
+								</li>
+								<li class="nv active">
 									<a href="#"><i class="fa fa-bar-chart-o"></i> Statistiche</a>
 								</li>
                             </ul>

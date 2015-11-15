@@ -21,6 +21,7 @@ include "top_nav.php";
 
 	$id_assistito=$_GET['id_assistito'];
 	$assistito = get_assistito($id_assistito);
+	$cat_servizi = get_cat_servizi();
 ?>
 
 <!-- page content -->
@@ -50,6 +51,8 @@ if ($page_mode=='VISUALIZZA_INSERISCI' or $page_mode=='VISUALIZZA_MODIFICA') {
 							<li role="presentation" class=""><a href="assistito.php?id_assistito=<?php echo $id_assistito; ?>" id="profile-tab" aria-expanded="false">Modifica</a>
 							</li>
 							<li role="presentation" class="active"><a href="servizio.php?id_assistito=<?php echo $id_assistito; ?>" id="profile-tab2" aria-expanded="false">Inserisci servizio</a>
+							</li>
+							<li role="presentation" class=""><a href="banco_alimentare.php?id_assistito=<?php echo $id_assistito; ?>" id="profile-tab2" aria-expanded="false">Banco alimentare</a>
 							</li>
 						</ul>
 					<!--	
@@ -88,9 +91,18 @@ if ($page_mode=='VISUALIZZA_INSERISCI' or $page_mode=='VISUALIZZA_MODIFICA') {
 										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="tipo">Tipo
 										</label>
 										<div class="col-md-6 col-sm-6 col-xs-12">
-											<input id="nome" class="form-control col-md-7 col-xs-12" name="tipo" type="text" value="<?php echo $servizio["tipo"];?>">
+											<select id="id_servizio" name="id_servizio" class="select2_single form-control" tabindex="-1">
+												<option value="">Seleziona un servizio</option>
+											<?php
+											  foreach ($cat_servizi as $tipo) {
+												echo '<option value="'.$tipo["id"].'">'.$tipo["nome"].'</option>';
+											  }
+											?>
+										   
+											</select>
 										</div>
 									</div>
+									
 									<div class="item form-group">
 										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="data_di_nascita">Data </label>
 										<div class="controls">
@@ -108,7 +120,13 @@ if ($page_mode=='VISUALIZZA_INSERISCI' or $page_mode=='VISUALIZZA_MODIFICA') {
 										</div>
 									</div>
 									
-
+									<div class="ln_solid"></div>
+									<div class="form-group">
+										<div class="col-md-6 col-md-offset-3">
+											<button type="submit" class="btn btn-primary">Annulla</button>
+											<button id="send" type="submit" class="btn btn-success">Inserisci</button>
+										</div>
+									</div>
                   <!-- altro -->
 									
 								</form>

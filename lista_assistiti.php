@@ -63,7 +63,7 @@ $assistiti = get_assistiti();
                                                 </th>
                                                 <th>Nome</th>
                                                 <th>Cognome</th>
-                                                <th>Nazionalità</th>
+                                                <th>Nazione</th>
                                                 <th>Cellulare</th>
                                                 <th>Nucleo familiare</th>
                                                 <th class="no-link last" data-sortable="true"><span class="nobr">Azione</span></th>
@@ -73,13 +73,15 @@ $assistiti = get_assistiti();
                                         <tbody>
 										    <?php
 												foreach ($assistiti as $a) {
-													echo '<tr class=""even pointer">';
+													$familiari = get_familiari_assistito($a["id"]);
+													$nucleo = (sizeof($familiari)==0) ? '1 persona' : (sizeof($familiari)+1).' persone';
+													echo '<tr class="even pointer">';
 													echo '<td class="a-center "><input type="checkbox" class="tableflat"></td>';
-													echo '<td class=" ">'.$a["nome"].'</td>';
+													echo '<td class=" ">'.$a["id"].'</td>';
 													echo '<td class=" ">'.$a["cognome"].'</td>';
-													echo '<td class=" ">'.$a["nazionalita"].'</td>';
+													echo '<td class=" ">'.$a["nazione"].'</td>';
 													echo '<td class=" ">'.$a["cellulare"].'</td>';
-													echo '<td class=" ">4 persone</td>';
+													echo '<td class=" ">'.$nucleo.'</td>';
 													echo '<td class=" ">
                             <a href="visualizza_assistito.php?id_assistito='.$a["id"].'" title="Visualizza assistito"><span class="glyphicon glyphicon-assistiti-actions glyphicon-file" aria-hidden="true"></span></a>&nbsp;
                             <a href="assistito.php?id_assistito='.$a["id"].'" title="Modifica assistito"><span class="glyphicon glyphicon-assistiti-actions glyphicon-pencil" aria-hidden="true"></span></a>&nbsp;
@@ -127,7 +129,7 @@ $assistiti = get_assistiti();
                             'aTargets': [0]
                         } //disables sorting for column one
             ],
-                    'iDisplayLength': 12,
+                    'iDisplayLength': 10,
                     "sPaginationType": "full_numbers",
                     "dom": 'T<"clear">lfrtip',
                     "tableTools": {

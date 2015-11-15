@@ -3,8 +3,8 @@ function get_assistiti() {
 	global $db,$config;
 	$result = array();
 
-	$sql="SELECT * FROM assistiti where valid=1";
-	$res=mysql_query($sql);
+	$sql="SELECT assistiti.*, elenco_nazioni.nome as nazione FROM assistiti join elenco_nazioni on elenco_nazioni.id=assistiti.id_nazionalita where valid=1";
+	$res=mysql_query($sql) or die(mysql_error());
 	while($r=mysql_fetch_assoc($res)) {
 			$result[]=$r;
 	}
@@ -86,7 +86,7 @@ function inserisci_assistito($params) {
 			$res8=mysql_query($sql8);
 		}
 	}
-
+    return $id_assistito;
 }
 
 
@@ -165,7 +165,7 @@ function get_servizi() {
 FROM cat_servizi
 JOIN servizi_erogati ON cat_servizi.id = servizi_erogati.id_servizio
 JOIN assistiti ON servizi_erogati.id_assistito = assistiti.id where servizi_erogati.valid=1 order by data desc, tipo";
-	$res=mysql_query($sql);
+	$res=mysql_query($sql) or die(mysql_error());
 	while($r=mysql_fetch_assoc($res)) {
 			$result[]=$r;
 	}
@@ -308,7 +308,6 @@ function get_banco_alimentare_assistito($id_assistito,$anno) {
 
 function delete_assistito($id) {
 	global $db,$config;
-	$result = array();
 	$sql="UPDATE assistiti SET valid=0, data_invalidazione='".date("Y-m-d H:i:s")."', data_modifica='".date("Y-m-d H:i:s")."' where id=".$id;
 
 	$res=mysql_query($sql);
@@ -317,7 +316,6 @@ function delete_assistito($id) {
 
 function delete_servizio($id) {
 	global $db,$config;
-	$result = array();
 	$sql="UPDATE servizi_erogati SET valid=0, data_invalidazione='".date("Y-m-d H:i:s")."', data_modifica='".date("Y-m-d H:i:s")."' where id=".$id;
 
 	$res=mysql_query($sql);
@@ -358,13 +356,106 @@ function get_elenco_nazioni() {
 	global $db,$config;
 	$result = array();
 
-	$sql="SELECT * FROM elenco_nazioni where valid=1 order by nome asc";
+	$sql="SELECT * FROM elenco_nazioni order by nome asc";
 
 	$res=mysql_query($sql);
 	while($r=mysql_fetch_assoc($res)) {
 			$result[]=$r;
 	}
 	return $result;
+}
+
+
+function get_scuole($anno) {
+	global $db,$config;
+	$result = array();
+
+	$sql="SELECT * FROM scuole where anno=".$anno;
+	$res=mysql_query($sql);
+	while($r=mysql_fetch_array($res)) {
+			$result[]=$r;
+	}
+
+	return $result;
+}
+
+
+function modifica_scuole($params) {
+
+	global $db,$config;
+  echo "scuole:"."\r\n";
+	$familiare_index = 0;
+	foreach ($params as $key => $value) {
+
+		if (substr($key, 0, 10)=="familiare_") {
+
+			$number=substr($key, -1);
+			$familiare_pk="familiare_".$familiare_index."_pk";
+			$nazionalita_key="nazionalita_".$familiare_index;
+			$sesso_key="sesso_".$familiare_index;
+			$numero_key="numero_".$familiare_index;
+			$rimuovi_key="familiare_".$familiare_index."_rimuovi";
+//			echo "familiare_pk=".$params[$familiare_pk]." nazionalita=".$params[$nazionalita_key]." sesso=".$params[$sesso_key]." numero=".$params[$numero_key]."\n";
+
+			if ($params[$familiare_pk]=="") {
+				//insert
+				if ( ($params[$nazionalita_key]!="0") AND ($params[$numero_key]!="") ) {
+					$sql="insert into scuole (`id`, `anno`, `id_nazionalita`, `sesso`, `numero`) VALUES ('', ".$params["anno"].", ".$params[$nazionalita_key].", '".$params[$sesso_key]."', ".$params[$numero_key].")";
+					echo $sql;
+					mysql_query($sql);
+				} 
+
+			} else {
+				$flag_to_remove = 0;
+				if ($params[$rimuovi_key]=="1") {
+
+					$sql='delete from scuole where id='.$params[$familiare_pk];
+//					echo $sql;
+					mysql_query($sql);
+				} else {
+					//update
+					$sql='update scuole set `id_nazionalita`='.$params[$nazionalita_key].', `sesso`="'.$params[$sesso_key].'", `numero`='.$params[$numero_key].' where id='.$params[$familiare_pk];
+					//$sql="update familiari (`id`, `id_capofamiglia`, `anno_di_nascita`, `parentela`) VALUES ('', ".$id_assistito.", ".$params[$anno_nascita_key].", '".$params[$parentela_key].'" where id='.$params["id_assistito"];
+//					echo $sql;
+					mysql_query($sql);
+				}
+			}
+			$familiare_index++;
+	 }
+
+ }
+
+}
+
+
+function get_cat_servizi() {
+	global $db,$config;
+	$result = array();
+
+	$sql="SELECT id, nome FROM cat_servizi";
+	$res=mysql_query($sql) or die(mysql_error());
+	while($r=mysql_fetch_assoc($res)) {
+			$result[]=$r;
+	}
+
+	return $result;
+}
+
+
+function inserisci_servizio($params) {
+	global $db,$config;
+	$date_pieces=split("/", $params['data']);
+	$data=$date_pieces[2]."-".$date_pieces[0]."-".$date_pieces[1];
+	$sql="INSERT INTO servizi_erogati VALUES ('', ".$params['id_servizio'].", ".$params['id_assistito'].", '".$data."', '".$params['note']."', 1, '', '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."')";
+
+	$res=mysql_query($sql);
+	
+	$sql2="select id from servizi_erogati order by id desc limit 1";
+	$res2=mysql_query($sql2);
+	$r=mysql_fetch_object($res2);
+	$id_servizio=$r->id;
+	
+	return $id_servizio;
 }
 
 

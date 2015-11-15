@@ -10,11 +10,7 @@ include "top_nav.php";
 
 <?php
 
-if ($_POST['action'] == 'register_update') {
-  $page_mode='REGISTRA_MODIFICA';
-} else if ($_POST['action'] == 'register_insert') {
-  $page_mode='REGISTRA_INSERISCI';
-} else if (isset($_GET['id_assistito'])) {
+if (isset($_GET['id_assistito'])) {
   $page_mode='VISUALIZZA_MODIFICA';
 } else {
   $page_mode='VISUALIZZA_INSERISCI';
@@ -129,7 +125,7 @@ $familiari_assistito_array = get_familiari_assistito($id_assistito);
 				</div>
 
 <?php
-if ($page_mode=='VISUALIZZA_INSERISCI' or $page_mode=='VISUALIZZA_MODIFICA') {
+//if ($page_mode=='VISUALIZZA_INSERISCI' or $page_mode=='VISUALIZZA_MODIFICA') {
 
   $elenco_nazioni = get_elenco_nazioni();
 
@@ -143,6 +139,8 @@ if ($page_mode=='VISUALIZZA_INSERISCI' or $page_mode=='VISUALIZZA_MODIFICA') {
 							<li role="presentation" class="active"><a href="assistito.php?id_assistito=<?php echo $id_assistito; ?>" id="profile-tab" aria-expanded="false">Modifica</a>
 							</li>
 							<li role="presentation" class=""><a href="servizio.php?id_assistito=<?php echo $id_assistito; ?>" id="profile-tab2" aria-expanded="false">Inserisci servizio</a>
+							</li>
+							<li role="presentation" class=""><a href="banco_alimentare.php?id_assistito=<?php echo $id_assistito; ?>" id="profile-tab2" aria-expanded="false">Banco alimentare</a>
 							</li>
 						</ul>
 					<!--
@@ -265,7 +263,7 @@ if ($page_mode=='VISUALIZZA_INSERISCI' or $page_mode=='VISUALIZZA_MODIFICA') {
 									</div>
 								</form>
 -->
-								<form action="assistito.php" method="post" class="form-horizontal form-label-left" novalidate>
+								<form action="inserisci_modifica_assistito.php" method="post" class="form-horizontal form-label-left" novalidate>
 									<input type="hidden" name="action" value="<?php echo $form_action;?>" />
                   <input type="hidden" name="id_assistito" value="<?php echo $id_assistito;?>" />
 									<span class="section">Dati personali</span>
@@ -887,22 +885,8 @@ foreach ($docs as $key=>$value) {
 </form>
 -->
 <?php
-} else { //siamo in fase registrazione
-
-  if ($page_mode=='REGISTRA_INSERISCI') {
-    echo "chiamata a inserisci_assistito...";
-  	inserisci_assistito($_POST);
-  	echo "Assistito inserito correttamente";
-  }
-  else {
-    echo "chiamata a modifica_assistito...";
-    modifica_assistito($_POST);
-  	echo "Dati assistito modificati correttamente";
-
-  }
-
-  header('Location: visualizza_assistito.php?id_assistito='.$id_assistito);
-}
+//} else { //siamo in fase registrazione
+//}
 ?>
 
 

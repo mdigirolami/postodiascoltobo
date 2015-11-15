@@ -9,6 +9,7 @@ include "top_nav.php";
 if (isset($_GET['id_assistito'])) {
 	$id_assistito = $_GET['id_assistito'];
 	$assistito = get_assistito($id_assistito);
+	$familiari_assistito_array = get_familiari_assistito($id_assistito);
 	$documenti_assistito_array = get_documenti_assistito($id_assistito);
 	$chi_lo_invia_assistito_array = get_chi_lo_invia_assistito($id_assistito);
 	$lingue_assistito_array = get_lingue_assistito($id_assistito);
@@ -39,6 +40,8 @@ if (isset($_GET['id_assistito'])) {
 							<li role="presentation" class=""><a href="assistito.php?id_assistito=<?php echo $id_assistito; ?>" id="profile-tab" aria-expanded="false">Modifica</a>
 							</li>
 							<li role="presentation" class=""><a href="servizio.php?id_assistito=<?php echo $id_assistito; ?>" id="profile-tab2" aria-expanded="false">Inserisci servizio</a>
+							</li>
+							<li role="presentation" class=""><a href="banco_alimentare.php?id_assistito=<?php echo $id_assistito; ?>" id="profile-tab2" aria-expanded="false">Banco alimentare</a>
 							</li>
 						</ul>
 					</div>
@@ -108,7 +111,38 @@ if (isset($_GET['id_assistito'])) {
                       <div class="col-md-9"><?php echo $assistito["nazione_residenza"];?></div>
                   </div>
 				  <br /><br />
+									<span class="section">Familiari</span>
 
+									<?php
+									if (sizeof($familiari_assistito_array)==0) {
+										echo '<div><label>Nessun familiare inserito</label></div>';
+									} else {
+									?>
+									<table class="table table-striped responsive-utilities jambo_table">
+										<thead>
+												<tr class="headings">
+														<th>Grado di parentela</th>
+														<th>Anno di nascita</th>
+												</tr>
+										</thead>
+									  <tbody>
+									<?php
+									foreach ($familiari_assistito_array as $familiari_assistito) {
+										echo '<tr class="even pointer">';
+										echo '<td class=" ">'.$familiari_assistito["parentela"].'</td>';
+										echo '<td class=" ">'.$familiari_assistito["anno_di_nascita"].'</td>';
+										echo '</tr>';
+									}
+									?>
+									   </tbody>
+								    </table>
+									<?php
+										}
+									?>
+
+						<br /><br />
+						
+						
 									<span class="section">Documenti</span>
 									<!--
 									<?php
@@ -231,6 +265,28 @@ if (isset($_GET['id_assistito'])) {
 									}
 									?>
 									<div class="ln_solid"></div>
+									
+						<br />
+									<span class="section">Situazione lavorativa</span>
+									<div class="row">
+									  <div class="col-md-3"><label>Ha lavorato</label></div>
+									  <div class="col-md-9"><?php $ha_lavorato = ($assistito["ha_lavorato"]==0) ? 'No' : 'Si'; echo $ha_lavorato;?></div>
+								    </div>
+									<div class="row">
+									  <div class="col-md-3"><label>Lavora</label></div>
+									  <div class="col-md-9"><?php $lavora = ($assistito["lavora"]==0) ? 'No' : 'Si'; echo $lavora;?></div>
+								    </div>
+									<?php
+									if ($lavora=="Si" and $assistito["dove_lavora"]!="") {
+									?>
+										<div class="row">
+										  <div class="col-md-3"><label>Dove lavora</label></div>
+										  <div class="col-md-9"><?php echo $assistito["dove_lavora"];?></div>
+										</div>
+									<?php
+									}
+									?>
+									<div class="ln_solid"></div>			
 							</div>
 						</div>
 					</div>
