@@ -29,7 +29,7 @@ if ($page_mode=='VISUALIZZA_MODIFICA') {
 
   //caricamento dati anagrafici
   $assistito = get_assistito($id_assistito);
-//  print_r($assistito);
+  print_r($assistito);
   $sesso_F = 0;
   $sesso_M = 0;
   if ("F"==$assistito["sesso"]) {
@@ -66,41 +66,11 @@ if ($page_mode=='VISUALIZZA_MODIFICA') {
 
   //caricamento documenti
   $documenti_assistito_array = get_documenti_assistito($id_assistito);
-//  print_r("numero documenti caricati: ".count($documenti_assistito_array));
-//  print_r($documenti_assistito_array);
-  foreach ($documenti_assistito_array as $loaded_doc) {
-//    echo "documento caricato:";print_r($loaded_doc);echo "\n";
+  $familiari_assistito_array = get_familiari_assistito($id_assistito);
 
-    $variable_name = "enabled_".$loaded_doc["TIPO_DOC"];
-    $$variable_name = "1";
-
-    $variable_name = "numero_".$loaded_doc["TIPO_DOC"];
-    $$variable_name = $loaded_doc["NUMERO_DOC"];
-
-    $variable_name = "rilascio_".$loaded_doc["TIPO_DOC"];
-    $$variable_name = $loaded_doc["DATA_RILASCIO_DOC"];
-
-    $variable_name = "scadenza_".$loaded_doc["TIPO_DOC"];
-    $$variable_name = $loaded_doc["DATA_SCADENZA_DOC"];
-
-    $variable_name = "fotocopia_".$loaded_doc["TIPO_DOC"];
-    $$variable_name = $loaded_doc["FOTOCOPIA"];
-  }
-/*
-  echo "enabled_identita: ".$enabled_identita;
-  echo "numero_identita: ".$numero_identita;
-  echo "rilascio_identita: ".$rilascio_identita;
-  echo "scadenza_identita: ".$scadenza_identita;
-  echo "fotocopia_identita: ".$fotocopia_identita;
-*/
-  $var_name = "enabled_".$loaded_doc["TIPO_DOC"];
-//  echo "var_name=".$var_name;
-//  if (${$var_name}==1) echo "si identita"; else "no identita";
-
-
-$familiari_assistito_array = get_familiari_assistito($id_assistito);
-
-
+  //caricamento richieste
+  $richieste = get_richieste($id_assistito);
+  print_r($richieste);
 
 } else if ($page_mode=='VISUALIZZA_INSERISCI') {
   $page_title='Inserisci';
@@ -439,101 +409,81 @@ $familiari_assistito_array = get_familiari_assistito($id_assistito);
 									</div>
 
 									<span class="section">Documenti</span>
-<?php
-$docs=array("identita"=>"Carta d'identità",
-			"passaporto"=>"Passaporto",
-			"patente"=>"Patente",
-			"smarrimento"=>"Denuncia di smarrimento",
-			"pds"=>"PDS (permesso di soggiorno)",
-			"stp"=>"STP (rifugiato politico)",
-			"sanitaria"=>"Tessera sanitaria",
-			"turistico"=>"Permesso turistico",
-			"identita_straniera"=>"Carta d'identità straniera",
-			"nessuno"=>"Nessun documento"
-			);
-foreach ($docs as $key=>$value) {
+                  <div id="documenti">
+                    <?php
+                    if (!is_null($documenti_assistito_array)) {
+                      $keys  = array_keys($documenti_assistito_array);
+                    }
 
-  $enabled_var_name = "enabled_".$key;
-  //echo "var_name=".$var_name;
-  //if (${$enabled_var_name}==1) echo "si identita"; else "no identita";
+                    for ($i = 0; $i < count($documenti_assistito_array)+1; ++$i) {
+                      $index = $keys[$i];
+                      $documento = $documenti_assistito_array[$index];
+                    ?>
+                      <div class="item form-group" id="documento_input_<?php echo $i;?>">
+                        <input type="hidden" name="documento_<?php echo $i;?>_pk" value="<?php echo $documento["ID"];?>" />
+                        <label class="control-label col-md-1 col-sm-1 col-xs-1">Documento <?php echo ($i+1);?> </label>
 
+                        <div class="col-md-2 col-sm-2 col-xs-2">
+    											<select name="tipodoc_<?php echo $i;?>" class="select2_single form-control" tabindex="-1">
+                            <option value="">Tipologia</option>
+    												<option value="identita" <?php if ($documento["TIPO_DOC"]=="identita") echo("selected");?>>Carta d'identità</option>
+    												<option value="passaporto" <?php if ($documento["TIPO_DOC"]=="passaporto") echo("selected");?>>Passaporto</option>
+    												<option value="patente" <?php if ($documento["TIPO_DOC"]=="patente") echo("selected");?>>Patente</option>
+    												<option value="smarrimento" <?php if ($documento["TIPO_DOC"]=="smarrimento") echo("selected");?>>Denuncia di smarrimento</option>
+    												<option value="pds" <?php if ($documento["TIPO_DOC"]=="pds") echo("selected");?>>PDS (permesso di soggiorno)</option>
+    												<option value="stp" <?php if ($documento["TIPO_DOC"]=="stp") echo("selected");?>>STP (rifugiato politico)</option>
+    												<option value="sanitaria" <?php if ($documento["TIPO_DOC"]=="sanitaria") echo("selected");?>>Tessera sanitaria</option>
+                            <option value="turistico" <?php if ($documento["TIPO_DOC"]=="turistico") echo("selected");?>>Permesso turistico</option>
+                            <option value="identita_straniera" <?php if ($documento["TIPO_DOC"]=="identita_straniera") echo("selected");?>>Carta d'identità straniera</option>
+                            <option value="altro" <?php if ($documento["TIPO_DOC"]=="altro") echo("selected");?>>Altro</option>
+    											</select>
+    										</div>
+                        <div class="col-md-1 col-sm-1 col-xs-1">
+                          <input id="numero_<?php echo $i;?>" name="numero_<?php echo $i;?>" class="form-control col-md-7 col-xs-12" placeholder="N° doc" value="<?php echo $documento["NUMERO_DOC"];?>">
+                        </div>
 
-?>
-
-                  <!-- documenti categorizzati -->
-									<div class="item form-group" style="min-height:34px;">
-										<div class="col-md-3 col-sm-3 col-xs-12" style="float:left;">
-											<div class="checkbox">
-												<span id="<?php echo $key;?>">
-														<input type="checkbox" class="flat" name="documenti[]" value="<?php echo $key;?>" <?php if (${$enabled_var_name}==1) echo("checked");?>>
-														<label style="cursor:default;"><?php echo $value;?></label>
-												</span>
-											</div>
-										</div>
-										<div id="info_<?php echo $key;?>" class="col-md-9 col-sm-9 col-xs-12" style="display:none;">
-											<div class="col-md-3 col-sm-3 col-xs-12">
-												<input id="numero_<?php echo $key;?>" placeholder="numero" name="numero_<?php echo $key;?>" class="form-control" type="text">
-											</div>
-											<div class="col-md-3 col-sm-3 col-xs-12">
-												<input type="text" placeholder="data di rilascio" name="rilascio_<?php echo $key;?>" class="form-control has-feedback-left" id="single_cal4" aria-describedby="inputSuccess2Status4">
-												<span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
-												<span id="inputSuccess2Status4" class="sr-only">(success)</span>
-											</div>
-											<div class="col-md-3 col-sm-3 col-xs-12">
-												<input type="text" placeholder="data di scadenza" name="scadenza_<?php echo $key;?>" class="form-control has-feedback-left" id="single_cal4" aria-describedby="inputSuccess2Status4">
-												<span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
-												<span id="inputSuccess2Status4" class="sr-only">(success)</span>
-											</div>
-											<div class="checkbox col-md-2 col-sm-2 col-xs-12">
+                        <div class="col-md-2 col-sm-2 col-xs-2">
+                           <input type="text" placeholder="data di rilascio" name="rilascio_<?php echo $i;?>" class="form-control has-feedback-left" id="rilascio_<?php echo $i;?>" aria-describedby="inputSuccess2Status4" value="<?php echo $documento["DATA_RILASCIO_DOC"];?>">
+ 												   <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+												   <span id="inputSuccess2Status4" class="sr-only">(success)</span>
+											  </div>
+                        <div class="col-md-2 col-sm-2 col-xs-2">
+                           <input type="text" placeholder="data di scadenza" name="scadenza_<?php echo $i;?>" class="form-control has-feedback-left" id="scadenza_<?php echo $i;?>" aria-describedby="inputSuccess2Status4" value="<?php echo $documento["DATA_SCADENZA_DOC"];?>">
+ 												   <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+												   <span id="inputSuccess2Status4" class="sr-only">(success)</span>
+											  </div>
+                        <div class="checkbox col-md-2 col-sm-2 col-xs-2">
 												<label>
-													<input type="checkbox" class="flat" name="fotocopia_<?php echo $key;?>"> Fotocopia
+													<input type="checkbox" class="flat" name="fotocopia_<?php echo $i;?>" value="<?php echo $documento["FOTOCOPIA"];?>"> Fotocopia
 												</label>
 											</div>
-										</div>
-									</div>
 
-<?php
-}
-?>
-                  <!-- altro -->
-									<div class="item form-group" style="min-height:34px;">
-										<div class="col-md-3 col-sm-3 col-xs-12">
-											<div class="checkbox" >
-												<span id="altro">
-													<div style="float:left; width:24px;">
-													<input type="checkbox" class="flat" name="documenti[]" value="altro" >
-													</div>
-													<label id="label_altro">Altro</label>
-													<div id="div_descrizione_altro" style="display:none; margin-left:35px; margin-top:-7px;">
-														<input type="text" placeholder="tipo documento" name="descrizione_altro" class="form-control checkbox" id="descrizione_altro">
-													</div>
-												</span>
+                        <?php
+                        if ($i==count($documenti_assistito_array))
+                        {
+                        ?>
+                          <div>
+                            <button class="btn btn-primary button_remove_documento" type="button" id="button_remove_documento_<?php echo $i;?>" style="display:none;">X</button>
+                          </div>
+                          <div>
+                            <button class="btn btn-primary button_add_documento" type="button" id="button_add_documento_<?php echo $i;?>">Agg. documento</button>
+                          </div>
+                        <?php
+                        }
+                        else {
+                        ?>
+                          <div>
+                            <button class="btn btn-primary button_remove_documento" type="button" id="button_remove_documento_<?php echo $i;?>">X</button>
+                          </div>
+                        <?php
+                        }
+                        ?>
+                      </div>
+                    <?php
+                    }
+                    ?>
 
-											</div>
 
-
-										</div>
-
-										<div id="info_altro" class="col-md-9 col-sm-9 col-xs-12" style="display:none;">
-											<div class="col-md-3 col-sm-3 col-xs-12">
-												<input id="numero_altro" placeholder="numero" name="numero_altro" class="form-control" type="text">
-											</div>
-											<div class="col-md-3 col-sm-3 col-xs-12">
-												<input type="text" placeholder="data di rilascio" name="rilascio_altro" class="form-control has-feedback-left" id="single_cal4" aria-describedby="inputSuccess2Status4">
-												<span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
-												<span id="inputSuccess2Status4" class="sr-only">(success)</span>
-											</div>
-											<div class="col-md-3 col-sm-3 col-xs-12">
-												<input type="text" placeholder="data di scadenza" name="scadenza_altro" class="form-control has-feedback-left" id="single_cal4" aria-describedby="inputSuccess2Status4">
-												<span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
-												<span id="inputSuccess2Status4" class="sr-only">(success)</span>
-											</div>
-											<div class="checkbox col-md-2 col-sm-2 col-xs-12">
-												<label>
-													<input type="checkbox" class="flat" name="fotocopia_altro"> Fotocopia
-												</label>
-											</div>
-										</div>
 									</div>
 
 <!--
@@ -752,6 +702,57 @@ foreach ($docs as $key=>$value) {
 										</div>
 									</div>
 
+                  <span class="section">Richieste</span>
+                  aaaa<?php echo $richieste["richiesta_alloggio"];?>
+                  <div class="item form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="richiesta_alloggio">Richiesta di alloggio</label>
+                      <div class="col-md-6 col-sm-6 col-xs-12">
+                          <textarea class="form-control col-md-7 col-xs-12" name="richiesta_alloggio" rows="3" >aaaa<?php echo $richieste["richiesta_alloggio"]; ?></textarea>
+                      </div>
+                  </div>
+
+                  <div class="item form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="richiesta_primari">Richiesta beni primari</label>
+                      <div class="col-md-6 col-sm-6 col-xs-12">
+                          <textarea class="form-control col-md-7 col-xs-12" name="richiesta_primari" rows="3" ><?php echo $richieste["richiesta_primari"];?></textarea>
+                      </div>
+                  </div>
+
+                  <div class="item form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="richiesta_lavoro">Richiesta lavoro</label>
+                      <div class="col-md-6 col-sm-6 col-xs-12">
+                          <textarea class="form-control col-md-7 col-xs-12" name="richiesta_lavoro" rows="3" ><?php echo $richieste["richiesta_lavoro"];?></textarea>
+                      </div>
+                  </div>
+
+                  <div class="item form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="richiesta_beni_servizi">Richiesta beni e servizi</label>
+                      <div class="col-md-6 col-sm-6 col-xs-12">
+                          <textarea class="form-control col-md-7 col-xs-12" name="richiesta_beni_servizi" rows="3" ><?php echo $richieste["richiesta_beni_servizi"];?></textarea>
+                      </div>
+                  </div>
+
+                  <div class="item form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="richiesta_contatti_servizi">Richiesta contatti con altri servizi</label>
+                      <div class="col-md-6 col-sm-6 col-xs-12">
+                          <textarea class="form-control col-md-7 col-xs-12" name="richiesta_contatti_servizi" rows="3" ><?php echo $richieste["richiesta_contatti_servizi"];?></textarea>
+                      </div>
+                  </div>
+
+                  <div class="item form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="richiesta_burocratica">Richiesta burocratica</label>
+                      <div class="col-md-6 col-sm-6 col-xs-12">
+                          <textarea class="form-control col-md-7 col-xs-12" name="richiesta_burocratica" rows="3" ><?php echo $richieste["richiesta_burocratica"];?></textarea>
+                      </div>
+                  </div>
+
+                  <div class="item form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="richiesta_sanitaria">Richiesta sanitaria</label>
+                      <div class="col-md-6 col-sm-6 col-xs-12">
+                          <textarea class="form-control col-md-7 col-xs-12" name="richiesta_sanitaria" rows="3" ><?php echo $richieste["richiesta_sanitaria"];?></textarea>
+                      </div>
+                  </div>
+
 									<span class="section">Risposte indirette</span>
 									<div class="item form-group">
 										<div class="checkbox">
@@ -903,12 +904,9 @@ print_r($assistiti);
     <script type="text/javascript">
 
 			$(document).on('click', '.button_familiare', function (event) {
-//				alert(event.target.id);
 				$('#'+event.target.id+'').hide();
-				//idx_familiare_clicked = parseInt(event.target.id.slice(-1));
         idx_familiare_clicked = parseInt(event.target.id.substring(event.target.id.lastIndexOf('_') + 1));
         idx_new_familiare = idx_familiare_clicked +1;
-//				alert(number);
 
 				new_html='<div class="item form-group" id="familiare_input_'+idx_new_familiare+'">' +
                     '<input type="hidden" name="familiare_'+idx_new_familiare+'_pk"/>' +
@@ -953,6 +951,70 @@ print_r($assistiti);
 
 			});
 
+      $(document).on('click', '.button_add_documento', function (event) {
+				$('#'+event.target.id+'').hide();
+        idx_documento_clicked = parseInt(event.target.id.substring(event.target.id.lastIndexOf('_') + 1));
+        idx_new_documento = idx_documento_clicked +1;
+
+				new_html='<div class="item form-group" id="documento_input_'+idx_new_documento+'">' +
+                    '<input type="hidden" name="documento_'+idx_new_documento+'_pk"/>' +
+										'<label class="control-label col-md-1 col-sm-1 col-xs-1">Documento '+(idx_new_documento+1)+' </label>' +
+
+                    '<div class="col-md-2 col-sm-2 col-xs-2">'+
+                      '<select name="tipodoc_'+idx_new_documento+'" class="select2_single form-control" tabindex="-1">'+
+                        '<option value="">Tipologia</option>'+
+                        '<option value="identita">Carta identità</option>'+
+                        '<option value="passaporto">Passaporto</option>'+
+                        '<option value="patente">Patente</option>'+
+                        '<option value="smarrimento">Denuncia di smarrimento</option>'+
+                        '<option value="pds">PDS (permesso di soggiorno)</option>'+
+                        '<option value="stp">STP (rifugiato politico)</option>'+
+                        '<option value="sanitaria">Tessera sanitaria</option>'+
+                        '<option value="turistico">Permesso turistico</option>'+
+                        '<option value="identita_straniera">Carta identità straniera</option>'+
+                        '<option value="altro">Altro</option>'+
+                      '</select>'+
+                    '</div>'+
+                    '<div class="col-md-1 col-sm-1 col-xs-1">'+
+                      '<input id="numero_'+idx_new_documento+'" name="numero_'+idx_new_documento+'" class="form-control col-md-7 col-xs-12" placeholder="N° doc">'+
+                    '</div>'+
+                    '<div class="col-md-2 col-sm-2 col-xs-2">'+
+                      '<input type="text" placeholder="data di rilascio" name="rilascio_'+idx_new_documento+'" class="form-control has-feedback-left" id="rilascio_'+idx_new_documento+'" aria-describedby="inputSuccess2Status4">'+
+                      '<span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>'+
+                      '<span id="inputSuccess2Status4" class="sr-only">(success)</span>'+
+                    '</div>'+
+                    '<div class="col-md-2 col-sm-2 col-xs-2">'+
+                      '<input type="text" placeholder="data di scadenza" name="scadenza_'+idx_new_documento+'" class="form-control has-feedback-left" id="scadenza_'+idx_new_documento+'" aria-describedby="inputSuccess2Status4">'+
+                      '<span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>'+
+                      '<span id="inputSuccess2Status4" class="sr-only">(success)</span>'+
+                      '</div>'+
+                      '<div class="checkbox col-md-2 col-sm-2 col-xs-2">'+
+                        '<label>'+
+                        '<input type="checkbox" class="flat" name="fotocopia_'+idx_new_documento+'" value="<?php echo $documento["FOTOCOPIA"];?>"> Fotocopia'+
+                        '</label>'+
+                      '</div>'+
+                    '<div>' +
+                      '<button class="btn btn-primary button_remove_documento" type="button" id="button_remove_documento_'+idx_new_documento+'" style="display:none;">X</button>' +
+                    '</div>'+
+										'<div>' +
+											'<button class="btn btn-primary button_add_documento" type="button" id="button_add_documento_'+idx_new_documento+'">Aggiungi documento</button>' +
+										'</div>' +
+									'</div>';
+				$('#documenti').append(new_html);
+
+        var elem = document.getElementById('button_remove_documento_'+idx_documento_clicked);
+        elem.setAttribute("style", "display: inline;");
+
+			});
+      $(document).on('click', '.button_remove_documento', function (event) {
+        idx_documento_clicked = parseInt(event.target.id.substring(event.target.id.lastIndexOf('_') + 1));
+        //set the remove flag
+				new_html='<input type="hidden" name="documento_'+idx_documento_clicked+'_rimuovi" value="1" />';
+				$('#documento_input_'+idx_documento_clicked).append(new_html);
+        var elem = document.getElementById('documento_input_'+idx_documento_clicked);
+        elem.setAttribute("style", "display: none;");
+			});
+
 		$(document).ready(function () {
             $('#single_cal1').daterangepicker({
                 singleDatePicker: true,
@@ -978,8 +1040,42 @@ print_r($assistiti);
             }, function (start, end, label) {
                 console.log(start.toISOString(), end.toISOString(), label);
             });
-
-
+            $('#rilascio_0').daterangepicker({
+                singleDatePicker: true,
+                calender_style: "picker"
+            }, function (start, end, label) {
+                console.log(start.toISOString(), end.toISOString(), label);
+            });
+            $('#scadenza_0').daterangepicker({
+                singleDatePicker: true,
+                calender_style: "picker"
+            }, function (start, end, label) {
+                console.log(start.toISOString(), end.toISOString(), label);
+            });
+            $('#rilascio_1').daterangepicker({
+                singleDatePicker: true,
+                calender_style: "picker"
+            }, function (start, end, label) {
+                console.log(start.toISOString(), end.toISOString(), label);
+            });
+            $('#scadenza_1').daterangepicker({
+                singleDatePicker: true,
+                calender_style: "picker"
+            }, function (start, end, label) {
+                console.log(start.toISOString(), end.toISOString(), label);
+            });
+            $('#rilascio_2').daterangepicker({
+                singleDatePicker: true,
+                calender_style: "picker"
+            }, function (start, end, label) {
+                console.log(start.toISOString(), end.toISOString(), label);
+            });
+            $('#scadenza_2').daterangepicker({
+                singleDatePicker: true,
+                calender_style: "picker"
+            }, function (start, end, label) {
+                console.log(start.toISOString(), end.toISOString(), label);
+            });
 
 
         });

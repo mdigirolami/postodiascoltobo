@@ -86,6 +86,11 @@ function inserisci_assistito($params) {
 			$res8=mysql_query($sql8);
 		}
 	}
+
+	$sql="insert into richieste (`id`, `id_assistito`, `richiesta_alloggio`,`richiesta_primari`,`richiesta_lavoro`,`richiesta_beni_servizi`,`richiesta_contatti_servizi`,`richiesta_burocratica`,`richiesta_sanitaria`) VALUES ('', ".$id_assistito.", '".$params["richiesta_alloggio"]."','".$params["richiesta_primari"]."','".$params["richiesta_lavoro"]."','".$params["richiesta_beni_servizi"]."','".$params["richiesta_contatti_servizi"]."','".$params["richiesta_burocratica"]."','".$params["richiesta_sanitaria"]."')";
+	echo "<br>".$sql;
+	$res9=mysql_query($sql);
+
     return $id_assistito;
 }
 
@@ -96,6 +101,7 @@ function modifica_assistito($params) {
 
   modifica_dati_anagrafici_assistito($params);
 	modifica_familiari_assistito($params);
+	modifica_documenti_assistito($params);
 }
 
 
@@ -156,6 +162,66 @@ function modifica_familiari_assistito($params) {
 
 }
 
+
+function modifica_documenti_assistito($params) {
+
+	global $db,$config;
+  echo "documenti:"."\r\n";
+	$documento_index = 0;
+	foreach ($params as $key => $value) {
+
+		if (substr($key, 0, 10)=="documento_") {
+
+			$number=substr($key, -1);
+			$documento_pk="documento_".$documento_index."_pk";
+			$tipodoc_key="tipodoc_".$documento_index;
+			$numero_key="numero_".$documento_index;
+			$rilascio_key="rilascio_".$documento_index;
+			$scadenza_key="scadenza_".$documento_index;
+			$fotocopia_key="fotocopia_".$documento_index;
+			$rimuovi_key="documento_".$documento_index."_rimuovi";
+			echo "documento_pk=".$params[$documento_pk]." numero=".$params[$numero_key]." rilascio=".$params[$rilascio_key]." scadenza=".$params[$scadenza_key]." fotocopia=".$params[$fotocopia_key]." numero=".$params[$numero_key]."\n";
+
+			$data_rilascio_formatted=NULL;
+			if ($params[$rilascio_key]!="") {
+				$data_rilascio_pieces=split("/", $params[$rilascio_key]);
+				$data_rilascio_formatted=$data_rilascio_pieces[2]."-".$data_rilascio_pieces[0]."-".$data_rilascio_pieces[1];
+			}
+
+			$data_scadenza_formatted=NULL;
+			if ($params[$scadenza_key]!="") {
+				$data_scadenza_pieces=split("/", $params[$scadenza_key]);
+				$data_scadenza_formatted=$data_scadenza_pieces[2]."-".$data_scadenza_pieces[0]."-".$data_scadenza_pieces[1];
+			}
+
+			if ($params[$documento_pk]=="") {
+				//insert
+				if ( ($params[$tipodoc_key]!="") OR ($params[$numero_key]!="") OR ($params[$rilascio_key]!="") OR ($params[$scadenza_key]!="") OR ($params[$fotocopia_key]!="") ) {
+					$sql="insert into DOCUMENTI_ASSISTITO (`id`, `id_assistito`, `tipo_doc`,`numero_doc`,`data_rilascio_doc`,`data_scadenza_doc`,`fotocopia`) VALUES ('', ".$params["id_assistito"].", '".$params[$tipodoc_key]."', '".$params[$numero_key]."', '".$data_rilascio_formatted."', '".$data_scadenza_formatted."', '".$params[$fotocopia_key]."')";
+					echo $sql;
+					mysql_query($sql);
+				}
+
+			} else {
+				$flag_to_remove = 0;
+				if ($params[$rimuovi_key]=="1") {
+
+					$sql='delete from DOCUMENTI_ASSISTITO where id='.$params[$documento_pk];
+					echo $sql;
+					mysql_query($sql);
+				} else {
+					//update
+					$sql='update DOCUMENTI_ASSISTITO set `tipo_doc`="'.$params[$tipodoc_key].'", `numero_doc`="'.$params[$numero_key].'", `data_rilascio_doc`="'.$data_rilascio_formatted.'", `data_scadenza_doc`="'.$data_scadenza_formatted.'", `fotocopia`="'.$params[$fotocopia_key].'" where id='.$params[$documento_pk];
+					echo $sql;
+					mysql_query($sql);
+				}
+			}
+			$documento_index++;
+	 }
+
+ }
+
+}
 
 function get_servizi() {
 	global $db,$config;
@@ -403,7 +469,7 @@ function modifica_scuole($params) {
 					$sql="insert into scuole (`id`, `anno`, `id_nazionalita`, `sesso`, `numero`) VALUES ('', ".$params["anno"].", ".$params[$nazionalita_key].", '".$params[$sesso_key]."', ".$params[$numero_key].")";
 					echo $sql;
 					mysql_query($sql);
-				} 
+				}
 
 			} else {
 				$flag_to_remove = 0;
@@ -449,13 +515,54 @@ function inserisci_servizio($params) {
 	$sql="INSERT INTO servizi_erogati VALUES ('', ".$params['id_servizio'].", ".$params['id_assistito'].", '".$data."', '".$params['note']."', 1, '', '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."')";
 
 	$res=mysql_query($sql);
-	
+
 	$sql2="select id from servizi_erogati order by id desc limit 1";
 	$res2=mysql_query($sql2);
 	$r=mysql_fetch_object($res2);
 	$id_servizio=$r->id;
-	
+
 	return $id_servizio;
+}
+
+
+function get_stat_banco_alimentare($anno) {
+	global $db,$config;
+	$result = array();
+
+	$sql="SELECT mese, count(*) as pacchi FROM banco_alimentare where anno=".$anno." group by mese";
+	$res=mysql_query($sql) or die(mysql_error());
+	while($r=mysql_fetch_assoc($res)) {
+			$result[]=$r;
+	}
+
+	return $result;
+}
+
+
+function get_stat_scuole($anno) {
+	global $db,$config;
+	$result = array();
+
+	$sql="SELECT sesso, numero, elenco_nazioni.nome as nazione, continenti.nome as continente FROM scuole join elenco_nazioni on id_nazionalita=elenco_nazioni.id join continenti on elenco_nazioni.id_continente=continenti.id where anno=".$anno;
+	$res=mysql_query($sql) or die(mysql_error());
+	while($r=mysql_fetch_assoc($res)) {
+			$result[]=$r;
+	}
+
+	return $result;
+}
+
+
+function get_richieste($id_assistito) {
+ global $db,$config;
+ $result = array();
+
+ $sql="SELECT * FROM richieste where id_assistito=".$id_assistito;
+ $res=mysql_query($sql);
+ while($r=mysql_fetch_assoc($res)) {
+   $result[]=$r;
+ }
+ return $result;
 }
 
 
