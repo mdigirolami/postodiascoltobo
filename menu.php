@@ -15,14 +15,19 @@
                                     </ul>
                                 </li>
 								<li class="nv active">
-									<a href="lista_servizi.php"><i class="fa fa-edit"></i> Servizi</a>
+									<a href="lista_servizi.php"><i class="fa fa-support"></i> Servizi</a>
 								</li>
 								<li class="nv active">
-									<a href="scuole.php"><i class="fa fa-edit"></i> Scuole</a>
+									<a href="scuole.php"><i class="fa fa-briefcase"></i> Scuole</a>
 								</li>
-								<li class="nv active">
-									<a href="#"><i class="fa fa-bar-chart-o"></i> Statistiche</a>
-								</li>
+								<li><a><i class="fa fa-bar-chart-o"></i> Statistiche <span class="fa fa-chevron-down"></span></a>
+                                    <ul class="nav child_menu" style="display: none">
+                                        <li><a href="stat_banco_alimentare.php">Banco alimentare</a>
+                                        </li>
+                                        <li><a href="stat_scuole.php">Scuole</a>
+                                        </li>
+                                    </ul>
+                                </li>
                             </ul>
                         </div>
 

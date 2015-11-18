@@ -20,8 +20,10 @@ if (isset($_GET['id_assistito'])) {
 if ($page_mode=='VISUALIZZA_MODIFICA') {
 
   $id_assistito=$_GET['id_assistito'];
-	$chi_lo_invia_assistito_array = get_chi_lo_invia_assistito($id_assistito);
-
+  $chi_lo_invia_assistito_array = get_chi_lo_invia_assistito($id_assistito);
+  $lingue_assistito_array = get_lingue_assistito($id_assistito);
+  $vulnerabilita_assistito_array = get_vulnerabilita_assistito($id_assistito);
+  $risposte_indirette_assistito_array = get_risposte_indirette_assistito($id_assistito);
 
   $page_title='Modifica';
   $send_button_title='Modifica';
@@ -29,7 +31,9 @@ if ($page_mode=='VISUALIZZA_MODIFICA') {
 
   //caricamento dati anagrafici
   $assistito = get_assistito($id_assistito);
-  print_r($assistito);
+
+
+
   $sesso_F = 0;
   $sesso_M = 0;
   if ("F"==$assistito["sesso"]) {
@@ -48,14 +52,12 @@ if ($page_mode=='VISUALIZZA_MODIFICA') {
   $stato_civile_is_DIVORZIATO=0;    //value=7
   if ("1"==$assistito["stato_civile"]) {
     $stato_civile_is_CELIBE=1;
-  } else if ("1"==$assistito["stato_civile"]) {
-    $stato_civile_is_NUBILE=1;
   } else if ("2"==$assistito["stato_civile"]) {
-    $stato_civile_is_CONVIVENTE=1;
+    $stato_civile_is_NUBILE=1;
   } else if ("3"==$assistito["stato_civile"]) {
-    $stato_civile_is_CONIUGATO=1;
+    $stato_civile_is_CONVIVENTE=1;
   } else if ("4"==$assistito["stato_civile"]) {
-    $stato_civile_is_CELIBE=1;
+    $stato_civile_is_CONIUGATO=1;
   } else if ("5"==$assistito["stato_civile"]) {
     $stato_civile_is_VEDOVO=1;
   } else if ("6"==$assistito["stato_civile"]) {
@@ -70,7 +72,7 @@ if ($page_mode=='VISUALIZZA_MODIFICA') {
 
   //caricamento richieste
   $richieste = get_richieste($id_assistito);
-  print_r($richieste);
+  //print_r($richieste);
 
 } else if ($page_mode=='VISUALIZZA_INSERISCI') {
   $page_title='Inserisci';
@@ -98,7 +100,9 @@ if ($page_mode=='VISUALIZZA_MODIFICA') {
 //if ($page_mode=='VISUALIZZA_INSERISCI' or $page_mode=='VISUALIZZA_MODIFICA') {
 
   $elenco_nazioni = get_elenco_nazioni();
-
+  //echo "page_mode: ".$page_mode;
+  //echo "id_assistito: ".$id_assistito;
+  //print_r($assistito);
   if ($page_mode=='VISUALIZZA_MODIFICA') {
 ?>
 				<div class="x_content" style="height:46px;">
@@ -256,7 +260,7 @@ if ($page_mode=='VISUALIZZA_MODIFICA') {
 										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="data_di_nascita">Data di nascita </label>
 										<div class="controls">
 											<div class="col-md-6 col-sm-6 col-xs-12">
-												<input type="text" name="data_di_nascita" class="form-control has-feedback-left" id="single_cal4" aria-describedby="inputSuccess2Status4" value="<?php echo $assistito["data_di_nascita"];?>">
+												<input type="text" name="data_di_nascita" class="form-control has-feedback-left" id="data_nascita_calendar" aria-describedby="inputSuccess2Status4" value="<?php echo $assistito["data_di_nascita"];?>">
 												<span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
 												<span id="inputSuccess2Status4" class="sr-only">(success)</span>
 											</div>
@@ -382,11 +386,12 @@ if ($page_mode=='VISUALIZZA_MODIFICA') {
 
 									</div>
 
+									<br />
 									<span class="section">Residenza</span>
 									<div class="item form-group">
 										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="citta_residenza">Città </label>
 										<div class="col-md-6 col-sm-6 col-xs-12">
-											<input id="citta_residenza" class="form-control col-md-7 col-xs-12" name="citta_residenza" type="text" value="<?php echo $assistito["residenza"];?>">
+											<input id="citta_residenza" class="form-control col-md-7 col-xs-12" name="citta_residenza" type="text" value="<?php echo $assistito["citta_residenza"];?>">
 										</div>
 									</div>
 									<div class="item form-group">
@@ -408,6 +413,7 @@ if ($page_mode=='VISUALIZZA_MODIFICA') {
 										</div>
 									</div>
 
+									<br />
 									<span class="section">Documenti</span>
                   <div id="documenti">
                     <?php
@@ -418,6 +424,10 @@ if ($page_mode=='VISUALIZZA_MODIFICA') {
                     for ($i = 0; $i < count($documenti_assistito_array)+1; ++$i) {
                       $index = $keys[$i];
                       $documento = $documenti_assistito_array[$index];
+					  $data_rilascio_pieces=split("-", $documento['DATA_RILASCIO_DOC']);
+					  $data_rilascio_formatted=$data_rilascio_pieces[1]."/".$data_rilascio_pieces[2]."/".$data_rilascio_pieces[0];
+					  $data_scadenza_pieces=split("-", $documento['DATA_SCADENZA_DOC']);
+					  $data_scadenza_formatted=$data_scadenza_pieces[1]."/".$data_scadenza_pieces[2]."/".$data_scadenza_pieces[0];
                     ?>
                       <div class="item form-group" id="documento_input_<?php echo $i;?>">
                         <input type="hidden" name="documento_<?php echo $i;?>_pk" value="<?php echo $documento["ID"];?>" />
@@ -443,18 +453,18 @@ if ($page_mode=='VISUALIZZA_MODIFICA') {
                         </div>
 
                         <div class="col-md-2 col-sm-2 col-xs-2">
-                           <input type="text" placeholder="data di rilascio" name="rilascio_<?php echo $i;?>" class="form-control has-feedback-left" id="rilascio_<?php echo $i;?>" aria-describedby="inputSuccess2Status4" value="<?php echo $documento["DATA_RILASCIO_DOC"];?>">
+                           <input type="text" placeholder="data di rilascio" name="rilascio_<?php echo $i;?>" class="form-control has-feedback-left" id="rilascio_<?php echo $i;?>" aria-describedby="inputSuccess2Status4" value="<?php if ($data_rilascio_formatted!="//") echo $data_rilascio_formatted;?>">
  												   <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
 												   <span id="inputSuccess2Status4" class="sr-only">(success)</span>
 											  </div>
                         <div class="col-md-2 col-sm-2 col-xs-2">
-                           <input type="text" placeholder="data di scadenza" name="scadenza_<?php echo $i;?>" class="form-control has-feedback-left" id="scadenza_<?php echo $i;?>" aria-describedby="inputSuccess2Status4" value="<?php echo $documento["DATA_SCADENZA_DOC"];?>">
+                           <input type="text" placeholder="data di scadenza" name="scadenza_<?php echo $i;?>" class="form-control has-feedback-left" id="scadenza_<?php echo $i;?>" aria-describedby="inputSuccess2Status4" value="<?php if ($data_scadenza_formatted!="//") echo $data_scadenza_formatted;?>">
  												   <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
 												   <span id="inputSuccess2Status4" class="sr-only">(success)</span>
 											  </div>
                         <div class="checkbox col-md-2 col-sm-2 col-xs-2">
 												<label>
-													<input type="checkbox" class="flat" name="fotocopia_<?php echo $i;?>" value="<?php echo $documento["FOTOCOPIA"];?>"> Fotocopia
+													<input type="checkbox" class="flat" name="fotocopia_<?php echo $i;?>" value=1 <?php if ($documento["FOTOCOPIA"]==1) echo 'checked="checked"'; ?> > Fotocopia
 												</label>
 											</div>
 
@@ -516,72 +526,73 @@ if ($page_mode=='VISUALIZZA_MODIFICA') {
 										</div>
 									</div>
 -->
-
+									<br />
 									<span class="section">Chi lo invia</span>
 									<div class="item form-group">
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="Conoscenti"> Conoscenti/connazionali
+												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="Conoscenti" <?php if (in_array("Conoscenti", $chi_lo_invia_assistito_array)) echo 'checked="checked"'; ?>> Conoscenti/connazionali
 											</label>
 										</div>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="Spontaneo"> Spontaneo
+												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="Spontaneo" <?php if (in_array("Spontaneo", $chi_lo_invia_assistito_array)) echo 'checked="checked"'; ?>> Spontaneo
 											</label>
 										</div>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="ASL"> Asl/ospedali
+												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="ASL" <?php if (in_array("ASL", $chi_lo_invia_assistito_array)) echo 'checked="checked"'; ?>> Asl/ospedali
 											</label>
 										</div>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="Attori di stazioni"> Attori di stazioni
+												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="Attori di stazioni" <?php if (in_array("Attori di stazioni", $chi_lo_invia_assistito_array)) echo 'checked="checked"'; ?>> Attori di stazioni
 											</label>
 										</div>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="Caritas"> Caritas
+												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="Caritas" <?php if (in_array("Caritas", $chi_lo_invia_assistito_array)) echo 'checked="checked"'; ?>> Caritas
 											</label>
 										</div>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="Ufficio immigrazioni"> Ufficio immigrazioni
+												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="Ufficio immigrazioni" <?php if (in_array("Ufficio immigrazioni", $chi_lo_invia_assistito_array)) echo 'checked="checked"'; ?>> Ufficio immigrazioni
 											</label>
 										</div>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="Enti"> Enti/associazioni
+												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="Enti" <?php if (in_array("Enti", $chi_lo_invia_assistito_array)) echo 'checked="checked"'; ?>> Enti/associazioni
 											</label>
 										</div>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="Servizi sociali"> Servizi sociali
+												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="Servizi sociali" <?php if (in_array("Servizi sociali", $chi_lo_invia_assistito_array)) echo 'checked="checked"'; ?>> Servizi sociali
 											</label>
 										</div>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="Sert"> SERT
+												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="Sert" <?php if (in_array("Sert", $chi_lo_invia_assistito_array)) echo 'checked="checked"'; ?>> SERT
 											</label>
 										</div>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="Privati"> Privati cittadini
+												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="Privati" <?php if (in_array("Privati", $chi_lo_invia_assistito_array)) echo 'checked="checked"'; ?>> Privati cittadini
 											</label>
 										</div>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="Polfer"> Polfer
+												<input type="checkbox" class="flat" name="chi_lo_invia[]" value="Polfer" <?php if (in_array("Polfer", $chi_lo_invia_assistito_array)) echo 'checked="checked"'; ?>> Polfer
 											</label>
 										</div>
 									</div>
 
+									<br />
 									<span class="section">Alloggio</span>
 									<div class="item form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Dimora stabile </label>
 										<div class="col-md-6 col-sm-6 col-xs-12">
 											<p>
-												<input type="radio" class="flat" name="alloggio" id="dimora_stabile" value="Dimora stabile" checked="" />
+												<input type="radio" class="flat" name="alloggio" id="dimora_stabile" value="Dimora stabile" <?php if ($assistito["alloggio"]=="Dimora stabile") echo("checked");?> />
 											</p>
 										</div>
 									</div>
@@ -589,7 +600,7 @@ if ($page_mode=='VISUALIZZA_MODIFICA') {
 										<label class="control-label col-md-3 col-sm-3 col-xs-12">Centro accoglienza </label>
 										<div class="col-md-6 col-sm-6 col-xs-12">
 											<p>
-												<input type="radio" class="flat" name="alloggio" id="centro_accoglienza" value="Centro accoglienza" checked="" />
+												<input type="radio" class="flat" name="alloggio" id="centro_accoglienza" value="Centro accoglienza" <?php if ($assistito["alloggio"]=="Centro accoglienza") echo("checked");?> />
 											</p>
 										</div>
 									</div>
@@ -597,7 +608,7 @@ if ($page_mode=='VISUALIZZA_MODIFICA') {
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Casa occupata </label>
 										<div class="col-md-6 col-sm-6 col-xs-12">
 											<p>
-												<input type="radio" class="flat" name="alloggio" id="casa_occupata" value="Casa occupata" checked="" />
+												<input type="radio" class="flat" name="alloggio" id="casa_occupata" value="Casa occupata" <?php if ($assistito["alloggio"]=="Casa occupata") echo("checked");?> />
 											</p>
 										</div>
 									</div>
@@ -605,7 +616,7 @@ if ($page_mode=='VISUALIZZA_MODIFICA') {
 										<label class="control-label col-md-3 col-sm-3 col-xs-12">Stazione </label>
 										<div class="col-md-6 col-sm-6 col-xs-12">
 											<p>
-												<input type="radio" class="flat" name="alloggio" id="stazione" value="Stazione" checked="" />
+												<input type="radio" class="flat" name="alloggio" id="stazione" value="Stazione" <?php if ($assistito["alloggio"]=="Stazione") echo("checked");?> />
 											</p>
 										</div>
 									</div>
@@ -613,101 +624,107 @@ if ($page_mode=='VISUALIZZA_MODIFICA') {
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Strada</label>
 										<div class="col-md-6 col-sm-6 col-xs-12">
 											<p>
-												<input type="radio" class="flat" name="alloggio" id="strada" value="Strada" checked="" />
+												<input type="radio" class="flat" name="alloggio" id="strada" value="Strada" <?php if ($assistito["alloggio"]=="Strada") echo("checked");?> />
 											</p>
 										</div>
 									</div>
 
+									<br />
 									<span class="section">Lingue conosciute</span>
 									<div class="item form-group">
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="lingue[]" value="Inglese"> Inglese
+												<input type="checkbox" class="flat" name="lingue[]" value="Italiano" <?php if (in_array("Italiano", $lingue_assistito_array)) echo 'checked="checked"'; ?>> Italiano
 											</label>
 										</div>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="lingue[]" value="Francese"> Francese
+												<input type="checkbox" class="flat" name="lingue[]" value="Inglese" <?php if (in_array("Inglese", $lingue_assistito_array)) echo 'checked="checked"'; ?>> Inglese
 											</label>
 										</div>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="lingue[]" value="Spagnolo"> Spagnolo
+												<input type="checkbox" class="flat" name="lingue[]" value="Francese" <?php if (in_array("Francese", $lingue_assistito_array)) echo 'checked="checked"'; ?>> Francese
 											</label>
 										</div>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="lingue[]" value="Tedesco"> Tedesco
+												<input type="checkbox" class="flat" name="lingue[]" value="Spagnolo" <?php if (in_array("Spagnolo", $lingue_assistito_array)) echo 'checked="checked"'; ?>> Spagnolo
 											</label>
 										</div>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="lingue[]" value="Russo"> Russo
+												<input type="checkbox" class="flat" name="lingue[]" value="Tedesco" <?php if (in_array("Tedesco", $lingue_assistito_array)) echo 'checked="checked"'; ?>> Tedesco
 											</label>
 										</div>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="lingue[]" value="Arabo"> Arabo
+												<input type="checkbox" class="flat" name="lingue[]" value="Russo" <?php if (in_array("Russo", $lingue_assistito_array)) echo 'checked="checked"'; ?>> Russo
+											</label>
+										</div>
+										<div class="checkbox">
+											<label>
+												<input type="checkbox" class="flat" name="lingue[]" value="Arabo" <?php if (in_array("Arabo", $lingue_assistito_array)) echo 'checked="checked"'; ?>> Arabo
 											</label>
 										</div>
 										<div class="item form-group">
 											<label class="control-label col-md-3 col-sm-3 col-xs-12" for="lingua_madre">Lingua madre </label>
 											<div class="col-md-6 col-sm-6 col-xs-12">
-												<input id="lingua_madre" class="form-control col-md-7 col-xs-12" name="lingua_madre" type="text">
+												<input id="lingua_madre" class="form-control col-md-7 col-xs-12" name="lingua_madre" type="text" value="<?php echo $assistito["lingua_madre"];?>">
 											</div>
 										</div>
 									</div>
 
+									<br />
 									<span class="section">Vulnerabilità</span>
 									<div class="item form-group">
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="vulnerabilita[]" value="Disabilità fisica"> Disabilità fisica
+												<input type="checkbox" class="flat" name="vulnerabilita[]" value="Disabilità fisica" <?php if (in_array("Disabilità fisica", $vulnerabilita_assistito_array)) echo 'checked="checked"'; ?>> Disabilità fisica
 											</label>
 										</div>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="vulnerabilita[]" value="Disabilità psicologica"> Disabilità psicologica
+												<input type="checkbox" class="flat" name="vulnerabilita[]" value="Disabilità psicologica" <?php if (in_array("Disabilità psicologica", $vulnerabilita_assistito_array)) echo 'checked="checked"'; ?>> Disabilità psicologica
 											</label>
 										</div>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="vulnerabilita[]" value="Disagio abitativo"> Disagio abitativo
+												<input type="checkbox" class="flat" name="vulnerabilita[]" value="Disagio abitativo" <?php if (in_array("Disagio abitativo", $vulnerabilita_assistito_array)) echo 'checked="checked"'; ?>> Disagio abitativo
 											</label>
 										</div>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="vulnerabilita[]" value="Fragilità lavorativa"> Fragilità lavorativa
+												<input type="checkbox" class="flat" name="vulnerabilita[]" value="Fragilità lavorativa" <?php if (in_array("Fragilità lavorativa", $vulnerabilita_assistito_array)) echo 'checked="checked"'; ?>> Fragilità lavorativa
 											</label>
 										</div>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="vulnerabilita[]" value="Dipendenza droghe"> Dipendenza droghe
+												<input type="checkbox" class="flat" name="vulnerabilita[]" value="Dipendenza droghe" <?php if (in_array("Dipendenza droghe", $vulnerabilita_assistito_array)) echo 'checked="checked"'; ?>> Dipendenza droghe
 											</label>
 										</div>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="vulnerabilita[]" value="Dipendenza alcool"> Dipendenza alcool
+												<input type="checkbox" class="flat" name="vulnerabilita[]" value="Dipendenza alcool" <?php if (in_array("Dipendenza alcool", $vulnerabilita_assistito_array)) echo 'checked="checked"'; ?>> Dipendenza alcool
 											</label>
 										</div>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="vulnerabilita[]" value="Ex detenuto"> Ex detenuto
+												<input type="checkbox" class="flat" name="vulnerabilita[]" value="Ex detenuto" <?php if (in_array("Ex detenuto", $vulnerabilita_assistito_array)) echo 'checked="checked"'; ?>> Ex detenuto
 											</label>
 										</div>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="vulnerabilita[]" value="Rifugiato politico"> Rifugiato politico
+												<input type="checkbox" class="flat" name="vulnerabilita[]" value="Rifugiato politico" <?php if (in_array("Rifugiato politico", $vulnerabilita_assistito_array)) echo 'checked="checked"'; ?>> Rifugiato politico
 											</label>
 										</div>
 									</div>
-
+				  <br />
                   <span class="section">Richieste</span>
-                  aaaa<?php echo $richieste["richiesta_alloggio"];?>
                   <div class="item form-group">
                       <label class="control-label col-md-3 col-sm-3 col-xs-12" for="richiesta_alloggio">Richiesta di alloggio</label>
                       <div class="col-md-6 col-sm-6 col-xs-12">
-                          <textarea class="form-control col-md-7 col-xs-12" name="richiesta_alloggio" rows="3" >aaaa<?php echo $richieste["richiesta_alloggio"]; ?></textarea>
+                          <textarea class="form-control col-md-7 col-xs-12" name="richiesta_alloggio" rows="3" ><?php echo $richieste["richiesta_alloggio"]; ?></textarea>
                       </div>
                   </div>
 
@@ -753,72 +770,74 @@ if ($page_mode=='VISUALIZZA_MODIFICA') {
                       </div>
                   </div>
 
+				  <br />
 									<span class="section">Risposte indirette</span>
 									<div class="item form-group">
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="risposte_indirette[]" value="Caritas"> Caritas
+												<input type="checkbox" class="flat" name="risposte_indirette[]" value="Caritas" <?php if (in_array("Caritas", $risposte_indirette_assistito_array)) echo 'checked="checked"'; ?>> Caritas
 											</label>
 										</div>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="risposte_indirette[]" value="Politiche sociali"> Politiche sociali
+												<input type="checkbox" class="flat" name="risposte_indirette[]" value="Politiche sociali" <?php if (in_array("Politiche sociali", $risposte_indirette_assistito_array)) echo 'checked="checked"'; ?>> Politiche sociali
 											</label>
 										</div>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="risposte_indirette[]" value="SERT"> SERT
+												<input type="checkbox" class="flat" name="risposte_indirette[]" value="SERT" <?php if (in_array("SERT", $risposte_indirette_assistito_array)) echo 'checked="checked"'; ?>> SERT
 											</label>
 										</div>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="risposte_indirette[]" value="DSM"> DSM
+												<input type="checkbox" class="flat" name="risposte_indirette[]" value="DSM" <?php if (in_array("DSM", $risposte_indirette_assistito_array)) echo 'checked="checked"'; ?>> DSM
 											</label>
 										</div>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="risposte_indirette[]" value="Privati"> Privati
+												<input type="checkbox" class="flat" name="risposte_indirette[]" value="Privati" <?php if (in_array("Privati", $risposte_indirette_assistito_array)) echo 'checked="checked"'; ?>> Privati
 											</label>
 										</div>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="risposte_indirette[]" value="Associazioni"> Associazioni
+												<input type="checkbox" class="flat" name="risposte_indirette[]" value="Associazioni" <?php if (in_array("Associazioni", $risposte_indirette_assistito_array)) echo 'checked="checked"'; ?>> Associazioni
 											</label>
 										</div>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="risposte_indirette[]" value="Parrocchie"> Parrocchie
+												<input type="checkbox" class="flat" name="risposte_indirette[]" value="Parrocchie" <?php if (in_array("Parrocchie", $risposte_indirette_assistito_array)) echo 'checked="checked"'; ?>> Parrocchie
 											</label>
 										</div>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="risposte_indirette[]" value="Antoniano"> Antoniano
+												<input type="checkbox" class="flat" name="risposte_indirette[]" value="Antoniano" <?php if (in_array("Antoniano", $risposte_indirette_assistito_array)) echo 'checked="checked"'; ?>> Antoniano
 											</label>
 										</div>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="risposte_indirette[]" value="Padre Marella"> Padre Marella
+												<input type="checkbox" class="flat" name="risposte_indirette[]" value="Padre Marella" <?php if (in_array("Padre Marella", $risposte_indirette_assistito_array)) echo 'checked="checked"'; ?>> Padre Marella
 											</label>
 										</div>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="risposte_indirette[]" value="Suore M. Teresa di Calcutta"> Suore M. Teresa di Calcutta
+												<input type="checkbox" class="flat" name="risposte_indirette[]" value="Suore M. Teresa di Calcutta" <?php if (in_array("Suore M. Teresa di Calcutta", $risposte_indirette_assistito_array)) echo 'checked="checked"'; ?>> Suore M. Teresa di Calcutta
 											</label>
 										</div>
 										<div class="checkbox">
 											<label>
-												<input type="checkbox" class="flat" name="risposte_indirette[]" value="Giovanni XXIII"> Giovanni XXIII
+												<input type="checkbox" class="flat" name="risposte_indirette[]" value="Giovanni XXIII" <?php if (in_array("Giovanni XXIII", $risposte_indirette_assistito_array)) echo 'checked="checked"'; ?>> Giovanni XXIII
 											</label>
 										</div>
 									</div>
 
+									<br />
 									<span class="section">Situazione lavorativa</span>
 									<div class="item form-group">
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Ha lavorato </label>
 										<div class="col-md-6 col-sm-6 col-xs-12">
 											<p>
-												Si <input type="radio" class="flat" name="ha_lavorato" id="ha_lavorato_si" value="Si" checked="" />
-												No <input type="radio" class="flat" name="ha_lavorato" id="ha_lavorato_no" value="No" />
+												Si <input type="radio" class="flat" name="ha_lavorato" id="ha_lavorato_si" value=1 <?php if ($assistito["ha_lavorato"]==1) echo("checked");?> />
+												No <input type="radio" class="flat" name="ha_lavorato" id="ha_lavorato_no" value=0 <?php if ($assistito["ha_lavorato"]==0) echo("checked");?> />
 											</p>
 										</div>
 									</div>
@@ -826,12 +845,12 @@ if ($page_mode=='VISUALIZZA_MODIFICA') {
                                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Lavora </label>
 										<div class="col-md-6 col-sm-6 col-xs-12">
 											<p>
-												Si <input type="radio" class="flat" name="lavora" id="lavora_si" value="Si" checked="" />
-												No <input type="radio" class="flat" name="lavora" id="lavora_no" value="No" />
+												Si <input type="radio" class="flat" name="lavora" id="lavora_si" value=1 <?php if ($assistito["lavora"]==1) echo("checked");?> />
+												No <input type="radio" class="flat" name="lavora" id="lavora_no" value=0 <?php if ($assistito["lavora"]==0) echo("checked");?> />
 												<div class="item form-group">
 													<label class="control-label col-md-3 col-sm-3 col-xs-12" for="dove_lavora">Dove lavora </label>
 													<div class="col-md-6 col-sm-6 col-xs-12">
-														<input id="dove_lavora" class="form-control col-md-7 col-xs-12" name="dove_lavora" type="text">
+														<input id="dove_lavora" class="form-control col-md-7 col-xs-12" name="dove_lavora" type="text" value="<?php echo $assistito["dove_lavora"];?>"">
 													</div>
 												</div>
 											</p>
@@ -895,7 +914,7 @@ if ($page_mode=='VISUALIZZA_MODIFICA') {
 <!--
 <?php
 $assistiti = get_assistiti();
-print_r($assistiti);
+//print_r($assistiti);
 ?>
 -->
 
@@ -1034,7 +1053,27 @@ print_r($assistiti);
             }, function (start, end, label) {
                 console.log(start.toISOString(), end.toISOString(), label);
             });
-            $('#single_cal4').daterangepicker({
+            $('#data_nascita_calendar').daterangepicker({
+              locale: {
+                  format: 'DD/MM/YYYY',
+                  monthNames: ['Gennaio',
+                        'Febbraio',
+                        'Marzo',
+                        'Aprile',
+                        'Maggio',
+                        'Giugno',
+                        'Luglio',
+                        'Agosto',
+                        'Settembre',
+                        'Ottobre',
+                        'Novembre',
+                        'Dicembre'],
+                },
+                showDropdowns: true,
+                minDate: '01-01-1920',
+                maxDate: '31-12-2020',
+                startDate: '01-01-1950',
+                endDate: '01-01-1950',
                 singleDatePicker: true,
                 calender_style: "picker_4"
             }, function (start, end, label) {

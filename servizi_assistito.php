@@ -52,9 +52,9 @@ if (isset($_GET['id_assistito'])) {
                                         <li><a href="#"><i class="fa fa-close"></i></a>
                                         </li>
                                     </ul>
-
+									-->
                                     <div class="clearfix"></div>
-                                    -->
+
                                 </div>
 
                                 <div class="x_content">
@@ -80,13 +80,20 @@ if (isset($_GET['id_assistito'])) {
 													echo '<td class=" ">'.$a["tipo"].'</td>';
 													echo '<td class=" ">'.$a["cognome"]." ".$a["nome"].'</td>';
 													echo '<td class=" ">'.$a["data"].'</td>';
-													echo '<td class=" ">Dettagli</td>';
+													echo '<td class=" ">
+                            <a href="dettagli_servizio.php?id_servizio='.$a["id_servizio_erogato"].'" title="Dettagli servizio"><span class="glyphicon glyphicon-assistiti-actions glyphicon-file" aria-hidden="true"></span></a>&nbsp;
+                            </td>';
 													echo '</tr>';
 												}
 											?>
 										</tbody>
 
                                     </table>
+
+																		<br/><br/>
+																		<div style="text-align:center">
+																		<a href="servizio.php?id_assistito=<?php echo $id_assistito?>" class="btn btn-info" role="button">Aggiungi servizio</a>
+																		</div>
                                 </div>
                             </div>
                         </div>
@@ -153,14 +160,14 @@ if (isset($_GET['id_assistito'])) {
 
 <?php
 } else {
-?>	
+?>
 	<div class="right_col" role="main">
 		<div class="page-title">
 			<div class="title_left">
 				<h3>Nessun assistito selezionato</h3>
 			</div>
 		</div>
-	</div>		
+	</div>
 <?php
 }
 include "footer.php";

@@ -18,10 +18,21 @@ function inserisci_assistito($params) {
 	echo("inserisci_assistito - params=".print_r($params,true));
 
 	global $db,$config;
-	$date_pieces=split("/", $params['data_di_nascita']);
-	$new_date=$date_pieces[2]."-".$date_pieces[0]."-".$date_pieces[1];
+
+	$data_nascita = $params['data_di_nascita'];
+	if ($data_nascita!="") {
+		$data_nascita_formatted = convertDate($data_nascita);
+		$data_nascita_sql="'".$data_nascita_formatted."'";
+	}
+	else {
+		$data_nascita_sql="NULL";
+	}
+	//echo("data_nascita_sql=".$data_nascita_sql);
+
+	//$date_pieces=split("/", $params['data_di_nascita']);
+	//$new_date=$date_pieces[2]."-".$date_pieces[0]."-".$date_pieces[1];
     $sql='insert into assistiti (`id`, `valid`, `data_creazione`, `nome`, `cognome`, `data_di_nascita`, `luogo_di_nascita`, `sesso`, `id_nazionalita`, `cellulare`, `stato_civile`, `citta_residenza`, `via_residenza`, `numero_residenza`, `nazione_residenza`, `alloggio`, `lingua_madre`, `ha_lavorato`, `lavora`, `dove_lavora`)
-	VALUES ("", 1,now(),"'.$params["nome"].'", "'.$params["cognome"].'", "'.$new_date.'", "'.$params["luogo_di_nascita"].'", "'.$params["sesso"].'", "'.$params["nazionalita"].'", "'.$params["cellulare"].'", "'.$params["stato_civile"].'", "'.$params["citta_residenza"].'", "'.$params["via_residenza"].'", "'.$params["numero_residenza"].'", "'.$params["nazione_residenza"].'", "'.$params["alloggio"].'", "'.$params["lingua_madre"].'", "'.$params["ha_lavorato"].'", "'.$params["lavora"].'", "'.$params["dove_lavora"].'")';
+	VALUES ("", 1,now(),"'.$params["nome"].'", "'.$params["cognome"].'", '.$data_nascita_sql.', "'.$params["luogo_di_nascita"].'", "'.$params["sesso"].'", "'.$params["nazionalita"].'", "'.$params["cellulare"].'", "'.$params["stato_civile"].'", "'.$params["citta_residenza"].'", "'.$params["via_residenza"].'", "'.$params["numero_residenza"].'", "'.$params["nazione_residenza"].'", "'.$params["alloggio"].'", "'.$params["lingua_madre"].'", "'.$params["ha_lavorato"].'", "'.$params["lavora"].'", "'.$params["dove_lavora"].'")';
     echo $sql;
 	$res=mysql_query($sql);
 
@@ -37,6 +48,7 @@ function inserisci_assistito($params) {
 		$res3=mysql_query($sql3);
 	}
 
+ /*
 	foreach ($params['documenti'] as $doc) {
 
 		if ($doc=="altro") {
@@ -46,8 +58,21 @@ function inserisci_assistito($params) {
 			$tipo_doc = $doc;
 		}
 
-		$data_rilascio_pieces=split("/", $params["rilascio_".$doc]);
-		$data_rilascio_formatted=$data_rilascio_pieces[2]."-".$data_rilascio_pieces[0]."-".$data_rilascio_pieces[1];
+		$data_rilascio = $params["rilascio_".$doc];
+		$data_rilascio_formatted=NULL;
+		$data_rilascio_pieces=split("/", $data_rilascio);
+		echo "data_rilascio: ".$data_rilascio;
+		if ($data_rilascio=="") {
+			echo "data_rilascio_1";
+		} else if ($data_rilascio=='') {
+			echo "data_rilascio_2";
+		} else if ($data_rilascio==NULL) {
+			echo "data_rilascio_3";
+		}
+		if ($data_rilascio!="") {
+			$data_rilascio_formatted=$data_rilascio_pieces[2]."-".$data_rilascio_pieces[0]."-".$data_rilascio_pieces[1];
+		}
+
 
 		$data_scadenza_pieces=split("/", $params["scadenza_".$doc]);
 		$data_scadenza_formatted=$data_scadenza_pieces[2]."-".$data_scadenza_pieces[0]."-".$data_scadenza_pieces[1];
@@ -58,6 +83,8 @@ function inserisci_assistito($params) {
 		echo "<br>".$sql4;
 		$res4=mysql_query($sql4);
 	}
+	*/
+	modifica_documenti_assistito($params,$id_assistito);
 
 	foreach ($params['lingue'] as $lingua) {
 		$sql5="insert into lingue VALUES ('', ".$id_assistito.", '".$lingua."')";
@@ -77,6 +104,7 @@ function inserisci_assistito($params) {
 		$res7=mysql_query($sql7);
 	}
 
+	/*
 	foreach ($params as $key => $value) {
 		if (substr($key, 0, -1)=="anno_nascita_" && $value!="") {
 			$number=substr($key, -1);
@@ -86,9 +114,10 @@ function inserisci_assistito($params) {
 			$res8=mysql_query($sql8);
 		}
 	}
+	*/
+	modifica_familiari_assistito($params,$id_assistito);
 
 	$sql="insert into richieste (`id`, `id_assistito`, `richiesta_alloggio`,`richiesta_primari`,`richiesta_lavoro`,`richiesta_beni_servizi`,`richiesta_contatti_servizi`,`richiesta_burocratica`,`richiesta_sanitaria`) VALUES ('', ".$id_assistito.", '".$params["richiesta_alloggio"]."','".$params["richiesta_primari"]."','".$params["richiesta_lavoro"]."','".$params["richiesta_beni_servizi"]."','".$params["richiesta_contatti_servizi"]."','".$params["richiesta_burocratica"]."','".$params["richiesta_sanitaria"]."')";
-	echo "<br>".$sql;
 	$res9=mysql_query($sql);
 
     return $id_assistito;
@@ -99,9 +128,14 @@ function modifica_assistito($params) {
 
 	echo("modifica_assistito - params=".print_r($params,true));
 
-  modifica_dati_anagrafici_assistito($params);
-	modifica_familiari_assistito($params);
-	modifica_documenti_assistito($params);
+    modifica_dati_anagrafici_assistito($params);
+	modifica_familiari_assistito($params,NULL);
+	modifica_documenti_assistito($params,NULL);
+	modifica_chi_lo_invia_assistito($params);
+	modifica_lingue_assistito($params);
+	modifica_vulnerabilita_assistito($params);
+	modifica_risposte_indirette_assistito($params);
+	modifica_richieste_assistito($params);
 }
 
 
@@ -109,17 +143,31 @@ function modifica_assistito($params) {
 function modifica_dati_anagrafici_assistito($params) {
 
 	global $db,$config;
-	$date_pieces=split("/", $params['data_di_nascita']);
-	$new_date=$date_pieces[2]."-".$date_pieces[0]."-".$date_pieces[1];
-  $sql='update assistiti set `data_modifica`=now(), `nome`="'.$params["nome"].'", `cognome`="'.$params["cognome"].'", `data_di_nascita`="'.$params["data_di_nascita"].'", `luogo_di_nascita`="'.$params["luogo_di_nascita"].'", `sesso`="'.$params["sesso"].'", `id_nazionalita`="'.$params["nazionalita"].'", `cellulare`="'.$params["cellulare"].'", `stato_civile`="'.$params["stato_civile"].'", `citta_residenza`="'.$params["citta_residenza"].'", `via_residenza`="'.$params["via_residenza"].'", `numero_residenza`="'.$params["numero_residenza"].'", `nazione_residenza`="'.$params["nazione_residenza"].'", `alloggio`="'.$params["alloggio"].'", `lingua_madre`="'.$params["lingua_madre"].'", `ha_lavorato`="'.$params["ha_lavorato"].'" where id='.$params["id_assistito"];
+
+	$data_nascita = $params['data_di_nascita'];
+	if ($data_nascita!="") {
+		//$data_nascita_formatted = convertDate($data_nascita);
+		$data_nascita_sql="'".$data_nascita."'";
+	}
+	else {
+		$data_nascita_sql="NULL";
+	}
+	echo("data_nascita_sql=".$data_nascita_sql);
+  $sql='update assistiti set `data_modifica`=now(), `nome`="'.$params["nome"].'", `cognome`="'.$params["cognome"].'", `data_di_nascita`='.$data_nascita_sql.', `luogo_di_nascita`="'.$params["luogo_di_nascita"].'", `sesso`="'.$params["sesso"].'", `id_nazionalita`="'.$params["nazionalita"].'", `cellulare`="'.$params["cellulare"].'", `stato_civile`="'.$params["stato_civile"].'", `citta_residenza`="'.$params["citta_residenza"].'", `via_residenza`="'.$params["via_residenza"].'", `numero_residenza`="'.$params["numero_residenza"].'", `nazione_residenza`="'.$params["nazione_residenza"].'", `alloggio`="'.$params["alloggio"].'", `lingua_madre`="'.$params["lingua_madre"].'", `ha_lavorato`='.$params["ha_lavorato"].', `lavora`='.$params["lavora"].', `dove_lavora`="'.$params["dove_lavora"].'" where id='.$params["id_assistito"];
   echo $sql;
 	$res=mysql_query($sql);
 }
 
-function modifica_familiari_assistito($params) {
+function modifica_familiari_assistito($params,$id_assistito) {
 
 	global $db,$config;
   echo "familiari:"."\r\n";
+
+	//quando chiamiamo questa funzione in caso di inserimento assistito id_assistito non è fra i parametri http, in caso di modifica assistito si.
+	if ($id_assistito==NULL) {
+		$id_assistito = $params["id_assistito"];
+	}
+
 	$familiare_index = 0;
 	foreach ($params as $key => $value) {
 
@@ -132,10 +180,18 @@ function modifica_familiari_assistito($params) {
 			$rimuovi_key="familiare_".$familiare_index."_rimuovi";
 			echo "familiare_pk=".$params[$familiare_pk]." anno_nascita=".$params[$anno_nascita_key]." parentela=".$params[$parentela_key]."\n";
 
+			$anno_nascita = $params[$anno_nascita_key];
+			if ($anno_nascita!="") {
+				$anno_nascita_sql="'".$anno_nascita."'";
+			}
+			else {
+				$anno_nascita_sql = "NULL";
+			}
+
 			if ($params[$familiare_pk]=="") {
 				//insert
 				if ( ($params[$anno_nascita_key]!="") OR ($params[$parentela_key]!="") ) {
-					$sql="insert into familiari (`id`, `id_capofamiglia`, `anno_di_nascita`, `parentela`) VALUES ('', ".$params["id_assistito"].", ".$params[$anno_nascita_key].", '".$params[$parentela_key]."')";
+					$sql="insert into familiari (`id`, `id_capofamiglia`, `anno_di_nascita`, `parentela`) VALUES ('', ".$id_assistito.", ".$anno_nascita_sql.", '".$params[$parentela_key]."')";
 					echo $sql;
 					mysql_query($sql);
 				}
@@ -149,7 +205,7 @@ function modifica_familiari_assistito($params) {
 					mysql_query($sql);
 				} else {
 					//update
-					$sql='update familiari set `id_capofamiglia`="'.$params["id_assistito"].'", `anno_di_nascita`="'.$params[$anno_nascita_key].'", `parentela`="'.$params[$parentela_key].'" where id='.$params[$familiare_pk];
+					$sql='update familiari set `id_capofamiglia`="'.$params["id_assistito"].'", `anno_di_nascita`='.$anno_nascita_sql.', `parentela`="'.$params[$parentela_key].'" where id='.$params[$familiare_pk];
 					//$sql="update familiari (`id`, `id_capofamiglia`, `anno_di_nascita`, `parentela`) VALUES ('', ".$id_assistito.", ".$params[$anno_nascita_key].", '".$params[$parentela_key].'" where id='.$params["id_assistito"];
 					echo $sql;
 					mysql_query($sql);
@@ -163,11 +219,16 @@ function modifica_familiari_assistito($params) {
 }
 
 
-function modifica_documenti_assistito($params) {
+function modifica_documenti_assistito($params, $id_assistito) {
 
 	global $db,$config;
   echo "documenti:"."\r\n";
 	$documento_index = 0;
+
+	//quando chiamiamo questa funzione in caso di inserimento assistito id_assistito non è fra i parametri http, in caso di modifica assistito si.
+	if ($id_assistito==NULL) {
+		$id_assistito = $params["id_assistito"];
+	}
 	foreach ($params as $key => $value) {
 
 		if (substr($key, 0, 10)=="documento_") {
@@ -182,22 +243,31 @@ function modifica_documenti_assistito($params) {
 			$rimuovi_key="documento_".$documento_index."_rimuovi";
 			echo "documento_pk=".$params[$documento_pk]." numero=".$params[$numero_key]." rilascio=".$params[$rilascio_key]." scadenza=".$params[$scadenza_key]." fotocopia=".$params[$fotocopia_key]." numero=".$params[$numero_key]."\n";
 
-			$data_rilascio_formatted=NULL;
+			$data_rilascio = $params[$rilascio_key];
+
 			if ($params[$rilascio_key]!="") {
 				$data_rilascio_pieces=split("/", $params[$rilascio_key]);
 				$data_rilascio_formatted=$data_rilascio_pieces[2]."-".$data_rilascio_pieces[0]."-".$data_rilascio_pieces[1];
+				$data_rilascio_sql="'".$data_rilascio_formatted."'";
+			}
+			else {
+				$data_rilascio_sql="NULL";
 			}
 
-			$data_scadenza_formatted=NULL;
+
 			if ($params[$scadenza_key]!="") {
 				$data_scadenza_pieces=split("/", $params[$scadenza_key]);
 				$data_scadenza_formatted=$data_scadenza_pieces[2]."-".$data_scadenza_pieces[0]."-".$data_scadenza_pieces[1];
+				$data_scadenza_sql="'".$data_scadenza_formatted."'";
+			}
+			else {
+				$data_scadenza_sql="NULL";
 			}
 
 			if ($params[$documento_pk]=="") {
 				//insert
 				if ( ($params[$tipodoc_key]!="") OR ($params[$numero_key]!="") OR ($params[$rilascio_key]!="") OR ($params[$scadenza_key]!="") OR ($params[$fotocopia_key]!="") ) {
-					$sql="insert into DOCUMENTI_ASSISTITO (`id`, `id_assistito`, `tipo_doc`,`numero_doc`,`data_rilascio_doc`,`data_scadenza_doc`,`fotocopia`) VALUES ('', ".$params["id_assistito"].", '".$params[$tipodoc_key]."', '".$params[$numero_key]."', '".$data_rilascio_formatted."', '".$data_scadenza_formatted."', '".$params[$fotocopia_key]."')";
+					$sql="insert into DOCUMENTI_ASSISTITO (`id`, `id_assistito`, `tipo_doc`,`numero_doc`,`data_rilascio_doc`,`data_scadenza_doc`,`fotocopia`) VALUES ('', ".$id_assistito.", '".$params[$tipodoc_key]."', '".$params[$numero_key]."', ".$data_rilascio_sql.", ".$data_scadenza_sql.", '".$params[$fotocopia_key]."')";
 					echo $sql;
 					mysql_query($sql);
 				}
@@ -211,7 +281,7 @@ function modifica_documenti_assistito($params) {
 					mysql_query($sql);
 				} else {
 					//update
-					$sql='update DOCUMENTI_ASSISTITO set `tipo_doc`="'.$params[$tipodoc_key].'", `numero_doc`="'.$params[$numero_key].'", `data_rilascio_doc`="'.$data_rilascio_formatted.'", `data_scadenza_doc`="'.$data_scadenza_formatted.'", `fotocopia`="'.$params[$fotocopia_key].'" where id='.$params[$documento_pk];
+					$sql='update DOCUMENTI_ASSISTITO set `tipo_doc`="'.$params[$tipodoc_key].'", `numero_doc`="'.$params[$numero_key].'", `data_rilascio_doc`='.$data_rilascio_sql.', `data_scadenza_doc`='.$data_scadenza_formatted.', `fotocopia`="'.$params[$fotocopia_key].'" where id='.$params[$documento_pk];
 					echo $sql;
 					mysql_query($sql);
 				}
@@ -223,14 +293,125 @@ function modifica_documenti_assistito($params) {
 
 }
 
+
+function modifica_chi_lo_invia_assistito($params) {
+	global $db,$config;
+
+	$sql="SELECT * FROM inviato where id_assistito=".$params['id_assistito'];
+	$res=mysql_query($sql) or die(mysql_error());
+	while($r=mysql_fetch_assoc($res)) {
+			$inviati[]=$r;
+	}
+	$chi_lo_invia_assistito_array = get_chi_lo_invia_assistito($params['id_assistito']);
+	foreach ($params['chi_lo_invia'] as $chi) {
+		if (!in_array($chi, $chi_lo_invia_assistito_array)) {
+			$sql2="insert into inviato (`id`, `id_assistito`, `chi`) VALUES ('', ".$params['id_assistito'].", '".$chi."')";
+			$res=mysql_query($sql2);
+		}
+	}
+	foreach ($inviati as $inviato) {
+		if (!in_array($inviato['chi'], $params['chi_lo_invia'])) {
+			$sql3="delete from inviato where id=".$inviato['id'];
+			$res=mysql_query($sql3);
+		}
+	}
+}
+
+function modifica_lingue_assistito($params) {
+	global $db,$config;
+
+	$sql="SELECT * FROM lingue where id_assistito=".$params['id_assistito'];
+	$res=mysql_query($sql) or die(mysql_error());
+	while($r=mysql_fetch_assoc($res)) {
+			$lingue[]=$r;
+	}
+	$lingue_assistito_array = get_lingue_assistito($params['id_assistito']);
+	foreach ($params['lingue'] as $lingua) {
+		if (!in_array($lingua, $lingue_assistito_array)) {
+			$sql2="insert into lingue (`id`, `id_assistito`, `lingua`) VALUES ('', ".$params['id_assistito'].", '".$lingua."')";
+			$res=mysql_query($sql2);
+		}
+	}
+	foreach ($lingue as $lingua) {
+		if (!in_array($lingua['lingua'], $params['lingue'])) {
+			$sql3="delete from lingue where id=".$lingua['id'];
+			$res=mysql_query($sql3);
+		}
+	}
+}
+
+function modifica_vulnerabilita_assistito($params) {
+	global $db,$config;
+
+	$sql="SELECT * FROM vulnerabilita where id_assistito=".$params['id_assistito'];
+	$res=mysql_query($sql) or die(mysql_error());
+	while($r=mysql_fetch_assoc($res)) {
+			$vulnerabilitas[]=$r;
+	}
+	$vulnerabilita_assistito_array = get_vulnerabilita_assistito($params['id_assistito']);
+	foreach ($params['vulnerabilita'] as $vulnerabilita) {
+		if (!in_array($vulnerabilita, $vulnerabilita_assistito_array)) {
+			$sql2="insert into vulnerabilita (`id`, `id_assistito`, `vulnerabilita`) VALUES ('', ".$params['id_assistito'].", '".$vulnerabilita."')";
+			$res=mysql_query($sql2);
+		}
+	}
+	foreach ($vulnerabilitas as $vuln) {
+		if (!in_array($vuln['vulnerabilita'], $params['vulnerabilita'])) {
+			$sql3="delete from vulnerabilita where id=".$vuln['id'];
+			$res=mysql_query($sql3);
+		}
+	}
+}
+
+function modifica_risposte_indirette_assistito($params) {
+	global $db,$config;
+
+	$sql="SELECT * FROM risposte_indirette where id_assistito=".$params['id_assistito'];
+	$res=mysql_query($sql) or die(mysql_error());
+	while($r=mysql_fetch_assoc($res)) {
+			$risposte_indirette[]=$r;
+	}
+	$risposte_indirette_assistito_array = get_risposte_indirette_assistito($params['id_assistito']);
+	foreach ($params['risposte_indirette'] as $risposta) {
+		if (!in_array($risposta, $risposte_indirette_assistito_array)) {
+			$sql2="insert into risposte_indirette (`id`, `id_assistito`, `risposta`) VALUES ('', ".$params['id_assistito'].", '".$risposta."')";
+			$res=mysql_query($sql2);
+		}
+	}
+	foreach ($risposte_indirette as $risposta) {
+		if (!in_array($risposta['risposta'], $params['risposte_indirette'])) {
+			$sql3="delete from risposte_indirette where id=".$risposta['id'];
+			$res=mysql_query($sql3);
+		}
+	}
+}
+
+
+function modifica_richieste_assistito($params) {
+	global $db,$config;
+
+	$richieste = get_richieste($params['id_assistito']);
+	echo "RICHIESTE   ";
+	print_r($richieste);
+	if (sizeof($richieste)==0) {
+		$sql="insert into richieste (`id`, `id_assistito`, `richiesta_alloggio`,`richiesta_primari`,`richiesta_lavoro`,`richiesta_beni_servizi`,`richiesta_contatti_servizi`,`richiesta_burocratica`,`richiesta_sanitaria`) VALUES ('', ".$params["id_assistito"].", '".$params["richiesta_alloggio"]."','".$params["richiesta_primari"]."','".$params["richiesta_lavoro"]."','".$params["richiesta_beni_servizi"]."','".$params["richiesta_contatti_servizi"]."','".$params["richiesta_burocratica"]."','".$params["richiesta_sanitaria"]."')";
+		$res=mysql_query($sql);
+	} else {
+		$sql2="update richieste set richiesta_alloggio='".$params["richiesta_alloggio"]."', richiesta_primari='".$params["richiesta_primari"]."', richiesta_lavoro='".$params["richiesta_lavoro"]."', richiesta_beni_servizi='".$params["richiesta_beni_servizi"]."', richiesta_contatti_servizi='".$params["richiesta_contatti_servizi"]."', richiesta_burocratica='".$params["richiesta_burocratica"]."', richiesta_sanitaria='".$params["richiesta_sanitaria"]."' where id_assistito=".$params["id_assistito"];
+		echo $sql2;
+		$res=mysql_query($sql2);
+	}
+}
+
+
 function get_servizi() {
 	global $db,$config;
 	$result = array();
 
 	$sql="SELECT cat_servizi.nome AS tipo, servizi_erogati.data, servizi_erogati.id as id_servizio_erogato, assistiti.nome AS nome, assistiti.cognome, assistiti.id as id_assistito
-FROM cat_servizi
-JOIN servizi_erogati ON cat_servizi.id = servizi_erogati.id_servizio
-JOIN assistiti ON servizi_erogati.id_assistito = assistiti.id where servizi_erogati.valid=1 order by data desc, tipo";
+					FROM cat_servizi
+					JOIN servizi_erogati ON cat_servizi.id = servizi_erogati.id_servizio
+					JOIN assistiti ON servizi_erogati.id_assistito = assistiti.id where servizi_erogati.valid=1 and assistiti.valid=1 order by data desc, tipo";
 	$res=mysql_query($sql) or die(mysql_error());
 	while($r=mysql_fetch_assoc($res)) {
 			$result[]=$r;
@@ -278,7 +459,7 @@ function get_assistito($id) {
 	global $db,$config;
 	$result = array();
 
-	$sql="SELECT a.*, n.nome as nome_nazionalita FROM assistiti a INNER JOIN elenco_nazioni n ON n.id = a.id_nazionalita where a.id=".$id." and a.valid=1";
+	$sql="SELECT a.*, n.nome as nome_nazionalita FROM assistiti a LEFT OUTER JOIN elenco_nazioni n ON n.id = a.id_nazionalita where a.id=".$id." and a.valid=1";
 	$res=mysql_query($sql);
 	while($r=mysql_fetch_assoc($res)) {
 			$result=$r;
@@ -306,10 +487,10 @@ function get_lingue_assistito($id_assistito) {
 		global $db,$config;
 		$result = array();
 
-		$sql="SELECT * FROM lingue where id_assistito=".$id_assistito;
+		$sql="SELECT lingua FROM lingue where id_assistito=".$id_assistito;
 		$res=mysql_query($sql);
 		while($r=mysql_fetch_assoc($res)) {
-				$result[]=$r;
+				$result[]=$r['lingua'];
 		}
 
 	return $result;
@@ -320,10 +501,10 @@ function get_vulnerabilita_assistito($id_assistito) {
 		global $db,$config;
 		$result = array();
 
-		$sql="SELECT * FROM vulnerabilita where id_assistito=".$id_assistito;
+		$sql="SELECT vulnerabilita FROM vulnerabilita where id_assistito=".$id_assistito;
 		$res=mysql_query($sql);
 		while($r=mysql_fetch_assoc($res)) {
-				$result[]=$r;
+				$result[]=$r['vulnerabilita'];
 		}
 
 	return $result;
@@ -334,10 +515,10 @@ function get_risposte_indirette_assistito($id_assistito) {
 		global $db,$config;
 		$result = array();
 
-		$sql="SELECT * FROM risposte_indirette where id_assistito=".$id_assistito;
+		$sql="SELECT risposta FROM risposte_indirette where id_assistito=".$id_assistito;
 		$res=mysql_query($sql);
 		while($r=mysql_fetch_assoc($res)) {
-				$result[]=$r;
+				$result[]=$r['risposta'];
 		}
 
 	return $result;
@@ -348,10 +529,10 @@ function get_chi_lo_invia_assistito($id_assistito) {
 	global $db,$config;
 	$result = array();
 
-	$sql="SELECT * FROM inviato where id_assistito=".$id_assistito;
+	$sql="SELECT chi FROM inviato where id_assistito=".$id_assistito;
 	$res=mysql_query($sql);
 	while($r=mysql_fetch_assoc($res)) {
-			$result[]=$r;
+			$result[]=$r['chi'];
 	}
 
 	return $result;
@@ -400,7 +581,7 @@ function delete_ritiro($id_assistito,$mese,$anno) {
 function inserisci_ritiro($id_assistito,$mese,$anno) {
 	global $db,$config;
 	$result = array();
-	$sql="INSERT INTO banco_alimentare VALUES ('', ".$id_assistito.", ".$anno.", ".$mese.")";
+	$sql="INSERT INTO banco_alimentare VALUES ('', ".$id_assistito.", ".$anno.", ".$mese.",1)";
 
 	$res=mysql_query($sql);
 }
@@ -436,7 +617,7 @@ function get_scuole($anno) {
 	global $db,$config;
 	$result = array();
 
-	$sql="SELECT * FROM scuole where anno=".$anno;
+	$sql="SELECT * FROM scuole where valid=1 and anno=".$anno;
 	$res=mysql_query($sql);
 	while($r=mysql_fetch_array($res)) {
 			$result[]=$r;
@@ -466,7 +647,7 @@ function modifica_scuole($params) {
 			if ($params[$familiare_pk]=="") {
 				//insert
 				if ( ($params[$nazionalita_key]!="0") AND ($params[$numero_key]!="") ) {
-					$sql="insert into scuole (`id`, `anno`, `id_nazionalita`, `sesso`, `numero`) VALUES ('', ".$params["anno"].", ".$params[$nazionalita_key].", '".$params[$sesso_key]."', ".$params[$numero_key].")";
+					$sql="insert into scuole (`id`, `anno`, `id_nazionalita`, `sesso`, `numero`, `valid`) VALUES ('', ".$params["anno"].", ".$params[$nazionalita_key].", '".$params[$sesso_key]."', ".$params[$numero_key].",1)";
 					echo $sql;
 					mysql_query($sql);
 				}
@@ -529,7 +710,7 @@ function get_stat_banco_alimentare($anno) {
 	global $db,$config;
 	$result = array();
 
-	$sql="SELECT mese, count(*) as pacchi FROM banco_alimentare where anno=".$anno." group by mese";
+	$sql="SELECT mese, count(*) as pacchi FROM banco_alimentare where banco_alimentare.valid=1 and anno=".$anno." group by mese";
 	$res=mysql_query($sql) or die(mysql_error());
 	while($r=mysql_fetch_assoc($res)) {
 			$result[]=$r;
@@ -543,7 +724,11 @@ function get_stat_scuole($anno) {
 	global $db,$config;
 	$result = array();
 
-	$sql="SELECT sesso, numero, elenco_nazioni.nome as nazione, continenti.nome as continente FROM scuole join elenco_nazioni on id_nazionalita=elenco_nazioni.id join continenti on elenco_nazioni.id_continente=continenti.id where anno=".$anno;
+	$sql="SELECT sesso, numero, elenco_nazioni.nome as nazione, continenti.nome as continente
+		FROM scuole
+			join elenco_nazioni on id_nazionalita=elenco_nazioni.id
+			join continenti on elenco_nazioni.id_continente=continenti.id
+		WHERE scuole.valid=1 and anno=".$anno." order by continente, nazione";
 	$res=mysql_query($sql) or die(mysql_error());
 	while($r=mysql_fetch_assoc($res)) {
 			$result[]=$r;
@@ -560,10 +745,16 @@ function get_richieste($id_assistito) {
  $sql="SELECT * FROM richieste where id_assistito=".$id_assistito;
  $res=mysql_query($sql);
  while($r=mysql_fetch_assoc($res)) {
-   $result[]=$r;
+   $result=$r;
  }
  return $result;
 }
 
+//converte date da formato GG/MM/AAAA a formato AAAA-YY-GG
+function convertDate($date) {
+	$data_pieces=split("/", $date);
+	$data_formatted=$data_pieces[2]."-".$data_pieces[0]."-".$data_pieces[1];
+  return $data_formatted;
+}
 
 ?>

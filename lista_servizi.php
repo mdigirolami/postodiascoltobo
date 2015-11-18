@@ -51,7 +51,7 @@ $servizi = get_servizi();
                                     </ul>
 									-->
                                     <div class="clearfix"></div>
-                                    
+
                                 </div>
 
                                 <div class="x_content">

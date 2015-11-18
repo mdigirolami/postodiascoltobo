@@ -6,14 +6,16 @@ include "header.php";
 include "menu.php";
 include "top_nav.php";
 
-$assistiti = get_assistiti();
+$anno = (isset($_GET['anno']) ? $_GET['anno'] : date('Y'));
+$stat_banco_alimentare = get_stat_banco_alimentare($anno);
+$nome_mese=array("Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre");
 ?>
 
 <!-- page content -->
             <div class="right_col" role="main">
 				<div class="page-title">
 					<div class="title_left">
-						<h3>Gestisci assistiti</h3>
+						<h3>Statistiche banco alimentare</h3>
 					</div>
           <!--
 					<div class="title_right">
@@ -30,9 +32,17 @@ $assistiti = get_assistiti();
 
 					<div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="x_panel">
+
                                 <div class="x_title">
-                                    <br/>
-                                    <h2>Assistiti attualmente serviti</h2>
+                                    <h2>Distribuzione pacchi per mese<small>(visualizza dati dell'anno 
+									<select name="anno" id="anno">
+										<?php
+											$earliest_year=2014;
+											foreach(range(date('Y'), $earliest_year) as $year) {
+												echo '<option value="'.$year.'" '.($year == $anno ? " selected=selected" : "").'>'.$year.'</option>';
+											}	
+										?>
+									</select>)</small></h2>
                                     <!--
                                     <ul class="nav navbar-right panel_toolbox">
                                         <li><a href="#"><i class="fa fa-chevron-up"></i></a>
@@ -49,51 +59,32 @@ $assistiti = get_assistiti();
                                         <li><a href="#"><i class="fa fa-close"></i></a>
                                         </li>
                                     </ul>
-                                    -->
+									-->
                                     <div class="clearfix"></div>
-
+                                    
                                 </div>
 
                                 <div class="x_content">
-                                    <table id="example" class="table table-striped responsive-utilities jambo_table">
-                                        <thead>
-                                            <tr class="headings">
-                                                <th>
-                                                    <input type="checkbox" class="tableflat">
-                                                </th>
-                                                <th>Nome</th>
-                                                <th>Cognome</th>
-                                                <th>Nazione</th>
-                                                <th>Cellulare</th>
-                                                <th>Nucleo familiare</th>
-                                                <th class="no-link last" data-sortable="true"><span class="nobr">Azione</span></th>
-                                            </tr>
-                                        </thead>
+								
 
-                                        <tbody>
-										    <?php
-												foreach ($assistiti as $a) {
-													$familiari = get_familiari_assistito($a["id"]);
-													$nucleo = (sizeof($familiari)==0) ? '1 persona' : (sizeof($familiari)+1).' persone';
-													echo '<tr class="even pointer">';
-													echo '<td class="a-center "><input type="checkbox" class="tableflat"></td>';
-													echo '<td class=" ">'.$a["nome"].'</td>';
-													echo '<td class=" ">'.$a["cognome"].'</td>';
-													echo '<td class=" ">'.$a["nazione"].'</td>';
-													echo '<td class=" ">'.$a["cellulare"].'</td>';
-													echo '<td class=" ">'.$nucleo.'</td>';
-													echo '<td class=" ">
-                            <a href="visualizza_assistito.php?id_assistito='.$a["id"].'" title="Visualizza assistito"><span class="glyphicon glyphicon-assistiti-actions glyphicon-file" aria-hidden="true"></span></a>&nbsp;
-                            <a href="assistito.php?id_assistito='.$a["id"].'" title="Gestisci assistito"><span class="glyphicon glyphicon-assistiti-actions glyphicon-pencil" aria-hidden="true"></span></a>&nbsp;
-                            <a href="servizi_assistito.php?id_assistito='.$a["id"].'" title="Servizi assistito"><span class="glyphicon glyphicon-assistiti-actions glyphicon-edit" aria-hidden="true"></span></a>&nbsp;
-                            <a href="rimuovi_assistito.php?id_assistito='.$a["id"].'" title="Rimuovi assistito" onclick="return confirm(\'Si sta per rimuovere l\\\'assistito '.$a["cognome"].' '.$a["nome"].'. I relativi dati non saranno più disponibili. Proseguire?\');"><span class="glyphicon glyphicon-assistiti-actions glyphicon-remove-circle" aria-hidden="true"></span></a>
-                            </td>';
-													echo '</tr>';
-												}
-											?>
-										</tbody>
-
-                                    </table>
+                                    <table class="table table-striped responsive-utilities jambo_table">
+										<thead>
+												<tr class="headings">
+														<th>Mese</th>
+														<th>Pacchi consegnati</th>
+												</tr>
+										</thead>
+									  <tbody>
+									<?php
+									foreach ($stat_banco_alimentare as $stat) {
+										echo '<tr class="even pointer">';
+										echo '<td class=" ">'.$nome_mese[$stat["mese"]-1].'</td>';
+										echo '<td class=" ">'.$stat["pacchi"].'</td>';
+										echo '</tr>';
+									}
+									?>
+									   </tbody>
+								    </table>
                                 </div>
                             </div>
                         </div>
@@ -111,6 +102,10 @@ $assistiti = get_assistiti();
         <!--<script src="js/datatables/tools/js/dataTables.tableTools.js"></script>-->
         <script>
             $(document).ready(function () {
+				$('#anno').change(function() {
+					window.location = "stat_banco_alimentare.php?anno=" + $(this).val();
+				});
+				
                 $('input.tableflat').iCheck({
                     checkboxClass: 'icheckbox_flat-green',
                     radioClass: 'iradio_flat-green'
@@ -157,6 +152,7 @@ $assistiti = get_assistiti();
                 });
             });
         </script>
+		
 
 <?php
 include "footer.php";

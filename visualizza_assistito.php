@@ -15,6 +15,26 @@ if (isset($_GET['id_assistito'])) {
 	$lingue_assistito_array = get_lingue_assistito($id_assistito);
 	$vulnerabilita_assistito_array = get_vulnerabilita_assistito($id_assistito);
 	$risposte_indirette_assistito_array = get_risposte_indirette_assistito($id_assistito);
+	$richieste = get_richieste($id_assistito);
+
+  if ("1"==$assistito["stato_civile"]) {
+    $stato_civile_str="Celibe";
+  } else if ("2"==$assistito["stato_civile"]) {
+    $stato_civile_str="Nubile";
+  } else if ("3"==$assistito["stato_civile"]) {
+    $stato_civile_str="Convivente";
+  } else if ("4"==$assistito["stato_civile"]) {
+    $stato_civile_str="Coniugato/a";
+  } else if ("5"==$assistito["stato_civile"]) {
+    $stato_civile_str="Vedovo/a";
+  } else if ("6"==$assistito["stato_civile"]) {
+    $stato_civile_str="Separato/a";
+  } else if ("7"==$assistito["stato_civile"]) {
+    $stato_civile_str="Divorziato/a";
+  }
+
+
+
 ?>
 
 <!-- page content -->
@@ -89,7 +109,7 @@ if (isset($_GET['id_assistito'])) {
                   </div>
 									<div class="row">
                       <div class="col-md-3"><label>Stato civile</label></div>
-                      <div class="col-md-9"><?php echo $assistito["stato_civile"];?></div>
+                      <div class="col-md-9"><?php echo $stato_civile_str;?></div>
                   </div>
 				  <br /><br />
 
@@ -141,8 +161,8 @@ if (isset($_GET['id_assistito'])) {
 									?>
 
 						<br /><br />
-						
-						
+
+
 									<span class="section">Documenti</span>
 									<!--
 									<?php
@@ -203,7 +223,7 @@ if (isset($_GET['id_assistito'])) {
 										echo '<div><label>Nessuna scelta indicata</label></div>';
 									} else {
 										foreach ($chi_lo_invia_assistito_array as $chi_lo_invia) {
-											echo '<div><label>'.$chi_lo_invia["chi"].'</label></div>';
+											echo '<div><label>'.$chi_lo_invia.'</label></div>';
 										}
 									}
 									?>
@@ -225,7 +245,7 @@ if (isset($_GET['id_assistito'])) {
 										echo '<div><label>Nessuna lingua indicata</label></div>';
 									} else {
 										foreach ($lingue_assistito_array as $lingua) {
-											echo '<div><label>'.$lingua["lingua"].'</label></div>';
+											echo '<div><label>'.$lingua.'</label></div>';
 										}
 									}
 									$lingua_madre = $assistito["lingua_madre"];
@@ -248,11 +268,87 @@ if (isset($_GET['id_assistito'])) {
 										echo '<div><label>Nessuna scelta indicata</label></div>';
 									} else {
 										foreach ($vulnerabilita_assistito_array as $vulnerabilita) {
-											echo '<div><label>'.$vulnerabilita["vulnerabilita"].'</label></div>';
+											echo '<div><label>'.$vulnerabilita.'</label></div>';
 										}
 									}
 									?>
 									<div class="ln_solid"></div>
+						<br />
+									<span class="section">Richieste</span>
+									<?php
+									if ($richieste["richiesta_alloggio"]=="") {
+										echo "<div>Nessuna richiesta di alloggio inserita</div>";
+									} else {
+									?>
+									<div class="row">
+										<div class="col-md-3"><label>Richiesta di alloggio</label></div>
+										<div class="col-md-9"><?php echo $richieste["richiesta_alloggio"];?></div>
+									</div>
+									<?php
+									}
+									if ($richieste["richiesta_primari"]=="") {
+										echo "<div>Nessuna richiesta di beni primari inserita</div>";
+									} else {
+									?>
+									<div class="row">
+										<div class="col-md-3"><label>Richiesta beni primari</label></div>
+										<div class="col-md-9"><?php echo $richieste["richiesta_primari"];?></div>
+									</div>
+									<?php
+									}
+									if ($richieste["richiesta_lavoro"]=="") {
+										echo "<div>Nessuna richiesta di lavoro inserita</div>";
+									} else {
+									?>
+									<div class="row">
+										<div class="col-md-3"><label>Richiesta lavoro</label></div>
+										<div class="col-md-9"><?php echo $richieste["richiesta_lavoro"];?></div>
+									</div>
+									<?php
+									}
+									if ($richieste["richiesta_beni_servizi"]=="") {
+										echo "<div>Nessuna richiesta di beni e servizi inserita</div>";
+									} else {
+									?>
+									<div class="row">
+										<div class="col-md-3"><label>Richiesta beni e servizi</label></div>
+										<div class="col-md-9"><?php echo $richieste["richiesta_beni_servizi"];?></div>
+									</div>
+									<?php
+									}
+									if ($richieste["richiesta_contatti_servizi"]=="") {
+										echo "<div>Nessuna richiesta contatti con altri servizi inserita</div>";
+									} else {
+									?>
+									<div class="row">
+										<div class="col-md-3"><label>Richiesta contatti con altri servizi</label></div>
+										<div class="col-md-9"><?php echo $richieste["richiesta_contatti_servizi"];?></div>
+									</div>
+									<?php
+									}
+									if ($richieste["richiesta_burocratica"]=="") {
+										echo "<div>Nessuna richiesta burocratica inserita</div>";
+									} else {
+									?>
+									<div class="row">
+										<div class="col-md-3"><label>Richiesta burocratica</label></div>
+										<div class="col-md-9"><?php echo $richieste["richiesta_burocratica"];?></div>
+									</div>
+									<?php
+									}
+									if ($richieste["richiesta_sanitaria"]=="") {
+										echo "<div>Nessuna richiesta sanitaria inserita</div>";
+									} else {
+									?>
+									<div class="row">
+										<div class="col-md-3"><label>Richiesta sanitaria</label></div>
+										<div class="col-md-9"><?php echo $richieste["richiesta_sanitaria"];?></div>
+									</div>
+									<?php
+									}
+									?>
+									<div class="ln_solid"></div>
+
 						<br />
 									<span class="section">Risposte indirette</span>
 									<?php
@@ -260,12 +356,12 @@ if (isset($_GET['id_assistito'])) {
 										echo '<div><label>Nessuna scelta indicata</label></div>';
 									} else {
 										foreach ($risposte_indirette_assistito_array as $risposta) {
-											echo '<div><label>'.$risposta["risposta"].'</label></div>';
+											echo '<div><label>'.$risposta.'</label></div>';
 										}
 									}
 									?>
 									<div class="ln_solid"></div>
-									
+
 						<br />
 									<span class="section">Situazione lavorativa</span>
 									<div class="row">
@@ -286,7 +382,7 @@ if (isset($_GET['id_assistito'])) {
 									<?php
 									}
 									?>
-									<div class="ln_solid"></div>			
+									<div class="ln_solid"></div>
 							</div>
 						</div>
 					</div>
