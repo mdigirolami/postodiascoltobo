@@ -240,7 +240,21 @@ if ($page_mode=='VISUALIZZA_MODIFICA') {
 								<form action="inserisci_modifica_assistito.php" method="post" class="form-horizontal form-label-left" novalidate>
 									<input type="hidden" name="action" value="<?php echo $form_action;?>" />
                   <input type="hidden" name="id_assistito" value="<?php echo $id_assistito;?>" />
-									<span class="section">Dati personali</span>
+
+                  <span class="section">Primo ascolto</span>
+
+									<div class="item form-group" style="text-align:left">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="data_primo_ascolto">Data primo ascolto</label>
+										<div class="controls">
+											<div class="col-md-6 col-sm-6 col-xs-12">
+												<input type="text" name="data_primo_ascolto" class="form-control has-feedback-left" id="data_primo_ascolto_calendar" aria-describedby="inputSuccess2Status4" value="<?php echo $assistito["data_primo_ascolto"];?>">
+												<span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
+												<span id="inputSuccess2Status4" class="sr-only">(success)</span>
+											</div>
+										</div>
+									</div>
+
+                  <span class="section">Dati personali</span>
 
 									<div class="item form-group">
 										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="nome">Nome <span class="required">*</span>
@@ -850,12 +864,21 @@ if ($page_mode=='VISUALIZZA_MODIFICA') {
 												<div class="item form-group">
 													<label class="control-label col-md-3 col-sm-3 col-xs-12" for="dove_lavora">Dove lavora </label>
 													<div class="col-md-6 col-sm-6 col-xs-12">
-														<input id="dove_lavora" class="form-control col-md-7 col-xs-12" name="dove_lavora" type="text" value="<?php echo $assistito["dove_lavora"];?>"">
+														<input id="dove_lavora" class="form-control col-md-7 col-xs-12" name="dove_lavora" type="text" value="<?php echo $assistito["dove_lavora"];?>" />
 													</div>
 												</div>
 											</p>
 										</div>
 									</div>
+
+                  <br />
+									<span class="section">Note</span>
+                  <div class="item form-group">
+                      <label class="control-label col-md-3 col-sm-3 col-xs-12" for="note">Note</label>
+                      <div class="col-md-6 col-sm-6 col-xs-12">
+                          <textarea class="form-control col-md-7 col-xs-12" name="note" rows="3" ><?php echo $assistito["note"];?></textarea>
+                      </div>
+                  </div>
 
 									<div class="ln_solid"></div>
 									<div class="form-group">
@@ -1050,6 +1073,32 @@ $assistiti = get_assistiti();
             $('#single_cal3').daterangepicker({
                 singleDatePicker: true,
                 calender_style: "picker_3"
+            }, function (start, end, label) {
+                console.log(start.toISOString(), end.toISOString(), label);
+            });
+            $('#data_primo_ascolto_calendar').daterangepicker({
+              locale: {
+                  format: 'DD/MM/YYYY',
+                  monthNames: ['Gennaio',
+                        'Febbraio',
+                        'Marzo',
+                        'Aprile',
+                        'Maggio',
+                        'Giugno',
+                        'Luglio',
+                        'Agosto',
+                        'Settembre',
+                        'Ottobre',
+                        'Novembre',
+                        'Dicembre'],
+                },
+                showDropdowns: true,
+                minDate: '01-01-2000',
+                maxDate: '31-12-2020',
+                startDate: new Date(),
+                endDate: new Date(),
+                singleDatePicker: true,
+                calender_style: "picker_4"
             }, function (start, end, label) {
                 console.log(start.toISOString(), end.toISOString(), label);
             });

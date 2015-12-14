@@ -7,6 +7,7 @@ include "menu.php";
 include "top_nav.php";
 
 $anno = (isset($_GET['anno']) ? $_GET['anno'] : date('Y'));
+$fasce_banco_alimentare = get_fasce_banco_alimentare($anno);
 $stat_banco_alimentare = get_stat_banco_alimentare($anno);
 $nome_mese=array("Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre");
 ?>
@@ -15,7 +16,15 @@ $nome_mese=array("Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio
             <div class="right_col" role="main">
 				<div class="page-title">
 					<div class="title_left">
-						<h3>Statistiche banco alimentare</h3>
+						<h3>Statistiche banco alimentare <h4>(visualizza dati dell'anno 
+									<select name="anno" id="anno">
+										<?php
+											$earliest_year=2014;
+											foreach(range(date('Y'), $earliest_year) as $year) {
+												echo '<option value="'.$year.'" '.($year == $anno ? " selected=selected" : "").'>'.$year.'</option>';
+											}	
+										?>
+									</select>)</h4></h3>
 					</div>
           <!--
 					<div class="title_right">
@@ -32,41 +41,37 @@ $nome_mese=array("Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio
 
 					<div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="x_panel">
-
-                                <div class="x_title">
-                                    <h2>Distribuzione pacchi per mese<small>(visualizza dati dell'anno 
-									<select name="anno" id="anno">
-										<?php
-											$earliest_year=2014;
-											foreach(range(date('Y'), $earliest_year) as $year) {
-												echo '<option value="'.$year.'" '.($year == $anno ? " selected=selected" : "").'>'.$year.'</option>';
-											}	
-										?>
-									</select>)</small></h2>
-                                    <!--
-                                    <ul class="nav navbar-right panel_toolbox">
-                                        <li><a href="#"><i class="fa fa-chevron-up"></i></a>
-                                        </li>
-                                        <li class="dropdown">
-                                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-                                            <ul class="dropdown-menu" role="menu">
-                                                <li><a href="#">Settings 1</a>
-                                                </li>
-                                                <li><a href="#">Settings 2</a>
-                                                </li>
-                                            </ul>
-                                        </li>
-                                        <li><a href="#"><i class="fa fa-close"></i></a>
-                                        </li>
-                                    </ul>
-									-->
+								<div class="x_title">
+                                    <h2>Assistiti per fasce d'età (almeno un pacco ritirato nel <?php echo $anno;?>)</h2>
                                     <div class="clearfix"></div>
-                                    
                                 </div>
-
+								<div class="x_content">
+                                    <table class="table table-striped responsive-utilities jambo_table">
+										<thead>
+												<tr class="headings">
+														<th>Fascia d'età</th>
+														<th>Numero assistiti</th>
+												</tr>
+										</thead>
+									  <tbody>
+									<?php
+									foreach ($fasce_banco_alimentare as $key => $value) {
+										echo '<tr class="even pointer">';
+										echo '<td class=" ">'.$key.'</td>';
+										echo '<td class=" ">'.$value.'</td>';
+										echo '</tr>';
+									}
+									?>
+									   </tbody>
+								    </table>
+                                </div>
+								<br />
+							
+                                <div class="x_title">
+                                    <h2>Distribuzione pacchi per mese</h2>
+                                    <div class="clearfix"></div>
+                                </div>
                                 <div class="x_content">
-								
-
                                     <table class="table table-striped responsive-utilities jambo_table">
 										<thead>
 												<tr class="headings">

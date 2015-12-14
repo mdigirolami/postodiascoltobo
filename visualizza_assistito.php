@@ -77,6 +77,11 @@ if (isset($_GET['id_assistito'])) {
 
 							</div>
 							<div class="x_content">
+								<span class="section">Primo ascolto</span>
+								<div class="row">
+										<div class="col-md-3"><label>Data primo ascolto</label></div>
+										<div class="col-md-9"><?php echo $assistito["data_primo_ascolto"];?></div>
+								</div>
 								<br />
 									<span class="section">Dati personali</span>
                   <div class="row">
@@ -382,6 +387,13 @@ if (isset($_GET['id_assistito'])) {
 									<?php
 									}
 									?>
+									<div class="ln_solid"></div>
+
+									<span class="section">Note</span>
+									<div class="row">
+										<div class="col-md-3"><label>Note</label></div>
+										<div class="col-md-9"><?php echo $assistito["note"];?></div>
+									</div>
 									<div class="ln_solid"></div>
 							</div>
 						</div>

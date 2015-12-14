@@ -27,15 +27,21 @@ function inserisci_assistito($params) {
 	else {
 		$data_nascita_sql="NULL";
 	}
-	//echo("data_nascita_sql=".$data_nascita_sql);
+	$data_primo_ascolto = $params['data_primo_ascolto'];
+	if ($data_primo_ascolto!="") {
+		$data_primo_ascolto_formatted = convertDate($data_primo_ascolto);
+		$data_primo_ascolto_sql="'".$data_primo_ascolto_formatted."'";
+	}
+	else {
+		$data_primo_ascolto_sql="NULL";
+	}
 
-	//$date_pieces=split("/", $params['data_di_nascita']);
-	//$new_date=$date_pieces[2]."-".$date_pieces[0]."-".$date_pieces[1];
-    $sql='insert into assistiti (`id`, `valid`, `data_creazione`, `nome`, `cognome`, `data_di_nascita`, `luogo_di_nascita`, `sesso`, `id_nazionalita`, `cellulare`, `stato_civile`, `citta_residenza`, `via_residenza`, `numero_residenza`, `nazione_residenza`, `alloggio`, `lingua_madre`, `ha_lavorato`, `lavora`, `dove_lavora`)
-	VALUES ("", 1,now(),"'.$params["nome"].'", "'.$params["cognome"].'", '.$data_nascita_sql.', "'.$params["luogo_di_nascita"].'", "'.$params["sesso"].'", "'.$params["nazionalita"].'", "'.$params["cellulare"].'", "'.$params["stato_civile"].'", "'.$params["citta_residenza"].'", "'.$params["via_residenza"].'", "'.$params["numero_residenza"].'", "'.$params["nazione_residenza"].'", "'.$params["alloggio"].'", "'.$params["lingua_madre"].'", "'.$params["ha_lavorato"].'", "'.$params["lavora"].'", "'.$params["dove_lavora"].'")';
+	/*
+  $sql='insert into assistiti (`id`, `valid`, `data_creazione`, `nome`, `cognome`, `data_di_nascita`, `luogo_di_nascita`, `sesso`, `id_nazionalita`, `cellulare`, `stato_civile`, `citta_residenza`, `via_residenza`, `numero_residenza`, `nazione_residenza`, `alloggio`, `lingua_madre`, `ha_lavorato`, `lavora`, `dove_lavora`,`data_primo_ascolto`,`note`)
+	VALUES ("", 1,now(),"'.$params["nome"].'", "'.$params["cognome"].'", '.$data_nascita_sql.', "'.$params["luogo_di_nascita"].'", "'.$params["sesso"].'", "'.$params["nazionalita"].'", "'.$params["cellulare"].'", "'.$params["stato_civile"].'", "'.$params["citta_residenza"].'", "'.$params["via_residenza"].'", "'.$params["numero_residenza"].'", "'.$params["nazione_residenza"].'", "'.$params["alloggio"].'", "'.$params["lingua_madre"].'", "'.$params["ha_lavorato"].'", "'.$params["lavora"].'", "'.$params["dove_lavora"].'", '.$data_primo_ascolto_sql.',"'.$params["note"].'")';
     echo $sql;
 	$res=mysql_query($sql);
-
+	*/
 	$sql2="select id from assistiti order by id desc limit 1";
 	$res2=mysql_query($sql2);
 	$r=mysql_fetch_object($res2);
@@ -152,8 +158,19 @@ function modifica_dati_anagrafici_assistito($params) {
 	else {
 		$data_nascita_sql="NULL";
 	}
-	echo("data_nascita_sql=".$data_nascita_sql);
-  $sql='update assistiti set `data_modifica`=now(), `nome`="'.$params["nome"].'", `cognome`="'.$params["cognome"].'", `data_di_nascita`='.$data_nascita_sql.', `luogo_di_nascita`="'.$params["luogo_di_nascita"].'", `sesso`="'.$params["sesso"].'", `id_nazionalita`="'.$params["nazionalita"].'", `cellulare`="'.$params["cellulare"].'", `stato_civile`="'.$params["stato_civile"].'", `citta_residenza`="'.$params["citta_residenza"].'", `via_residenza`="'.$params["via_residenza"].'", `numero_residenza`="'.$params["numero_residenza"].'", `nazione_residenza`="'.$params["nazione_residenza"].'", `alloggio`="'.$params["alloggio"].'", `lingua_madre`="'.$params["lingua_madre"].'", `ha_lavorato`='.$params["ha_lavorato"].', `lavora`='.$params["lavora"].', `dove_lavora`="'.$params["dove_lavora"].'" where id='.$params["id_assistito"];
+
+	$data_primo_ascolto = $params['data_primo_ascolto'];
+	if ($data_primo_ascolto!="") {
+	  $data_primo_ascolto_formatted = convertDate($data_primo_ascolto);
+	  $data_primo_ascolto_sql="'".$data_primo_ascolto_formatted."'";
+	}
+	else {
+	  $data_primo_ascolto_sql="NULL";
+	}
+
+
+	//echo("data_nascita_sql=".$data_nascita_sql);
+  $sql='update assistiti set `data_modifica`=now(), `nome`="'.$params["nome"].'", `cognome`="'.$params["cognome"].'", `data_di_nascita`='.$data_nascita_sql.', `luogo_di_nascita`="'.$params["luogo_di_nascita"].'", `sesso`="'.$params["sesso"].'", `id_nazionalita`="'.$params["nazionalita"].'", `cellulare`="'.$params["cellulare"].'", `stato_civile`="'.$params["stato_civile"].'", `citta_residenza`="'.$params["citta_residenza"].'", `via_residenza`="'.$params["via_residenza"].'", `numero_residenza`="'.$params["numero_residenza"].'", `nazione_residenza`="'.$params["nazione_residenza"].'", `alloggio`="'.$params["alloggio"].'", `lingua_madre`="'.$params["lingua_madre"].'", `ha_lavorato`='.$params["ha_lavorato"].', `lavora`='.$params["lavora"].', `dove_lavora`="'.$params["dove_lavora"].'", `data_primo_ascolto`='.$data_primo_ascolto_sql.', `note`="'.$params["note"].'" where id='.$params["id_assistito"];
   echo $sql;
 	$res=mysql_query($sql);
 }
@@ -757,4 +774,24 @@ function convertDate($date) {
   return $data_formatted;
 }
 
+
+function get_fasce_banco_alimentare($anno) {
+	global $db,$config;
+	$result = array();
+
+	$sql="select SUM(IF(age < 5,1,0)) as '0 - 5',
+    SUM(IF(age BETWEEN 5 and 18,1,0)) as '5 - 18',
+    SUM(IF(age BETWEEN 18 and 60,1,0)) as '18 - 60',
+    SUM(IF(age > 60,1,0)) as '> 60'
+    from (select ".$anno."-substring(data_di_nascita, 1, 4) as age from assistiti join banco_alimentare 
+	on banco_alimentare.id_assistito=assistiti.id where assistiti.valid=1 and banco_alimentare.valid=1 
+	and anno=".$anno." union select ".$anno."-anno_di_nascita from familiari join assistiti on assistiti.id=familiari.id_capofamiglia 
+	join banco_alimentare on banco_alimentare.id_assistito=assistiti.id where banco_alimentare.valid=1 and assistiti.valid=1) as eta_table";
+	$res=mysql_query($sql) or die(mysql_error());
+	while($r=mysql_fetch_assoc($res)) {
+			$result=$r;
+	}
+
+	return $result;
+}
 ?>

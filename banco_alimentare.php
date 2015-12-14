@@ -108,7 +108,7 @@ if ($page_mode=='VISUALIZZA_INSERISCI' or $page_mode=='VISUALIZZA_MODIFICA') {
 											<?php
 												setlocale(LC_TIME, 'it_IT');
 												for ($m=1; $m<=12; $m++) {
-													echo '<th style="text-align:center;">'.ucfirst(strftime("%B", mktime(0,0,0,$m))).'</th>';
+													echo '<th style="text-align:center;">'.ucfirst(substr(strftime("%B", mktime(0,0,0,$m)), 0, 3)).'</th>';
 												}	
 											?>
 										</tr>

@@ -13,6 +13,6 @@ if ($_POST['action'] == 'register_update') {
 //  echo "Assistito inserito correttamente";
 }
 
-//header('Location: visualizza_assistito.php?id_assistito='.$id_assistito);
+header('Location: visualizza_assistito.php?id_assistito='.$id_assistito);
 
 ?>
