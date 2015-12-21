@@ -7,20 +7,27 @@ include "menu.php";
 include "top_nav.php";
 
 $anno = (isset($_GET['anno']) ? $_GET['anno'] : date('Y'));
-$assistiti_banco_list = get_assistiti_banco_list($anno);
+$assistiti_list = get_assistiti_list($anno);
 
-if (sizeof($assistiti_banco_list)>0) {
-	$fasce_banco_alimentare = get_fasce_banco_alimentare($anno, $assistiti_banco_list);
-	$stat_banco_alimentare = get_stat_banco_alimentare($anno, $assistiti_banco_list);
+if (sizeof($assistiti_list)>0) {
+	$fasce_assistiti = get_fasce_assistiti($anno, $assistiti_list);
+	foreach ($fasce_assistiti as $key => $value) {
+		if (substr($key, 0, 1)=='M') {
+			$fasce[substr($key, 2)]['maschi'] = $value;
+		} else if (substr($key, 0, 1)=='F') {
+			$fasce[substr($key, 2)]['femmine'] = $value;
+		}	
+	}
+	$stat_assistiti_nazionalita = get_stat_assistiti_nazionalita($anno, $assistiti_list);
+	$stat_assistiti_nuclei = get_stat_assistiti_nuclei($anno, $assistiti_list);
 }
-$nome_mese=array("Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio","Agosto","Settembre","Ottobre","Novembre","Dicembre");
 ?>
 
 <!-- page content -->
             <div class="right_col" role="main">
 				<div class="page-title">
-					<div class="title_left">
-						<h3>Statistiche banco alimentare <h4>(visualizza dati dell'anno 
+					<div class="title_left" style="width:100%;">
+						<h3>Statistiche sugli assistiti <h4>(visualizza assistiti con almeno un servizio ricevuto nell'anno 
 									<select name="anno" id="anno">
 										<?php
 											$earliest_year=2014;
@@ -30,26 +37,28 @@ $nome_mese=array("Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio
 										?>
 									</select>)</h4></h3>
 					</div>
-          <!--
-					<div class="title_right">
-						<div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-							<div class="input-group">
-
-							</div>
-						</div>
-					</div>
-        -->
 				</div>
 
+				<div class="x_content" style="height:46px;">
+					<div class="" role="tabpanel" data-example-id="togglable-tabs">
+						<ul id="myTab" class="nav nav-tabs bar_tabs" role="tablist">
+							<li role="presentation" class="active"><a href="stat_assistiti.php?anno=<?php echo $anno; ?>" id="assistiti-tab" aria-expanded="true">Tutti gli assistiti</a>
+							</li>
+							<li role="presentation" class=""><a href="stat_primi_ascolti.php?anno=<?php echo $anno; ?>" id="primi-ascolti-tab" aria-expanded="false">Primi ascolti</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+				
                 <div class="row">
 
 					<div class="col-md-12 col-sm-12 col-xs-12">
                             <div class="x_panel">
 								<?php
-									if (sizeof($assistiti_banco_list)>0) { 
+									if (sizeof($assistiti_list)>0) { 
 								?>
 								<div class="x_title">
-                                    <h2>Assistiti per fasce d'età (almeno un pacco ritirato nel <?php echo $anno;?>)</h2>
+                                    <h2>Assistiti per fasce d'età</h2>
                                     <div class="clearfix"></div>
                                 </div>
 								<div class="x_content">
@@ -57,15 +66,57 @@ $nome_mese=array("Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio
 										<thead>
 												<tr class="headings">
 														<th>Fascia d'età</th>
+														<th>Totale</th>
+														<th>Maschi</th>
+														<th>Femmine</th>
+												</tr>
+										</thead>
+									  <tbody>
+									<?php
+									foreach ($fasce as $key => $value) {
+										$totale=$value['maschi']+$value['femmine'];
+										$tot_maschi+=$value['maschi'];
+										$tot_femmine+=$value['femmine'];
+										$tot_totale+=$totale;
+										echo '<tr class="even pointer">';
+										echo '<td class=" ">'.$key.'</td>';
+										echo '<td class=" ">'.$totale.'</td>';
+										echo '<td class=" ">'.$value['maschi'].'</td>';
+										echo '<td class=" ">'.$value['femmine'].'</td>';
+										echo '</tr>';
+										
+									}
+									echo '<tr class="even pointer" style="font-weight:bold;">';
+									echo '<td class=" ">Totale</td>';
+									echo '<td class=" ">'.$tot_totale.'</td>';
+									echo '<td class=" ">'.$tot_maschi.'</td>';
+									echo '<td class=" ">'.$tot_femmine.'</td>';
+									echo '</tr>';
+									?>
+										
+									   </tbody>
+								    </table>
+                                </div>
+								<br />
+							
+                                <div class="x_title">
+                                    <h2>Assistiti per nazionalità</h2>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div class="x_content">
+                                    <table class="table table-striped responsive-utilities jambo_table">
+										<thead>
+												<tr class="headings">
+														<th>Nazionalità</th>
 														<th>Numero assistiti</th>
 												</tr>
 										</thead>
 									  <tbody>
 									<?php
-									foreach ($fasce_banco_alimentare as $key => $value) {
+									foreach ($stat_assistiti_nazionalita as $stat) {
 										echo '<tr class="even pointer">';
-										echo '<td class=" ">'.$key.'</td>';
-										echo '<td class=" ">'.$value.'</td>';
+										echo '<td class=" ">'.$stat["nazionalita"].'</td>';
+										echo '<td class=" ">'.$stat["num_assistiti"].'</td>';
 										echo '</tr>';
 									}
 									?>
@@ -73,25 +124,25 @@ $nome_mese=array("Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio
 								    </table>
                                 </div>
 								<br />
-							
-                                <div class="x_title">
-                                    <h2>Distribuzione pacchi per mese</h2>
+								
+								<div class="x_title">
+                                    <h2>Nuclei familiari assistiti per numero di componenti</h2>
                                     <div class="clearfix"></div>
                                 </div>
                                 <div class="x_content">
                                     <table class="table table-striped responsive-utilities jambo_table">
 										<thead>
 												<tr class="headings">
-														<th>Mese</th>
-														<th>Pacchi consegnati</th>
+														<th>Componenti nucleo</th>
+														<th>Numero nuclei</th>
 												</tr>
 										</thead>
 									  <tbody>
 									<?php
-									foreach ($stat_banco_alimentare as $stat) {
+									foreach ($stat_assistiti_nuclei as $stat) {
 										echo '<tr class="even pointer">';
-										echo '<td class=" ">'.$nome_mese[$stat["mese"]-1].'</td>';
-										echo '<td class=" ">'.$stat["pacchi"].'</td>';
+										echo '<td class=" ">'.$stat["componenti"].'</td>';
+										echo '<td class=" ">'.$stat["occorrenze"].'</td>';
 										echo '</tr>';
 									}
 									?>
@@ -101,7 +152,7 @@ $nome_mese=array("Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio
                             </div>
 							<?php
 								} else { 
-									echo "<div>Non risultano pacchi consegnati nell'anno ".$anno."</div>";
+									echo "<div>Non risultano assistiti con almeno un servizio ricevuto nell'anno ".$anno."</div>";
 								}	
 							?>
                         </div>
@@ -120,7 +171,7 @@ $nome_mese=array("Gennaio","Febbraio","Marzo","Aprile","Maggio","Giugno","Luglio
         <script>
             $(document).ready(function () {
 				$('#anno').change(function() {
-					window.location = "stat_banco_alimentare.php?anno=" + $(this).val();
+					window.location = "stat_assistiti.php?anno=" + $(this).val();
 				});
 				
                 $('input.tableflat').iCheck({

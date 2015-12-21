@@ -42,7 +42,7 @@ foreach ($stat_scuole as $stat) {
                             <div class="x_panel">
 
                                 <div class="x_title">
-                                    <h2>Alunni per nazione<small>(visualizza dati dell'anno
+                                    <h3>Alunni per nazione<h4>(visualizza dati dell'anno
 									<select name="anno" id="anno">
 										<?php
 											$earliest_year=2014;
@@ -50,7 +50,7 @@ foreach ($stat_scuole as $stat) {
 												echo '<option value="'.$year.'" '.($year == $anno ? " selected=selected" : "").'>'.$year.'</option>';
 											}
 										?>
-									</select>)</small></h2>
+									</select>)</h4></h3>
                                     <!--
                                     <ul class="nav navbar-right panel_toolbox">
                                         <li><a href="#"><i class="fa fa-chevron-up"></i></a>
@@ -73,8 +73,9 @@ foreach ($stat_scuole as $stat) {
                                 </div>
 
                                 <div class="x_content">
-
-
+									<?php
+										if (sizeof($stat_scuole)>0) { 
+									?>
                                     <table class="table table-striped responsive-utilities jambo_table">
 										<thead>
 												<tr class="headings">
@@ -87,6 +88,7 @@ foreach ($stat_scuole as $stat) {
 										</thead>
 									  <tbody>
 									<?php
+									//print_r($nazione);
 									if ($nazione!=NULL) {
 										foreach ($nazione as $stat) {
 											echo '<tr class="even pointer">';
@@ -102,6 +104,11 @@ foreach ($stat_scuole as $stat) {
 									?>
 									   </tbody>
 								    </table>
+									<?php
+										} else { 
+											echo "<div>Non risultano dati per scuole effettuate nell'anno ".$anno."</div>";
+										}	
+									?>
                                 </div>
                             </div>
                         </div>
@@ -120,7 +127,7 @@ foreach ($stat_scuole as $stat) {
         <script>
             $(document).ready(function () {
 				$('#anno').change(function() {
-					window.location = "stat_banco_alimentare.php?anno=" + $(this).val();
+					window.location = "stat_scuole.php?anno=" + $(this).val();
 				});
 
                 $('input.tableflat').iCheck({

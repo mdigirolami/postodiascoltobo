@@ -723,10 +723,11 @@ function inserisci_servizio($params) {
 }
 
 
-function get_stat_banco_alimentare($anno) {
+function get_stat_banco_alimentare($anno, $assistiti) {
 	global $db,$config;
 	$result = array();
 
+	$assistiti_string=implode(",", $assistiti);
 	$sql="SELECT mese, count(*) as pacchi FROM banco_alimentare where banco_alimentare.valid=1 and anno=".$anno." group by mese";
 	$res=mysql_query($sql) or die(mysql_error());
 	while($r=mysql_fetch_assoc($res)) {
@@ -775,18 +776,11 @@ function convertDate($date) {
 }
 
 
-function get_fasce_banco_alimentare($anno) {
+function get_assistiti_banco_list($anno) {
 	global $db,$config;
 	$result = array();
 
-	$sql="select SUM(IF(age < 5,1,0)) as '0 - 5',
-    SUM(IF(age BETWEEN 5 and 18,1,0)) as '5 - 18',
-    SUM(IF(age BETWEEN 18 and 60,1,0)) as '18 - 60',
-    SUM(IF(age > 60,1,0)) as '> 60'
-    from (select ".$anno."-substring(data_di_nascita, 1, 4) as age from assistiti join banco_alimentare 
-	on banco_alimentare.id_assistito=assistiti.id where assistiti.valid=1 and banco_alimentare.valid=1 
-	and anno=".$anno." union select ".$anno."-anno_di_nascita from familiari join assistiti on assistiti.id=familiari.id_capofamiglia 
-	join banco_alimentare on banco_alimentare.id_assistito=assistiti.id where banco_alimentare.valid=1 and assistiti.valid=1) as eta_table";
+	$sql="SELECT distinct(id_assistito) from banco_alimentare where valid=1 and anno=".$anno;
 	$res=mysql_query($sql) or die(mysql_error());
 	while($r=mysql_fetch_assoc($res)) {
 			$result=$r;
@@ -794,4 +788,118 @@ function get_fasce_banco_alimentare($anno) {
 
 	return $result;
 }
+
+
+function get_assistiti_list($anno, $primo_ascolto=false) {
+	global $db,$config;
+	$result = array();
+
+	if ($primo_ascolto) {
+		$sql="SELECT distinct(id_assistito) from servizi_erogati join assistiti on assistiti.id=servizi_erogati.id_assistito where servizi_erogati.valid=1 and YEAR(STR_TO_DATE(data, '%Y-%m-%d'))=".$anno." and YEAR(STR_TO_DATE(data, '%Y-%m-%d'))=".$anno;
+	}  else {
+		$sql="SELECT distinct(id_assistito) from servizi_erogati where valid=1 and YEAR(STR_TO_DATE(data, '%Y-%m-%d'))=".$anno;
+	}
+	$res=mysql_query($sql) or die(mysql_error());
+	while($r=mysql_fetch_assoc($res)) {
+			$result=$r;
+	}
+
+	return $result;
+}
+
+
+function get_fasce_banco_alimentare($anno, $assistiti) {
+	global $db,$config;
+	$result = array();
+
+	$assistiti_string=implode(",", $assistiti);
+	$sql="select SUM(IF(age < 5,1,0)) as '0 - 5',
+    SUM(IF(age BETWEEN 5 and 18,1,0)) as '5 - 18',
+    SUM(IF(age BETWEEN 18 and 60,1,0)) as '18 - 60',
+    SUM(IF(age > 60,1,0)) as '> 60'
+    from (select ".$anno."-substring(data_di_nascita, 1, 4) as age from assistiti 
+	where valid=1 and id in (".$assistiti_string.") 
+	union select ".$anno."-anno_di_nascita from familiari join assistiti on assistiti.id=familiari.id_capofamiglia 
+	where assistiti.valid=1 and assistiti.id in (".$assistiti_string.")) as eta_table";
+	$res=mysql_query($sql) or die(mysql_error());
+	while($r=mysql_fetch_assoc($res)) {
+			$result=$r;
+	}
+
+	return $result;
+}
+
+
+function get_fasce_assistiti($anno, $assistiti) {
+	global $db,$config;
+	$result = array();
+	
+	$assistiti_string=implode(",", $assistiti);
+	$sql="select SUM(IF(age < 18,1,0) and sesso='M') as 'M 0 - 18',
+	SUM(IF(age < 18,1,0) and sesso='F') as 'F 0 - 18',
+    SUM(IF(age BETWEEN 18 and 35,1,0) and sesso='M') as 'M 18 - 35',
+	SUM(IF(age BETWEEN 18 and 35,1,0) and sesso='F') as 'F 18 - 35',
+	SUM(IF(age BETWEEN 35 and 45,1,0) and sesso='M') as 'M 35 - 45',
+	SUM(IF(age BETWEEN 35 and 45,1,0) and sesso='F') as 'F 35 - 45',
+	SUM(IF(age BETWEEN 45 and 60,1,0) and sesso='M') as 'M 45 - 60',
+	SUM(IF(age BETWEEN 45 and 60,1,0) and sesso='F') as 'F 45 - 60',
+    SUM(IF(age > 60,1,0) and sesso='M') as 'M > 60',
+	SUM(IF(age > 60,1,0) and sesso='F') as 'F > 60'
+    from (select sesso, ".$anno."-substring(data_di_nascita, 1, 4) as age from assistiti 
+	where assistiti.valid=1 and id in (".$assistiti_string.")) as eta_table";
+	$res=mysql_query($sql) or die(mysql_error());
+	while($r=mysql_fetch_assoc($res)) {
+			$result=$r;
+	}
+
+	return $result;
+}
+
+
+function get_stat_servizi($anno) {
+	global $db,$config;
+	$result = array();
+
+	$sql="SELECT nome, count(*) as num_erogazioni FROM servizi_erogati
+			join cat_servizi on servizi_erogati.id_servizio=cat_servizi.id
+		WHERE servizi_erogati.valid=1 and YEAR(STR_TO_DATE(data, '%Y-%m-%d'))=".$anno." group by nome";
+	$res=mysql_query($sql) or die(mysql_error());
+	while($r=mysql_fetch_assoc($res)) {
+			$result[]=$r;
+	}
+
+	return $result;
+}
+
+
+function get_stat_assistiti_nazionalita($anno, $assistiti) {
+	global $db,$config;
+	$result = array();
+	
+	$assistiti_string=implode(",", $assistiti);
+	$sql="SELECT nazionalita, count(*) as num_assistiti FROM assistiti WHERE assistiti.valid=1 and id in (".$assistiti_string.") group by nazionalita";
+	$res=mysql_query($sql) or die(mysql_error());
+	while($r=mysql_fetch_assoc($res)) {
+			$result[]=$r;
+	}
+
+	return $result;
+}
+
+
+function get_stat_assistiti_nuclei($anno, $assistiti) {
+	global $db,$config;
+	$result = array();
+	
+	$assistiti_string=implode(",", $assistiti);
+	$sql="SELECT count(*) as occorrenze, componenti from (SELECT id_capofamiglia, count(*) as componenti FROM familiari join assistiti on assistiti.id=familiari.id_capofamiglia where assistiti.valid=1 and id_capofamiglia in (".$assistiti_string.") group by id_capofamiglia) as dettaglio_nuclei group by componenti";
+	$res=mysql_query($sql) or die(mysql_error());
+	while($r=mysql_fetch_assoc($res)) {
+			$result[]=$r;
+	}
+
+	return $result;
+}
+
+
 ?>
