@@ -21,7 +21,7 @@ function inserisci_assistito($params) {
 
 	$data_nascita = $params['data_di_nascita'];
 	if ($data_nascita!="") {
-		$data_nascita_formatted = convertDate($data_nascita);
+		$data_nascita_formatted = convertDateFromItTo2Db($data_nascita);
 		$data_nascita_sql="'".$data_nascita_formatted."'";
 	}
 	else {
@@ -29,19 +29,19 @@ function inserisci_assistito($params) {
 	}
 	$data_primo_ascolto = $params['data_primo_ascolto'];
 	if ($data_primo_ascolto!="") {
-		$data_primo_ascolto_formatted = convertDate($data_primo_ascolto);
+		$data_primo_ascolto_formatted = convertDateFromItTo2Db($data_primo_ascolto);
 		$data_primo_ascolto_sql="'".$data_primo_ascolto_formatted."'";
 	}
 	else {
 		$data_primo_ascolto_sql="NULL";
 	}
 
-	/*
-  $sql='insert into assistiti (`id`, `valid`, `data_creazione`, `nome`, `cognome`, `data_di_nascita`, `luogo_di_nascita`, `sesso`, `id_nazionalita`, `cellulare`, `stato_civile`, `citta_residenza`, `via_residenza`, `numero_residenza`, `nazione_residenza`, `alloggio`, `lingua_madre`, `ha_lavorato`, `lavora`, `dove_lavora`,`data_primo_ascolto`,`note`)
-	VALUES ("", 1,now(),"'.$params["nome"].'", "'.$params["cognome"].'", '.$data_nascita_sql.', "'.$params["luogo_di_nascita"].'", "'.$params["sesso"].'", "'.$params["nazionalita"].'", "'.$params["cellulare"].'", "'.$params["stato_civile"].'", "'.$params["citta_residenza"].'", "'.$params["via_residenza"].'", "'.$params["numero_residenza"].'", "'.$params["nazione_residenza"].'", "'.$params["alloggio"].'", "'.$params["lingua_madre"].'", "'.$params["ha_lavorato"].'", "'.$params["lavora"].'", "'.$params["dove_lavora"].'", '.$data_primo_ascolto_sql.',"'.$params["note"].'")';
+
+  $sql='insert into assistiti (`id`, `valid`, `data_creazione`,`data_modifica`, `nome`, `cognome`, `data_di_nascita`, `luogo_di_nascita`, `sesso`, `id_nazionalita`, `cellulare`, `stato_civile`, `citta_residenza`, `via_residenza`, `numero_residenza`, `nazione_residenza`, `alloggio`, `lingua_madre`, `ha_lavorato`, `lavora`, `dove_lavora`,`data_primo_ascolto`,`note`)
+	VALUES ("", 1,now(),now(),"'.$params["nome"].'", "'.$params["cognome"].'", '.$data_nascita_sql.', "'.$params["luogo_di_nascita"].'", "'.$params["sesso"].'", "'.$params["nazionalita"].'", "'.$params["cellulare"].'", "'.$params["stato_civile"].'", "'.$params["citta_residenza"].'", "'.$params["via_residenza"].'", "'.$params["numero_residenza"].'", "'.$params["nazione_residenza"].'", "'.$params["alloggio"].'", "'.$params["lingua_madre"].'", "'.$params["ha_lavorato"].'", "'.$params["lavora"].'", "'.$params["dove_lavora"].'", '.$data_primo_ascolto_sql.',"'.$params["note"].'")';
     echo $sql;
 	$res=mysql_query($sql);
-	*/
+
 	$sql2="select id from assistiti order by id desc limit 1";
 	$res2=mysql_query($sql2);
 	$r=mysql_fetch_object($res2);
@@ -152,8 +152,8 @@ function modifica_dati_anagrafici_assistito($params) {
 
 	$data_nascita = $params['data_di_nascita'];
 	if ($data_nascita!="") {
-		//$data_nascita_formatted = convertDate($data_nascita);
-		$data_nascita_sql="'".$data_nascita."'";
+		$data_nascita_formatted = convertDateFromItTo2Db($data_nascita);
+		$data_nascita_sql="'".$data_nascita_formatted."'";
 	}
 	else {
 		$data_nascita_sql="NULL";
@@ -161,7 +161,7 @@ function modifica_dati_anagrafici_assistito($params) {
 
 	$data_primo_ascolto = $params['data_primo_ascolto'];
 	if ($data_primo_ascolto!="") {
-	  $data_primo_ascolto_formatted = convertDate($data_primo_ascolto);
+	  $data_primo_ascolto_formatted = convertDateFromItTo2Db($data_primo_ascolto);
 	  $data_primo_ascolto_sql="'".$data_primo_ascolto_formatted."'";
 	}
 	else {
@@ -261,20 +261,17 @@ function modifica_documenti_assistito($params, $id_assistito) {
 			echo "documento_pk=".$params[$documento_pk]." numero=".$params[$numero_key]." rilascio=".$params[$rilascio_key]." scadenza=".$params[$scadenza_key]." fotocopia=".$params[$fotocopia_key]." numero=".$params[$numero_key]."\n";
 
 			$data_rilascio = $params[$rilascio_key];
-
-			if ($params[$rilascio_key]!="") {
-				$data_rilascio_pieces=split("/", $params[$rilascio_key]);
-				$data_rilascio_formatted=$data_rilascio_pieces[2]."-".$data_rilascio_pieces[0]."-".$data_rilascio_pieces[1];
+			if ($data_rilascio!="") {
+				$data_rilascio_formatted = convertDateFromItTo2Db($data_rilascio);
 				$data_rilascio_sql="'".$data_rilascio_formatted."'";
 			}
 			else {
 				$data_rilascio_sql="NULL";
 			}
 
-
-			if ($params[$scadenza_key]!="") {
-				$data_scadenza_pieces=split("/", $params[$scadenza_key]);
-				$data_scadenza_formatted=$data_scadenza_pieces[2]."-".$data_scadenza_pieces[0]."-".$data_scadenza_pieces[1];
+			$data_scadenza = $params[$scadenza_key];
+			if ($data_scadenza!="") {
+				$data_scadenza_formatted = convertDateFromItTo2Db($data_scadenza);
 				$data_scadenza_sql="'".$data_scadenza_formatted."'";
 			}
 			else {
@@ -298,7 +295,7 @@ function modifica_documenti_assistito($params, $id_assistito) {
 					mysql_query($sql);
 				} else {
 					//update
-					$sql='update DOCUMENTI_ASSISTITO set `tipo_doc`="'.$params[$tipodoc_key].'", `numero_doc`="'.$params[$numero_key].'", `data_rilascio_doc`='.$data_rilascio_sql.', `data_scadenza_doc`='.$data_scadenza_formatted.', `fotocopia`="'.$params[$fotocopia_key].'" where id='.$params[$documento_pk];
+					$sql='update DOCUMENTI_ASSISTITO set `tipo_doc`="'.$params[$tipodoc_key].'", `numero_doc`="'.$params[$numero_key].'", `data_rilascio_doc`='.$data_rilascio_sql.', `data_scadenza_doc`='.$data_scadenza_sql.', `fotocopia`="'.$params[$fotocopia_key].'" where id='.$params[$documento_pk];
 					echo $sql;
 					mysql_query($sql);
 				}
@@ -415,7 +412,7 @@ function modifica_richieste_assistito($params) {
 		$res=mysql_query($sql);
 	} else {
 		$sql2="update richieste set richiesta_alloggio='".$params["richiesta_alloggio"]."', richiesta_primari='".$params["richiesta_primari"]."', richiesta_lavoro='".$params["richiesta_lavoro"]."', richiesta_beni_servizi='".$params["richiesta_beni_servizi"]."', richiesta_contatti_servizi='".$params["richiesta_contatti_servizi"]."', richiesta_burocratica='".$params["richiesta_burocratica"]."', richiesta_sanitaria='".$params["richiesta_sanitaria"]."' where id_assistito=".$params["id_assistito"];
-		echo $sql2;
+		//echo $sql2;
 		$res=mysql_query($sql2);
 	}
 }
@@ -482,6 +479,9 @@ function get_assistito($id) {
 			$result=$r;
 	}
 
+	$result["data_primo_ascolto"] = convertDateFromDbTo2It($result["data_primo_ascolto"]);
+	$result["data_di_nascita"] = convertDateFromDbTo2It($result["data_di_nascita"]);
+
 	return $result;
 }
 
@@ -494,6 +494,8 @@ function get_documenti_assistito($id_assistito) {
 
 	$res=mysql_query($sql);
 	while($r=mysql_fetch_assoc($res)) {
+		  $r[DATA_RILASCIO_DOC] = convertDateFromDbTo2It($r[DATA_RILASCIO_DOC]);
+			$r[DATA_SCADENZA_DOC] = convertDateFromDbTo2It($r[DATA_SCADENZA_DOC]);
 			$result[]=$r;
 	}
 	return $result;
@@ -768,11 +770,29 @@ function get_richieste($id_assistito) {
  return $result;
 }
 
-//converte date da formato GG/MM/AAAA a formato AAAA-YY-GG
-function convertDate($date) {
+//converte date da formato GG/MM/AAAA a formato AAAA-MM-GG
+function convertDateFromItTo2Db($date) {
 	$data_pieces=split("/", $date);
-	$data_formatted=$data_pieces[2]."-".$data_pieces[0]."-".$data_pieces[1];
-  return $data_formatted;
+	if (count($data_pieces)==3) {
+		$data_formatted=$data_pieces[2]."-".$data_pieces[1]."-".$data_pieces[0];
+	  return $data_formatted;
+	} else {
+		return NULL;
+	}
+
+
+}
+
+//converte date da formato AAAA-MM-GG a formato GG/MM/AAAA
+function convertDateFromDbTo2It($date) {
+	$data_pieces=split("-", $date);
+	if (count($data_pieces)==3) {
+		$data_formatted=$data_pieces[2]."/".$data_pieces[1]."/".$data_pieces[0];
+		return $data_formatted;
+	}
+	else {
+		return NULL;
+	}
 }
 
 
@@ -817,9 +837,9 @@ function get_fasce_banco_alimentare($anno, $assistiti) {
     SUM(IF(age BETWEEN 5 and 18,1,0)) as '5 - 18',
     SUM(IF(age BETWEEN 18 and 60,1,0)) as '18 - 60',
     SUM(IF(age > 60,1,0)) as '> 60'
-    from (select ".$anno."-substring(data_di_nascita, 1, 4) as age from assistiti 
-	where valid=1 and id in (".$assistiti_string.") 
-	union select ".$anno."-anno_di_nascita from familiari join assistiti on assistiti.id=familiari.id_capofamiglia 
+    from (select ".$anno."-substring(data_di_nascita, 1, 4) as age from assistiti
+	where valid=1 and id in (".$assistiti_string.")
+	union select ".$anno."-anno_di_nascita from familiari join assistiti on assistiti.id=familiari.id_capofamiglia
 	where assistiti.valid=1 and assistiti.id in (".$assistiti_string.")) as eta_table";
 	$res=mysql_query($sql) or die(mysql_error());
 	while($r=mysql_fetch_assoc($res)) {
@@ -833,7 +853,7 @@ function get_fasce_banco_alimentare($anno, $assistiti) {
 function get_fasce_assistiti($anno, $assistiti) {
 	global $db,$config;
 	$result = array();
-	
+
 	$assistiti_string=implode(",", $assistiti);
 	$sql="select SUM(IF(age < 18,1,0) and sesso='M') as 'M 0 - 18',
 	SUM(IF(age < 18,1,0) and sesso='F') as 'F 0 - 18',
@@ -845,7 +865,7 @@ function get_fasce_assistiti($anno, $assistiti) {
 	SUM(IF(age BETWEEN 45 and 60,1,0) and sesso='F') as 'F 45 - 60',
     SUM(IF(age > 60,1,0) and sesso='M') as 'M > 60',
 	SUM(IF(age > 60,1,0) and sesso='F') as 'F > 60'
-    from (select sesso, ".$anno."-substring(data_di_nascita, 1, 4) as age from assistiti 
+    from (select sesso, ".$anno."-substring(data_di_nascita, 1, 4) as age from assistiti
 	where assistiti.valid=1 and id in (".$assistiti_string.")) as eta_table";
 	$res=mysql_query($sql) or die(mysql_error());
 	while($r=mysql_fetch_assoc($res)) {
@@ -875,7 +895,7 @@ function get_stat_servizi($anno) {
 function get_stat_assistiti_nazionalita($anno, $assistiti) {
 	global $db,$config;
 	$result = array();
-	
+
 	$assistiti_string=implode(",", $assistiti);
 	$sql="SELECT nazionalita, count(*) as num_assistiti FROM assistiti WHERE assistiti.valid=1 and id in (".$assistiti_string.") group by nazionalita";
 	$res=mysql_query($sql) or die(mysql_error());
@@ -890,7 +910,7 @@ function get_stat_assistiti_nazionalita($anno, $assistiti) {
 function get_stat_assistiti_nuclei($anno, $assistiti) {
 	global $db,$config;
 	$result = array();
-	
+
 	$assistiti_string=implode(",", $assistiti);
 	$sql="SELECT count(*) as occorrenze, componenti from (SELECT id_capofamiglia, count(*) as componenti FROM familiari join assistiti on assistiti.id=familiari.id_capofamiglia where assistiti.valid=1 and id_capofamiglia in (".$assistiti_string.") group by id_capofamiglia) as dettaglio_nuclei group by componenti";
 	$res=mysql_query($sql) or die(mysql_error());

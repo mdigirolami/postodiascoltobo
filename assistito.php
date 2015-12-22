@@ -117,19 +117,6 @@ if ($page_mode=='VISUALIZZA_MODIFICA') {
 							<li role="presentation" class=""><a href="banco_alimentare.php?id_assistito=<?php echo $id_assistito; ?>" id="profile-tab2" aria-expanded="false">Banco alimentare</a>
 							</li>
 						</ul>
-					<!--
-						<div id="myTabContent" class="tab-content">
-							<div role="tabpanel" class="tab-pane fade active in" id="tab_content1" aria-labelledby="home-tab">
-								<p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica. Reprehenderit butcher retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terr.</p>
-							</div>
-							<div role="tabpanel" class="tab-pane fade" id="tab_content2" aria-labelledby="profile-tab">
-								<p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip</p>
-							</div>
-							<div role="tabpanel" class="tab-pane fade" id="tab_content3" aria-labelledby="profile-tab">
-								<p>xxFood truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk </p>
-							</div>
-						</div>
-					-->
 					</div>
 				</div>
 <?php
@@ -140,114 +127,21 @@ if ($page_mode=='VISUALIZZA_MODIFICA') {
 						<div class="x_panel">
 							<div class="x_title">
 								<h2><?php echo $page_title;?><small>(i campi contrassegnati con * sono obbligatori)</small></h2>
-                <!--
-								<ul class="nav navbar-right panel_toolbox">
-									<li><a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-									</li>
-									<li class="dropdown">
-										<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false"><i class="fa fa-wrench"></i></a>
-										<ul class="dropdown-menu" role="menu">
-											<li><a href="#">Settings 1</a>
-											</li>
-											<li><a href="#">Settings 2</a>
-											</li>
-										</ul>
-									</li>
-									<li><a class="close-link"><i class="fa fa-close"></i></a>
-									</li>
-								</ul>
-              -->
 								<div class="clearfix"></div>
 							</div>
 							<div class="x_content">
 								<br />
-<!--
-								<form class="form-horizontal form-label-left">
 
-									<div class="form-group">
-										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="first-name">Nome <span class="required">*</span>
-										</label>
-										<div class="col-md-6 col-sm-6 col-xs-12">
-											<input type="text" id="nome" required="required" class="form-control col-md-7 col-xs-12">
-										</div>
-									</div>
-									<div class="form-group">
-										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="last-name">Cognome <span class="required">*</span>
-										</label>
-										<div class="col-md-6 col-sm-6 col-xs-12">
-											<input type="text" id="cognome" name="last-name" required="required" class="form-control col-md-7 col-xs-12">
-										</div>
-									</div>
-									<div class="form-group">
-										<label class="control-label col-md-3 col-sm-3 col-xs-12">Sesso</label>
-										<div class="col-md-6 col-sm-6 col-xs-12">
-											<div id="gender" class="btn-group" data-toggle="buttons">
-												<label class="btn btn-default" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
-													<input type="radio" name="sesso" value="maschio"> &nbsp; Maschio &nbsp;
-												</label>
-												<label class="btn btn-primary active" data-toggle-class="btn-primary" data-toggle-passive-class="btn-default">
-													<input type="radio" name="sesso" value="femmina" checked=""> Femmina
-												</label>
-											</div>
-										</div>
-									</div>
-									<div class="form-group">
-										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">Email * :</label>
-										<div class="col-md-6 col-sm-6 col-xs-12">
-											<input type="email" id="email" class="form-control col-md-7 col-xs-12" name="email" data-parsley-trigger="change" required />
-										</div>
-									</div>
-									<div class="form-group">
-                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Gender *:</label>
-										<div class="col-md-6 col-sm-6 col-xs-12">
-											<p>
-												M:
-												<input type="radio" class="flat" name="gender" id="genderM" value="M" checked="" required /> F:
-												<input type="radio" class="flat" name="gender" id="genderF" value="F" />
-											</p>
-										</div>
-									</div>
-									<div class="form-group">
-										<label class="control-label col-md-3 col-sm-3 col-xs-12">Data di nascita <span class="required">*</span>
-										</label>
-										<div class="col-md-6 col-sm-6 col-xs-12">
-											<input id="data_di_nascita" class="date-picker form-control col-md-7 col-xs-12" required="required" type="text">
-										</div>
-									</div>
-									<div class="form-group">
-										<label class="control-label col-md-3 col-sm-3 col-xs-12">Select Custom</label>
-										<div class="col-md-9 col-sm-9 col-xs-12">
-											<select name="stato_civile" class="select2_single form-control" tabindex="-1">
-												<option value="1">Celibe</option>
-												<option value="2">Nubile</option>
-												<option value="3">Convivente</option>
-												<option value="4">Coniugato/a</option>
-												<option value="5">Vedevo/a</option>
-												<option value="6">Separato/a</option>
-												<option value="7">Divorziato</option>
-											</select>
-										</div>
-									</div>
-									<div class="ln_solid"></div>
-									<div class="form-group">
-										<div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-											<button type="submit" class="btn btn-primary">Cancella</button>
-											<button type="submit" class="btn btn-success">Inserisci</button>
-										</div>
-									</div>
-								</form>
--->
 								<form action="inserisci_modifica_assistito.php" method="post" class="form-horizontal form-label-left" novalidate>
 									<input type="hidden" name="action" value="<?php echo $form_action;?>" />
                   <input type="hidden" name="id_assistito" value="<?php echo $id_assistito;?>" />
-
                   <span class="section">Primo ascolto</span>
 
 									<div class="item form-group" style="text-align:left">
-                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="data_primo_ascolto">Data primo ascolto</label>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12" for="data_primo_ascolto">Data primo ascolto <span class="required">*</span></label>
 										<div class="controls">
 											<div class="col-md-6 col-sm-6 col-xs-12">
-												<input type="text" name="data_primo_ascolto" class="form-control has-feedback-left" id="data_primo_ascolto_calendar" aria-describedby="inputSuccess2Status4" value="<?php echo $assistito["data_primo_ascolto"];?>">
+												<input type="text" name="data_primo_ascolto" class="form-control has-feedback-left" required="required" id="data_primo_ascolto_calendar" aria-describedby="inputSuccess2Status4" value="<?php echo $assistito["data_primo_ascolto"];?>">
 												<span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
 												<span id="inputSuccess2Status4" class="sr-only">(success)</span>
 											</div>
@@ -315,18 +209,10 @@ if ($page_mode=='VISUALIZZA_MODIFICA') {
                             echo '<option value="'.$nazione[id].'" '.$is_selected_html.' >'.$nazione[nome].'</option>';
                           }
                         ?>
-                        <!--<option value="2" <?php if ($stato_civile_is_NUBILE==1) echo("selected");?>>Nubile</option>-->
 											</select>
 										</div>
 									</div>
-<!--
-									<div class="item form-group">
-										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">Email  </label>
-										<div class="col-md-6 col-sm-6 col-xs-12">
-											<input type="email" id="email" name="email" class="form-control col-md-7 col-xs-12">
-										</div>
-									</div>
--->
+
 									<div class="item form-group">
 										<label class="control-label col-md-3 col-sm-3 col-xs-12" for="email">Cellulare </label>
 										<div class="col-md-6 col-sm-6 col-xs-12">
@@ -349,9 +235,6 @@ if ($page_mode=='VISUALIZZA_MODIFICA') {
 										</div>
 									</div>
 
-<?php
-//	foreach ($i=0; i<=20; $i++; as $key=>$value) {
-?>
 									<div id="familiari">
                     <?php
                     if (!is_null($familiari_assistito_array)) {
@@ -362,15 +245,17 @@ if ($page_mode=='VISUALIZZA_MODIFICA') {
                       $index = $keys[$i];
                       $familiare = $familiari_assistito_array[$index];
                     ?>
-                      <div class="item form-group" id="familiare_input_<?php echo $i;?>">
+                      <div id="familiare_input_<?php echo $i;?>" class="form-group">
                         <input type="hidden" name="familiare_<?php echo $i;?>_pk" value="<?php echo $familiare["id"];?>" />
                         <!--<input type="hidden" id="familiare_toremove_<?php echo $i;?>" name="familiare_toremove_<?php echo $i;?>" value="0" />-->
                         <label class="control-label col-md-3 col-sm-3 col-xs-12">Familiare <?php echo ($i+1);?> </label>
                         <div class="col-md-3 col-sm-3 col-xs-6">
                           <input id="parentela_<?php echo $i;?>" name="parentela_<?php echo $i;?>" class="form-control col-md-7 col-xs-12" placeholder="Grado di parentela" value="<?php echo $familiare["parentela"];?>">
                         </div>
-                        <div class="col-md-3 col-sm-3 col-xs-6">
-                          <input id="anno_nascita_<?php echo $i;?>" name="anno_nascita_<?php echo $i;?>" class="form-control col-md-7 col-xs-12" placeholder="Anno di nascita" value="<?php echo $familiare["anno_di_nascita"];?>">
+                        <div class="col-md-2 col-sm-2 col-xs-6 item form-group">
+                          <div>
+                            <input id="anno_nascita_<?php echo $i;?>" name="anno_nascita_<?php echo $i;?>" required="required" class="form-control col-md-7 col-xs-12" placeholder="Anno di nascita" value="<?php echo $familiare["anno_di_nascita"];?>">
+                          </div>
                         </div>
                         <?php
                         if ($i==count($familiari_assistito_array))
@@ -386,7 +271,8 @@ if ($page_mode=='VISUALIZZA_MODIFICA') {
                         }
                         else {
                         ?>
-                          <div>
+
+                          <div class="col-md-1 col-sm-1 col-xs-1">
                             <button class="btn btn-primary button_remove_familiare" type="button" id="button_remove_familiare_<?php echo $i;?>">X</button>
                           </div>
                         <?php
@@ -438,14 +324,10 @@ if ($page_mode=='VISUALIZZA_MODIFICA') {
                     for ($i = 0; $i < count($documenti_assistito_array)+1; ++$i) {
                       $index = $keys[$i];
                       $documento = $documenti_assistito_array[$index];
-					  $data_rilascio_pieces=split("-", $documento['DATA_RILASCIO_DOC']);
-					  $data_rilascio_formatted=$data_rilascio_pieces[1]."/".$data_rilascio_pieces[2]."/".$data_rilascio_pieces[0];
-					  $data_scadenza_pieces=split("-", $documento['DATA_SCADENZA_DOC']);
-					  $data_scadenza_formatted=$data_scadenza_pieces[1]."/".$data_scadenza_pieces[2]."/".$data_scadenza_pieces[0];
                     ?>
                       <div class="item form-group" id="documento_input_<?php echo $i;?>">
                         <input type="hidden" name="documento_<?php echo $i;?>_pk" value="<?php echo $documento["ID"];?>" />
-                        <label class="control-label col-md-1 col-sm-1 col-xs-1">Documento <?php echo ($i+1);?> </label>
+                        <!--<label class="control-label col-md-1 col-sm-1 col-xs-1">Documento <?php echo ($i+1);?> </label>-->
 
                         <div class="col-md-2 col-sm-2 col-xs-2">
     											<select name="tipodoc_<?php echo $i;?>" class="select2_single form-control" tabindex="-1">
@@ -462,25 +344,25 @@ if ($page_mode=='VISUALIZZA_MODIFICA') {
                             <option value="altro" <?php if ($documento["TIPO_DOC"]=="altro") echo("selected");?>>Altro</option>
     											</select>
     										</div>
-                        <div class="col-md-1 col-sm-1 col-xs-1">
+                        <div class="col-md-2 col-sm-2 col-xs-2">
                           <input id="numero_<?php echo $i;?>" name="numero_<?php echo $i;?>" class="form-control col-md-7 col-xs-12" placeholder="N° doc" value="<?php echo $documento["NUMERO_DOC"];?>">
                         </div>
 
                         <div class="col-md-2 col-sm-2 col-xs-2">
-                           <input type="text" placeholder="data di rilascio" name="rilascio_<?php echo $i;?>" class="form-control has-feedback-left" id="rilascio_<?php echo $i;?>" aria-describedby="inputSuccess2Status4" value="<?php if ($data_rilascio_formatted!="//") echo $data_rilascio_formatted;?>">
+                           <input type="text" placeholder="data di rilascio" name="rilascio_<?php echo $i;?>" class="form-control has-feedback-left" id="rilascio_<?php echo $i;?>" aria-describedby="inputSuccess2Status4" value="<?php echo $documento['DATA_RILASCIO_DOC'];?>">
  												   <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
 												   <span id="inputSuccess2Status4" class="sr-only">(success)</span>
 											  </div>
                         <div class="col-md-2 col-sm-2 col-xs-2">
-                           <input type="text" placeholder="data di scadenza" name="scadenza_<?php echo $i;?>" class="form-control has-feedback-left" id="scadenza_<?php echo $i;?>" aria-describedby="inputSuccess2Status4" value="<?php if ($data_scadenza_formatted!="//") echo $data_scadenza_formatted;?>">
+                           <input type="text" placeholder="data di scadenza" name="scadenza_<?php echo $i;?>" class="form-control has-feedback-left" id="scadenza_<?php echo $i;?>" aria-describedby="inputSuccess2Status4" value="<?php echo $documento['DATA_SCADENZA_DOC'];?>">
  												   <span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
 												   <span id="inputSuccess2Status4" class="sr-only">(success)</span>
 											  </div>
                         <div class="checkbox col-md-2 col-sm-2 col-xs-2">
-												<label>
-													<input type="checkbox" class="flat" name="fotocopia_<?php echo $i;?>" value=1 <?php if ($documento["FOTOCOPIA"]==1) echo 'checked="checked"'; ?> > Fotocopia
-												</label>
-											</div>
+  												<label>
+  													<input type="checkbox" class="flat" name="fotocopia_<?php echo $i;?>" value=1 <?php if ($documento["FOTOCOPIA"]==1) echo 'checked="checked"'; ?> > Fotoc
+  												</label>
+                        </div>
 
                         <?php
                         if ($i==count($documenti_assistito_array))
@@ -490,7 +372,7 @@ if ($page_mode=='VISUALIZZA_MODIFICA') {
                             <button class="btn btn-primary button_remove_documento" type="button" id="button_remove_documento_<?php echo $i;?>" style="display:none;">X</button>
                           </div>
                           <div>
-                            <button class="btn btn-primary button_add_documento" type="button" id="button_add_documento_<?php echo $i;?>">Agg. documento</button>
+                            <button class="btn btn-primary button_add_documento" type="button" id="button_add_documento_<?php echo $i;?>">+</button>
                           </div>
                         <?php
                         }
@@ -510,36 +392,6 @@ if ($page_mode=='VISUALIZZA_MODIFICA') {
 
 									</div>
 
-<!--
-									<div class="item form-group" style="min-height:34px;">
-										<div class="col-md-3 col-sm-3 col-xs-12" style="float:left;">
-											<div class="checkbox">
-												<span id="identita">
-													<label>
-														<input type="checkbox" class="flat" name="documenti[]" value="identita"> Carta di identità
-													</label>
-												</span>
-											</div>
-										</div>
-										<div id="info_identita" class="col-md-9 col-sm-9 col-xs-12" style="display:none;">
-											<div class="col-md-3 col-sm-3 col-xs-12">
-												<input type="text" name="rilascio_identita" class="form-control has-feedback-left" id="single_cal4" aria-describedby="inputSuccess2Status4">
-												<span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
-												<span id="inputSuccess2Status4" class="sr-only">(success)</span>
-											</div>
-											<div class="col-md-3 col-sm-3 col-xs-12">
-												<input type="text" name="scadenza_identita" class="form-control has-feedback-left" id="single_cal4" aria-describedby="inputSuccess2Status4">
-												<span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>
-												<span id="inputSuccess2Status4" class="sr-only">(success)</span>
-											</div>
-											<div class="checkbox">
-												<label>
-													<input type="checkbox" class="flat" name="fotocopia_identita" value="conoscenti"> Fotocopia
-												</label>
-											</div>
-										</div>
-									</div>
--->
 									<br />
 									<span class="section">Chi lo invia</span>
 									<div class="item form-group">
@@ -894,337 +746,372 @@ if ($page_mode=='VISUALIZZA_MODIFICA') {
 
 </div>
 
-<!--
-<form action="assistito.php" method="post">
-	<div class="mandatory">I campi contrassegnati con * sono obbligatori</div><br />
-	<input type="hidden" name="action" value="register" />
 
-    <label for="user">Nome<i>*</i></label>
-    <input type="text" name="nome" id="nome" class="input" value="" autocomplete="off" /><br />
+<script type="text/javascript">
 
-	<label for="user">Cognome<i>*</i></label>
-    <input type="text" name="cognome" id="cognome" class="input" value="" autocomplete="off" /><br />
+	$(document).on('click', '.button_familiare', function (event) {
+		$('#'+event.target.id+'').hide();
+    idx_familiare_clicked = parseInt(event.target.id.substring(event.target.id.lastIndexOf('_') + 1));
+    idx_new_familiare = idx_familiare_clicked +1;
 
-	<label for="phone">Cellulare<i>*</i></label>
-	<input type="text" name="cellulare" id="cellulare" class="input" maxlength="10" value="" /><br />
+		new_html='<div class="item form-group" id="familiare_input_'+idx_new_familiare+'">' +
+                '<input type="hidden" name="familiare_'+idx_new_familiare+'_pk"/>' +
+								'<label class="control-label col-md-3 col-sm-3 col-xs-12">Familiare '+(idx_new_familiare+1)+' </label>' +
+								'<div class="col-md-3 col-sm-3 col-xs-6">' +
+									'<input id="parentela_'+idx_new_familiare+'" name="parentela_'+idx_new_familiare+'" class="form-control col-md-7 col-xs-12" placeholder="Grado di parentela" >' +
+								'</div>' +
+								'<div class="col-md-3 col-sm-3 col-xs-6">' +
+									'<input id="anno_nascita_'+idx_new_familiare+'" name="anno_nascita_'+idx_new_familiare+'" class="form-control col-md-7 col-xs-12" placeholder="Anno di nascita" >' +
+								'</div>' +
+                '<div>' +
+                  '<button class="btn btn-primary button_remove_familiare" type="button" id="button_remove_familiare_'+idx_new_familiare+'" style="display:none;">X</button>' +
+                '</div>'+
+								'<div>' +
+									'<button class="btn btn-primary button_familiare" type="button" id="button_familiare_'+idx_new_familiare+'">Aggiungi familiare</button>' +
+								'</div>' +
+							'</div>';
+		$('#familiari').append(new_html);
 
+    var elem = document.getElementById('button_remove_familiare_'+idx_familiare_clicked);
+    elem.setAttribute("style", "display: inline;");
 
-<label for="stato_civile">Stato civile<i>*</i></label>
-<div class="input">
-	    <select name="stato_civile" id="stato_civile" class="stato_civile">
-			<option value="">Selezionare</option>
-		    				<option value="1">Celibe</option>
-							<option value="2">Nubile</option>
-							<option value="3">Convivente</option>
-							<option value="4">Coniugato/a</option>
-							<option value="5">Vedevo/a</option>
-							<option value="6">Separato/a</option>
-							<option value="7">Divorziato</option>
-					</select>
-    </div><br />
-    </div>
+	});
+  $(document).on('click', '.button_remove_familiare', function (event) {
 
-<input type="submit" name="submit" value="Inserisci assistito" class="bluebutton rad3" />
-</form>
--->
-<?php
-//} else { //siamo in fase registrazione
-//}
-?>
+    idx_familiare_clicked = parseInt(event.target.id.substring(event.target.id.lastIndexOf('_') + 1));
 
+    //set the remove flag
+		new_html='<input type="hidden" name="familiare_'+idx_familiare_clicked+'_rimuovi" value="1" />';
+		$('#familiare_input_'+idx_familiare_clicked).append(new_html);
 
+    //$('#familiare_input_'+idx_familiare_clicked).setAttribute("style", "display: none;");
 
-<!--
-<?php
-$assistiti = get_assistiti();
-//print_r($assistiti);
-?>
--->
+    var elem = document.getElementById('familiare_input_'+idx_familiare_clicked);
+    elem.setAttribute("style", "display: none;");
+	});
 
-<!-- page content -->
-	   <!-- /datepicker -->
-    <script type="text/javascript">
+  $(document).on('click', '.button_add_documento', function (event) {
+		$('#'+event.target.id+'').hide();
+    idx_documento_clicked = parseInt(event.target.id.substring(event.target.id.lastIndexOf('_') + 1));
+    idx_new_documento = idx_documento_clicked +1;
 
-			$(document).on('click', '.button_familiare', function (event) {
-				$('#'+event.target.id+'').hide();
-        idx_familiare_clicked = parseInt(event.target.id.substring(event.target.id.lastIndexOf('_') + 1));
-        idx_new_familiare = idx_familiare_clicked +1;
+		new_html='<div class="item form-group" id="documento_input_'+idx_new_documento+'">' +
+                '<input type="hidden" name="documento_'+idx_new_documento+'_pk"/>' +
+                '<div class="col-md-2 col-sm-2 col-xs-2">'+
+                  '<select name="tipodoc_'+idx_new_documento+'" class="select2_single form-control" tabindex="-1">'+
+                    '<option value="">Tipologia</option>'+
+                    '<option value="identita">Carta identità</option>'+
+                    '<option value="passaporto">Passaporto</option>'+
+                    '<option value="patente">Patente</option>'+
+                    '<option value="smarrimento">Denuncia di smarrimento</option>'+
+                    '<option value="pds">PDS (permesso di soggiorno)</option>'+
+                    '<option value="stp">STP (rifugiato politico)</option>'+
+                    '<option value="sanitaria">Tessera sanitaria</option>'+
+                    '<option value="turistico">Permesso turistico</option>'+
+                    '<option value="identita_straniera">Carta identità straniera</option>'+
+                    '<option value="altro">Altro</option>'+
+                  '</select>'+
+                '</div>'+
+                '<div class="col-md-2 col-sm-2 col-xs-2">'+
+                  '<input id="numero_'+idx_new_documento+'" name="numero_'+idx_new_documento+'" class="form-control col-md-7 col-xs-12" placeholder="N° doc">'+
+                '</div>'+
+                '<div class="col-md-2 col-sm-2 col-xs-2">'+
+                  '<input type="text" placeholder="data di rilascio" name="rilascio_'+idx_new_documento+'" class="form-control has-feedback-left" id="rilascio_'+idx_new_documento+'" aria-describedby="inputSuccess2Status4">'+
+                  '<span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>'+
+                  '<span id="inputSuccess2Status4" class="sr-only">(success)</span>'+
+                '</div>'+
+                '<div class="col-md-2 col-sm-2 col-xs-2">'+
+                  '<input type="text" placeholder="data di scadenza" name="scadenza_'+idx_new_documento+'" class="form-control has-feedback-left" id="scadenza_'+idx_new_documento+'" aria-describedby="inputSuccess2Status4">'+
+                  '<span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>'+
+                  '<span id="inputSuccess2Status4" class="sr-only">(success)</span>'+
+                '</div>'+
+                '<div class="checkbox col-md-2 col-sm-2 col-xs-2">'+
+                    '<label>'+
+                    '<input type="checkbox" class="flat" name="fotocopia_'+idx_new_documento+'" value="<?php echo $documento["FOTOCOPIA"];?>"> Fotoc'+
+                    '</label>'+
+                '</div>'+
+                '<div>' +
+                  '<button class="btn btn-primary button_remove_documento" type="button" id="button_remove_documento_'+idx_new_documento+'" style="display:none;">X</button>' +
+                '</div>'+
+								'<div>' +
+									'<button class="btn btn-primary button_add_documento" type="button" id="button_add_documento_'+idx_new_documento+'">+</button>' +
+								'</div>' +
+							'</div>';
+		$('#documenti').append(new_html);
 
-				new_html='<div class="item form-group" id="familiare_input_'+idx_new_familiare+'">' +
-                    '<input type="hidden" name="familiare_'+idx_new_familiare+'_pk"/>' +
-										'<label class="control-label col-md-3 col-sm-3 col-xs-12">Familiare '+(idx_new_familiare+1)+' </label>' +
-										'<div class="col-md-3 col-sm-3 col-xs-6">' +
-											'<input id="parentela_'+idx_new_familiare+'" name="parentela_'+idx_new_familiare+'" class="form-control col-md-7 col-xs-12" placeholder="Grado di parentela" >' +
-										'</div>' +
-										'<div class="col-md-3 col-sm-3 col-xs-6">' +
-											'<input id="anno_nascita_'+idx_new_familiare+'" name="anno_nascita_'+idx_new_familiare+'" class="form-control col-md-7 col-xs-12" placeholder="Anno di nascita" >' +
-										'</div>' +
-                    '<div>' +
-                      '<button class="btn btn-primary button_remove_familiare" type="button" id="button_remove_familiare_'+idx_new_familiare+'" style="display:none;">X</button>' +
-                    '</div>'+
-										'<div>' +
-											'<button class="btn btn-primary button_familiare" type="button" id="button_familiare_'+idx_new_familiare+'">Aggiungi familiare</button>' +
-										'</div>' +
-									'</div>';
-				$('#familiari').append(new_html);
+    var elem = document.getElementById('button_remove_documento_'+idx_documento_clicked);
+    elem.setAttribute("style", "display: inline;");
 
-        var elem = document.getElementById('button_remove_familiare_'+idx_familiare_clicked);
-        elem.setAttribute("style", "display: inline;");
-
-			});
-      $(document).on('click', '.button_remove_familiare', function (event) {
-
-        idx_familiare_clicked = parseInt(event.target.id.substring(event.target.id.lastIndexOf('_') + 1));
-
-        //set the remove flag
-				new_html='<input type="hidden" name="familiare_'+idx_familiare_clicked+'_rimuovi" value="1" />';
-				$('#familiare_input_'+idx_familiare_clicked).append(new_html);
-
-        //$('#familiare_input_'+idx_familiare_clicked).setAttribute("style", "display: none;");
-
-        var elem = document.getElementById('familiare_input_'+idx_familiare_clicked);
-        elem.setAttribute("style", "display: none;");
-
-        //familiare_toremove_
-
-        //var d = document.getElementById('familiari');
-        //var olddiv = document.getElementById('familiare_input_'.$index);
-        //d.removeChild(olddiv);
-
-			});
-
-      $(document).on('click', '.button_add_documento', function (event) {
-				$('#'+event.target.id+'').hide();
-        idx_documento_clicked = parseInt(event.target.id.substring(event.target.id.lastIndexOf('_') + 1));
-        idx_new_documento = idx_documento_clicked +1;
-
-				new_html='<div class="item form-group" id="documento_input_'+idx_new_documento+'">' +
-                    '<input type="hidden" name="documento_'+idx_new_documento+'_pk"/>' +
-										'<label class="control-label col-md-1 col-sm-1 col-xs-1">Documento '+(idx_new_documento+1)+' </label>' +
-
-                    '<div class="col-md-2 col-sm-2 col-xs-2">'+
-                      '<select name="tipodoc_'+idx_new_documento+'" class="select2_single form-control" tabindex="-1">'+
-                        '<option value="">Tipologia</option>'+
-                        '<option value="identita">Carta identità</option>'+
-                        '<option value="passaporto">Passaporto</option>'+
-                        '<option value="patente">Patente</option>'+
-                        '<option value="smarrimento">Denuncia di smarrimento</option>'+
-                        '<option value="pds">PDS (permesso di soggiorno)</option>'+
-                        '<option value="stp">STP (rifugiato politico)</option>'+
-                        '<option value="sanitaria">Tessera sanitaria</option>'+
-                        '<option value="turistico">Permesso turistico</option>'+
-                        '<option value="identita_straniera">Carta identità straniera</option>'+
-                        '<option value="altro">Altro</option>'+
-                      '</select>'+
-                    '</div>'+
-                    '<div class="col-md-1 col-sm-1 col-xs-1">'+
-                      '<input id="numero_'+idx_new_documento+'" name="numero_'+idx_new_documento+'" class="form-control col-md-7 col-xs-12" placeholder="N° doc">'+
-                    '</div>'+
-                    '<div class="col-md-2 col-sm-2 col-xs-2">'+
-                      '<input type="text" placeholder="data di rilascio" name="rilascio_'+idx_new_documento+'" class="form-control has-feedback-left" id="rilascio_'+idx_new_documento+'" aria-describedby="inputSuccess2Status4">'+
-                      '<span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>'+
-                      '<span id="inputSuccess2Status4" class="sr-only">(success)</span>'+
-                    '</div>'+
-                    '<div class="col-md-2 col-sm-2 col-xs-2">'+
-                      '<input type="text" placeholder="data di scadenza" name="scadenza_'+idx_new_documento+'" class="form-control has-feedback-left" id="scadenza_'+idx_new_documento+'" aria-describedby="inputSuccess2Status4">'+
-                      '<span class="fa fa-calendar-o form-control-feedback left" aria-hidden="true"></span>'+
-                      '<span id="inputSuccess2Status4" class="sr-only">(success)</span>'+
-                      '</div>'+
-                      '<div class="checkbox col-md-2 col-sm-2 col-xs-2">'+
-                        '<label>'+
-                        '<input type="checkbox" class="flat" name="fotocopia_'+idx_new_documento+'" value="<?php echo $documento["FOTOCOPIA"];?>"> Fotocopia'+
-                        '</label>'+
-                      '</div>'+
-                    '<div>' +
-                      '<button class="btn btn-primary button_remove_documento" type="button" id="button_remove_documento_'+idx_new_documento+'" style="display:none;">X</button>' +
-                    '</div>'+
-										'<div>' +
-											'<button class="btn btn-primary button_add_documento" type="button" id="button_add_documento_'+idx_new_documento+'">Aggiungi documento</button>' +
-										'</div>' +
-									'</div>';
-				$('#documenti').append(new_html);
-
-        var elem = document.getElementById('button_remove_documento_'+idx_documento_clicked);
-        elem.setAttribute("style", "display: inline;");
-
-			});
-      $(document).on('click', '.button_remove_documento', function (event) {
-        idx_documento_clicked = parseInt(event.target.id.substring(event.target.id.lastIndexOf('_') + 1));
-        //set the remove flag
-				new_html='<input type="hidden" name="documento_'+idx_documento_clicked+'_rimuovi" value="1" />';
-				$('#documento_input_'+idx_documento_clicked).append(new_html);
-        var elem = document.getElementById('documento_input_'+idx_documento_clicked);
-        elem.setAttribute("style", "display: none;");
-			});
-
-		$(document).ready(function () {
-            $('#single_cal1').daterangepicker({
-                singleDatePicker: true,
-                calender_style: "picker_1"
-            }, function (start, end, label) {
-                console.log(start.toISOString(), end.toISOString(), label);
-            });
-            $('#single_cal2').daterangepicker({
-                singleDatePicker: true,
-                calender_style: "picker_2"
-            }, function (start, end, label) {
-                console.log(start.toISOString(), end.toISOString(), label);
-            });
-            $('#single_cal3').daterangepicker({
-                singleDatePicker: true,
-                calender_style: "picker_3"
-            }, function (start, end, label) {
-                console.log(start.toISOString(), end.toISOString(), label);
-            });
-            $('#data_primo_ascolto_calendar').daterangepicker({
-              locale: {
-                  format: 'DD/MM/YYYY',
-                  monthNames: ['Gennaio',
-                        'Febbraio',
-                        'Marzo',
-                        'Aprile',
-                        'Maggio',
-                        'Giugno',
-                        'Luglio',
-                        'Agosto',
-                        'Settembre',
-                        'Ottobre',
-                        'Novembre',
-                        'Dicembre'],
-                },
-                showDropdowns: true,
-                minDate: '01-01-2000',
-                maxDate: '31-12-2020',
-                startDate: new Date(),
-                endDate: new Date(),
-                singleDatePicker: true,
-                calender_style: "picker_4"
-            }, function (start, end, label) {
-                console.log(start.toISOString(), end.toISOString(), label);
-            });
-            $('#data_nascita_calendar').daterangepicker({
-              locale: {
-                  format: 'DD/MM/YYYY',
-                  monthNames: ['Gennaio',
-                        'Febbraio',
-                        'Marzo',
-                        'Aprile',
-                        'Maggio',
-                        'Giugno',
-                        'Luglio',
-                        'Agosto',
-                        'Settembre',
-                        'Ottobre',
-                        'Novembre',
-                        'Dicembre'],
-                },
-                showDropdowns: true,
-                minDate: '01-01-1920',
-                maxDate: '31-12-2020',
-                startDate: '01-01-1950',
-                endDate: '01-01-1950',
-                singleDatePicker: true,
-                calender_style: "picker_4"
-            }, function (start, end, label) {
-                console.log(start.toISOString(), end.toISOString(), label);
-            });
-            $('#rilascio_0').daterangepicker({
-                singleDatePicker: true,
-                calender_style: "picker"
-            }, function (start, end, label) {
-                console.log(start.toISOString(), end.toISOString(), label);
-            });
-            $('#scadenza_0').daterangepicker({
-                singleDatePicker: true,
-                calender_style: "picker"
-            }, function (start, end, label) {
-                console.log(start.toISOString(), end.toISOString(), label);
-            });
-            $('#rilascio_1').daterangepicker({
-                singleDatePicker: true,
-                calender_style: "picker"
-            }, function (start, end, label) {
-                console.log(start.toISOString(), end.toISOString(), label);
-            });
-            $('#scadenza_1').daterangepicker({
-                singleDatePicker: true,
-                calender_style: "picker"
-            }, function (start, end, label) {
-                console.log(start.toISOString(), end.toISOString(), label);
-            });
-            $('#rilascio_2').daterangepicker({
-                singleDatePicker: true,
-                calender_style: "picker"
-            }, function (start, end, label) {
-                console.log(start.toISOString(), end.toISOString(), label);
-            });
-            $('#scadenza_2').daterangepicker({
-                singleDatePicker: true,
-                calender_style: "picker"
-            }, function (start, end, label) {
-                console.log(start.toISOString(), end.toISOString(), label);
-            });
+	});
+  $(document).on('click', '.button_remove_documento', function (event) {
+    idx_documento_clicked = parseInt(event.target.id.substring(event.target.id.lastIndexOf('_') + 1));
+    //set the remove flag
+		new_html='<input type="hidden" name="documento_'+idx_documento_clicked+'_rimuovi" value="1" />';
+		$('#documento_input_'+idx_documento_clicked).append(new_html);
+    var elem = document.getElementById('documento_input_'+idx_documento_clicked);
+    elem.setAttribute("style", "display: none;");
+	});
 
 
+$(document).ready(function () {
+
+  $('#data_primo_ascolto_calendar').daterangepicker({
+    format: 'DD/MM/YYYY',
+    locale: {
+        monthNames: ['Gennaio',
+              'Febbraio',
+              'Marzo',
+              'Aprile',
+              'Maggio',
+              'Giugno',
+              'Luglio',
+              'Agosto',
+              'Settembre',
+              'Ottobre',
+              'Novembre',
+              'Dicembre'],
+          daysOfWeek: ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'],
+      },
+      showDropdowns: true,
+      minDate: '01-01-2010',
+      maxDate: new Date(),
+      singleDatePicker: true,
+      calender_style: "picker_4"
+  }, function (start, end, label) {
+      console.log(start.toISOString(), end.toISOString(), label);
+  });
+  $('#data_nascita_calendar').daterangepicker({
+    format: 'DD/MM/YYYY',
+    locale: {
+        format: 'DD/MM/YYYY',
+        monthNames: ['Gennaio',
+              'Febbraio',
+              'Marzo',
+              'Aprile',
+              'Maggio',
+              'Giugno',
+              'Luglio',
+              'Agosto',
+              'Settembre',
+              'Ottobre',
+              'Novembre',
+              'Dicembre'],
+          daysOfWeek: ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'],
+      },
+      showDropdowns: true,
+      minDate: '01-01-1930',
+      maxDate: new Date(),
+      singleDatePicker: true,
+      calender_style: "picker_4"
+  }, function (start, end, label) {
+      console.log(start.toISOString(), end.toISOString(), label);
+  });
+  $('#rilascio_0').daterangepicker({
+    format: 'DD/MM/YYYY',
+    locale: {
+        format: 'DD/MM/YYYY',
+        monthNames: ['Gennaio',
+              'Febbraio',
+              'Marzo',
+              'Aprile',
+              'Maggio',
+              'Giugno',
+              'Luglio',
+              'Agosto',
+              'Settembre',
+              'Ottobre',
+              'Novembre',
+              'Dicembre'],
+          daysOfWeek: ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'],
+      },
+      showDropdowns: true,
+      minDate: '01-01-2000',
+      maxDate: new Date(),
+      singleDatePicker: true,
+      calender_style: "picker_4"
+  }, function (start, end, label) {
+      console.log(start.toISOString(), end.toISOString(), label);
+  });
+  $('#scadenza_0').daterangepicker({
+    format: 'DD/MM/YYYY',
+    locale: {
+        format: 'DD/MM/YYYY',
+        monthNames: ['Gennaio',
+              'Febbraio',
+              'Marzo',
+              'Aprile',
+              'Maggio',
+              'Giugno',
+              'Luglio',
+              'Agosto',
+              'Settembre',
+              'Ottobre',
+              'Novembre',
+              'Dicembre'],
+          daysOfWeek: ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'],
+      },
+      showDropdowns: true,
+      minDate: '01-01-2000',
+      maxDate: '31-12-2020',
+      singleDatePicker: true,
+      calender_style: "picker_4"
+  }, function (start, end, label) {
+      console.log(start.toISOString(), end.toISOString(), label);
+  });
+  $('#rilascio_1').daterangepicker({
+    format: 'DD/MM/YYYY',
+    locale: {
+        format: 'DD/MM/YYYY',
+        monthNames: ['Gennaio',
+              'Febbraio',
+              'Marzo',
+              'Aprile',
+              'Maggio',
+              'Giugno',
+              'Luglio',
+              'Agosto',
+              'Settembre',
+              'Ottobre',
+              'Novembre',
+              'Dicembre'],
+          daysOfWeek: ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'],
+      },
+      showDropdowns: true,
+      minDate: '01-01-2000',
+      maxDate: new Date(),
+      singleDatePicker: true,
+      calender_style: "picker_4"
+  }, function (start, end, label) {
+      console.log(start.toISOString(), end.toISOString(), label);
+  });
+  $('#scadenza_1').daterangepicker({
+    format: 'DD/MM/YYYY',
+    locale: {
+        format: 'DD/MM/YYYY',
+        monthNames: ['Gennaio',
+              'Febbraio',
+              'Marzo',
+              'Aprile',
+              'Maggio',
+              'Giugno',
+              'Luglio',
+              'Agosto',
+              'Settembre',
+              'Ottobre',
+              'Novembre',
+              'Dicembre'],
+          daysOfWeek: ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'],
+      },
+      showDropdowns: true,
+      minDate: '01-01-2000',
+      maxDate: '31-12-2020',
+      singleDatePicker: true,
+      calender_style: "picker_4"
+  }, function (start, end, label) {
+      console.log(start.toISOString(), end.toISOString(), label);
+  });
+  $('#rilascio_2').daterangepicker({
+    format: 'DD/MM/YYYY',
+    locale: {
+        format: 'DD/MM/YYYY',
+        monthNames: ['Gennaio',
+              'Febbraio',
+              'Marzo',
+              'Aprile',
+              'Maggio',
+              'Giugno',
+              'Luglio',
+              'Agosto',
+              'Settembre',
+              'Ottobre',
+              'Novembre',
+              'Dicembre'],
+          daysOfWeek: ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'],
+      },
+      showDropdowns: true,
+      minDate: '01-01-2000',
+      maxDate: new Date(),
+      singleDatePicker: true,
+      calender_style: "picker_4"
+  }, function (start, end, label) {
+      console.log(start.toISOString(), end.toISOString(), label);
+  });
+  $('#scadenza_2').daterangepicker({
+    format: 'DD/MM/YYYY',
+    locale: {
+        format: 'DD/MM/YYYY',
+        monthNames: ['Gennaio',
+              'Febbraio',
+              'Marzo',
+              'Aprile',
+              'Maggio',
+              'Giugno',
+              'Luglio',
+              'Agosto',
+              'Settembre',
+              'Ottobre',
+              'Novembre',
+              'Dicembre'],
+          daysOfWeek: ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'],
+      },
+      showDropdowns: true,
+      minDate: '01-01-2000',
+      maxDate: '31-12-2020',
+      singleDatePicker: true,
+      calender_style: "picker_4"
+  }, function (start, end, label) {
+      console.log(start.toISOString(), end.toISOString(), label);
+  });
+
+
+    });
+</script>
+
+<!-- form validation -->
+<script src="js/validator/validator.js"></script>
+<script>
+    // initialize the validator function
+    validator.message['date'] = 'not a real date';
+
+    // validate a field on "blur" event, a 'select' on 'change' event & a '.reuired' classed multifield on 'keyup':
+    $('form')
+        .on('blur', 'input[required], input.optional, select.required', validator.checkField)
+        .on('change', 'select.required', validator.checkField)
+        .on('keypress', 'input[required][pattern]', validator.keypress);
+
+    $('.multi.required')
+        .on('keyup blur', 'input', function () {
+            validator.checkField.apply($(this).siblings().last()[0]);
         });
-    </script>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('#reservation').daterangepicker(null, function (start, end, label) {
-                console.log(start.toISOString(), end.toISOString(), label);
-            });
-        });
-    </script>
-    <!-- /datepicker -->
 
+    // bind the validation to the form submit event
+    //$('#send').click('submit');//.prop('disabled', true);
 
+    $('form').submit(function (e) {
+        e.preventDefault();
+        var submit = true;
+        // evaluate the form using generic validaing
+        if (!validator.checkAll($(this))) {
+            submit = false;
+        }
 
+        if (submit)
+            this.submit();
+        return false;
+    });
 
-    <!-- form validation -->
-    <script src="js/validator/validator.js"></script>
-    <script>
-        // initialize the validator function
-        validator.message['date'] = 'not a real date';
+    /* FOR DEMO ONLY */
+    $('#vfields').change(function () {
+        $('form').toggleClass('mode2');
+    }).prop('checked', false);
 
-        // validate a field on "blur" event, a 'select' on 'change' event & a '.reuired' classed multifield on 'keyup':
-        $('form')
-            .on('blur', 'input[required], input.optional, select.required', validator.checkField)
-            .on('change', 'select.required', validator.checkField)
-            .on('keypress', 'input[required][pattern]', validator.keypress);
+    $('#alerts').change(function () {
+        validator.defaults.alerts = (this.checked) ? false : true;
+        if (this.checked)
+            $('form .alert').remove();
+    }).prop('checked', false);
 
-        $('.multi.required')
-            .on('keyup blur', 'input', function () {
-                validator.checkField.apply($(this).siblings().last()[0]);
-            });
-
-        // bind the validation to the form submit event
-        //$('#send').click('submit');//.prop('disabled', true);
-
-        $('form').submit(function (e) {
-            e.preventDefault();
-            var submit = true;
-            // evaluate the form using generic validaing
-            if (!validator.checkAll($(this))) {
-                submit = false;
-            }
-
-            if (submit)
-                this.submit();
-            return false;
-        });
-
-        /* FOR DEMO ONLY */
-        $('#vfields').change(function () {
-            $('form').toggleClass('mode2');
-        }).prop('checked', false);
-
-        $('#alerts').change(function () {
-            validator.defaults.alerts = (this.checked) ? false : true;
-            if (this.checked)
-                $('form .alert').remove();
-        }).prop('checked', false);
-
-    </script>
+</script>
 
 <?php
 include "footer.php";

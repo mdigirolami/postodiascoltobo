@@ -4,7 +4,7 @@ header("Cache-Control: no-cache");
 header("Pragma: no-cache");
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="it">
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -31,7 +31,7 @@ header("Pragma: no-cache");
     <script src="js/jquery.min.js"></script>
 
 
-    
+
     <!--[if lt IE 9]>
         <script src="../assets/js/ie8-responsive-file-warning.js"></script>
         <![endif]-->
@@ -58,7 +58,7 @@ header("Pragma: no-cache");
                     <div class="navbar nav_title" style="border: 0;">
                         <a href="index.html" class="site_title"><i class="fa fa-paw"></i> <span>Posto di ascolto</span></a>
                     </div>
--->					
+-->
 					<div class="clearfix"></div>
 
                     <!-- menu prile quick info -->
@@ -66,12 +66,12 @@ header("Pragma: no-cache");
                         <div class="profile_pic">
                             <img src="images/logo_quadrato.png" alt="..." class="img-circle profile_img">
                         </div>
-						
-<!--						
-                        <div class="profile_info">	
+
+<!--
+                        <div class="profile_info">
                             <span>Welcome,</span>
                             <h2>Iperman</h2>
-						</div>	
--->						
+						</div>
+-->
                     </div>
                     <!-- /menu prile quick info -->

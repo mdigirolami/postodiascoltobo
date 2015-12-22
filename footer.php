@@ -2,7 +2,7 @@
 
                 <footer>
                     <div class="">
-                        <p class="pull-right">realizzato da <a>IperWeb</a> |
+                        <p class="pull-right">realizzato da IperWeb |
                             <span class="lead">Posto di Ascolto e Indirizzo Città di Bologna</span>
                         </p>
                     </div>

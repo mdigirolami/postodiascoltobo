@@ -115,7 +115,7 @@ body.nav-sm .profile {
 /*  width: 35%; */
     width: 100%;
 /*    float: left; */
-	
+
 	height: 200px;
 }
 
@@ -197,7 +197,7 @@ body.nav-sm .menu_section h3 {
     float: left;
     /*background: #F4F6F9;
     border-bottom: 1px solid #E6E9ED;*/
-    
+
     background: #EDEDED;
     border-bottom: 1px solid #D9DEE4;
     margin-bottom: 10px;
@@ -381,7 +381,7 @@ body {
     color: #73879C;
     background: #2A3F54;
     /*#ECF0F1; #FCFCFC*/
-    
+
     font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif;
     font-size: 13px;
     font-weight: 400;
@@ -2443,7 +2443,7 @@ span.section {
   color: #333;
   border: 0;
   border-bottom: 1px solid #e5e5e5;
-} 
+}
 
 .form-control {
     border-radius: 0;
@@ -2907,7 +2907,7 @@ select.parsley-error {
 }
 
 .well .markup-heading{
-    
+
 }
 .well .markup{
     background: #fff;
@@ -3200,6 +3200,8 @@ select.parsley-error {
     border: 1px solid #ADB2B5;
     line-height: 30px;
     border-radius: 0px !important;
+
+	color: #000;
 }
 
 .daterangepicker select.monthselect {
@@ -3496,7 +3498,7 @@ span.tag a {
 
 ul.bar_tabs {
     /* border: 1px solid #ff0000; */
-    
+
     overflow: visible;
     background: #F5F7FA;
     height: 25px;
@@ -3881,7 +3883,7 @@ ul.social li {
     position: absolute;
     height: auto;
     /* Ensures notices are above everything */
-    
+
     z-index: 9999;
 }
 /* Hides position: fixed from IE6 */
@@ -5680,12 +5682,12 @@ a.hiddenanchor{
     position: relative;
 }
 
-#register, 
+#register,
 #login{
     position: absolute;
     top: 0px; width:100%;
 }
-#register{	
+#register{
     z-index: 21;
     opacity: 0; width:100%;
 }
