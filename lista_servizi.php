@@ -58,9 +58,6 @@ $servizi = get_servizi();
                                     <table id="example" class="table table-striped responsive-utilities jambo_table">
                                         <thead>
                                             <tr class="headings">
-                                                <th>
-                                                    <input type="checkbox" class="tableflat">
-                                                </th>
                                                 <th>Tipo</th>
                                                 <th>Destinatario</th>
                                                 <th>Data</th>
@@ -72,11 +69,9 @@ $servizi = get_servizi();
                                         <tbody>
 										    <?php
 												foreach ($servizi as $a) {
-													echo '<tr class=""even pointer">';
-													echo '<td class="a-center "><input type="checkbox" class="tableflat"></td>';
 													echo '<td class=" ">'.$a["tipo"].'</td>';
 													echo '<td class=" ">'.$a["cognome"]." ".$a["nome"].'</td>';
-													echo '<td class=" ">'.$a["data"].'</td>';
+													echo '<td class=" ">'.convertDateFromDbTo2It($a["data"]).'</td>';
 													echo '<td class=" ">
                             <a href="dettagli_servizio.php?id_servizio='.$a["id_servizio_erogato"].'" title="Dettagli servizio"><span class="glyphicon glyphicon-assistiti-actions glyphicon-file" aria-hidden="true"></span></a>&nbsp;
                             <a href="servizi_assistito.php?id_assistito='.$a["id_assistito"].'" title="Servizi assistito '.$a["cognome"]." ".$a["nome"].'"><span class="glyphicon glyphicon-assistiti-actions glyphicon-edit" aria-hidden="true"></span></a>&nbsp;

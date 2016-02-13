@@ -58,14 +58,12 @@ $assistiti = get_assistiti();
                                     <table id="example" class="table table-striped responsive-utilities jambo_table">
                                         <thead>
                                             <tr class="headings">
-                                                <th>
-                                                    <input type="checkbox" class="tableflat">
-                                                </th>
                                                 <th>Nome</th>
                                                 <th>Cognome</th>
                                                 <th>Nazione</th>
                                                 <th>Cellulare</th>
                                                 <th>Nucleo familiare</th>
+												<th>Primo ascolto</th>
                                                 <th class="no-link last" data-sortable="true"><span class="nobr">Azione</span></th>
                                             </tr>
                                         </thead>
@@ -76,12 +74,12 @@ $assistiti = get_assistiti();
 													$familiari = get_familiari_assistito($a["id"]);
 													$nucleo = (sizeof($familiari)==0) ? '1 persona' : (sizeof($familiari)+1).' persone';
 													echo '<tr class="even pointer">';
-													echo '<td class="a-center "><input type="checkbox" class="tableflat"></td>';
 													echo '<td class=" ">'.$a["nome"].'</td>';
 													echo '<td class=" ">'.$a["cognome"].'</td>';
 													echo '<td class=" ">'.$a["nazione"].'</td>';
 													echo '<td class=" ">'.$a["cellulare"].'</td>';
 													echo '<td class=" ">'.$nucleo.'</td>';
+													echo '<td class=" ">'.convertDateFromDbTo2It($a["data_primo_ascolto"]).'</td>';
 													echo '<td class=" ">
                             <a href="visualizza_assistito.php?id_assistito='.$a["id"].'" title="Visualizza assistito"><span class="glyphicon glyphicon-assistiti-actions glyphicon-file" aria-hidden="true"></span></a>&nbsp;
                             <a href="assistito.php?id_assistito='.$a["id"].'" title="Gestisci assistito"><span class="glyphicon glyphicon-assistiti-actions glyphicon-pencil" aria-hidden="true"></span></a>&nbsp;

@@ -48,7 +48,7 @@ if (isset($_GET['id_servizio'])) {
                   </div>
                   <div class="row">
                       <div class="col-md-3"><label>Data</label></div>
-                      <div class="col-md-9"><?php echo $servizio["data"];?></div>
+                      <div class="col-md-9"><?php echo convertDateFromDbTo2It($servizio["data"]);?></div>
                   </div>
 				
                   <?php

@@ -61,9 +61,6 @@ if (isset($_GET['id_assistito'])) {
                                     <table id="example" class="table table-striped responsive-utilities jambo_table">
                                         <thead>
                                             <tr class="headings">
-                                                <th>
-                                                    <input type="checkbox" class="tableflat">
-                                                </th>
                                                 <th>Tipo</th>
                                                 <th>Destinatario</th>
                                                 <th>Data</th>
@@ -76,12 +73,12 @@ if (isset($_GET['id_assistito'])) {
 										    <?php
 												foreach ($servizi as $a) {
 													echo '<tr class=""even pointer">';
-													echo '<td class="a-center "><input type="checkbox" class="tableflat"></td>';
 													echo '<td class=" ">'.$a["tipo"].'</td>';
 													echo '<td class=" ">'.$a["cognome"]." ".$a["nome"].'</td>';
-													echo '<td class=" ">'.$a["data"].'</td>';
+													echo '<td class=" ">'.convertDateFromDbTo2It($a["data"]).'</td>';
 													echo '<td class=" ">
                             <a href="dettagli_servizio.php?id_servizio='.$a["id_servizio_erogato"].'" title="Dettagli servizio"><span class="glyphicon glyphicon-assistiti-actions glyphicon-file" aria-hidden="true"></span></a>&nbsp;
+							<a href="rimuovi_servizio.php?id_servizio='.$a["id_servizio_erogato"].'" title="Rimuovi servizio" onclick="return confirm(\'Si sta per rimuovere il servizio '.$a["tipo"].' per '.$a["cognome"].' '.$a["nome"].'. I dati relativi al servizio non saranno più disponibili. Proseguire?\');"><span class="glyphicon glyphicon-assistiti-actions glyphicon-remove-circle" aria-hidden="true"></span></a>
                             </td>';
 													echo '</tr>';
 												}
