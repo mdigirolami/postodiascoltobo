@@ -3,7 +3,7 @@ function get_assistiti() {
 	global $db,$config;
 	$result = array();
 
-	$sql="SELECT assistiti.*, elenco_nazioni.nome as nazione FROM assistiti join elenco_nazioni on elenco_nazioni.id=assistiti.id_nazionalita where valid=1";
+	$sql="SELECT assistiti.*, elenco_nazioni.nome as nazione FROM assistiti left join elenco_nazioni on elenco_nazioni.id=assistiti.id_nazionalita where valid=1";
 	$res=mysql_query($sql) or die(mysql_error());
 	while($r=mysql_fetch_assoc($res)) {
 			$result[]=$r;
@@ -405,8 +405,8 @@ function modifica_richieste_assistito($params) {
 	global $db,$config;
 
 	$richieste = get_richieste($params['id_assistito']);
-	echo "RICHIESTE   ";
-	print_r($richieste);
+	//echo "RICHIESTE   ";
+	//print_r($richieste);
 	if (sizeof($richieste)==0) {
 		$sql="insert into richieste (`id`, `id_assistito`, `richiesta_alloggio`,`richiesta_primari`,`richiesta_lavoro`,`richiesta_beni_servizi`,`richiesta_contatti_servizi`,`richiesta_burocratica`,`richiesta_sanitaria`) VALUES ('', ".$params["id_assistito"].", '".$params["richiesta_alloggio"]."','".$params["richiesta_primari"]."','".$params["richiesta_lavoro"]."','".$params["richiesta_beni_servizi"]."','".$params["richiesta_contatti_servizi"]."','".$params["richiesta_burocratica"]."','".$params["richiesta_sanitaria"]."')";
 		$res=mysql_query($sql);
