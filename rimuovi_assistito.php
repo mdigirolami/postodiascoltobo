@@ -11,16 +11,16 @@ if (isset($_GET['id_assistito'])) {
 		include "header.php";
 		include "menu.php";
 		include "top_nav.php";
-?>		
+?>
 		<div class="right_col" role="main">
 			<div class="page-title">
 				<div class="title_left">
-					<h3>Rimozione non riuscita</h3>
+					<h3>Rimozione non riuscita: <?php echo(sizeof($assistito));?> </h3>
 				</div>
 			</div>
-		</div>			
+		</div>
 <?php
-	} else {	
+	} else {
 		header('Location: lista_assistiti.php');
 	}
 ?>

@@ -1,5 +1,6 @@
 <?php
 function get_assistiti() {
+
 	global $db,$config;
 	$result = array();
 
@@ -456,16 +457,19 @@ function get_servizio($id) {
 	global $db,$config;
 	$result = array();
 
-	$sql="SELECT cat_servizi.nome AS tipo, servizi_erogati.data, servizi_erogati.note, assistiti.nome AS nome, assistiti.cognome, assistiti.id as id_assistito
-FROM cat_servizi
-JOIN servizi_erogati ON cat_servizi.id = servizi_erogati.id_servizio
-JOIN assistiti ON servizi_erogati.id_assistito = assistiti.id where servizi_erogati.id=".$id." and servizi_erogati.valid=1";
+	$sql="SELECT cat_servizi.id AS id_categoria, cat_servizi.nome AS tipo, servizi_erogati.data, servizi_erogati.note, assistiti.nome AS nome, assistiti.cognome, assistiti.id as id_assistito
+	FROM cat_servizi
+	JOIN servizi_erogati ON cat_servizi.id = servizi_erogati.id_servizio
+	JOIN assistiti ON servizi_erogati.id_assistito = assistiti.id where servizi_erogati.id=".$id." and servizi_erogati.valid=1";
 	$res=mysql_query($sql);
-	while($r=mysql_fetch_assoc($res)) {
-			$result=$r;
-	}
 
-	return $result;
+	if ($res){
+		while($r=mysql_fetch_assoc($res)) {
+				$result=$r;
+		}
+		return $result;
+	}
+	else return NULL;
 }
 
 
@@ -475,14 +479,20 @@ function get_assistito($id) {
 
 	$sql="SELECT a.*, n.nome as nome_nazionalita FROM assistiti a LEFT OUTER JOIN elenco_nazioni n ON n.id = a.id_nazionalita where a.id=".$id." and a.valid=1";
 	$res=mysql_query($sql);
-	while($r=mysql_fetch_assoc($res)) {
-			$result=$r;
+
+	if ($res) {
+		while($r=mysql_fetch_assoc($res)) {
+				$result=$r;
+				$result["data_primo_ascolto"] = convertDateFromDbTo2It($result["data_primo_ascolto"]);
+				$result["data_di_nascita"] = convertDateFromDbTo2It($result["data_di_nascita"]);
+		}
+
+		return $result;
 	}
+	else return NULL;
 
-	$result["data_primo_ascolto"] = convertDateFromDbTo2It($result["data_primo_ascolto"]);
-	$result["data_di_nascita"] = convertDateFromDbTo2It($result["data_di_nascita"]);
 
-	return $result;
+
 }
 
 
@@ -710,9 +720,20 @@ function get_cat_servizi() {
 
 function inserisci_servizio($params) {
 	global $db,$config;
+
+  $data_servizio = $params['data'];
+  if ($data_servizio!="") {
+ 	 $data_servizio_formatted = convertDateFromItTo2Db($data_servizio);
+ 	 $data_servizio_sql="'".$data_servizio_formatted."'";
+  }
+  else {
+ 	 $data_servizio_sql="NULL";
+  }
+
+
 	$date_pieces=split("/", $params['data']);
 	$data=$date_pieces[2]."-".$date_pieces[0]."-".$date_pieces[1];
-	$sql="INSERT INTO servizi_erogati VALUES ('', ".$params['id_servizio'].", ".$params['id_assistito'].", '".$data."', '".$params['note']."', 1, '', '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."')";
+	$sql="INSERT INTO servizi_erogati VALUES ('', ".$params['id_servizio'].", ".$params['id_assistito'].", ".$data_servizio_sql.", '".$params['note']."', 1, '', '".date("Y-m-d H:i:s")."', '".date("Y-m-d H:i:s")."')";
 
 	$res=mysql_query($sql);
 
@@ -722,6 +743,36 @@ function inserisci_servizio($params) {
 	$id_servizio=$r->id;
 
 	return $id_servizio;
+}
+
+function modifica_servizio($params) {
+	global $db,$config;
+
+	//echo("modifica_servizio - params=".print_r($params,true));
+	$id_servizio_erogato = $params['id_servizio_erogato'];
+	$data_servizio = $params['data'];
+	if ($data_servizio!="") {
+		$data_servizio_formatted = convertDateFromItTo2Db($data_servizio);
+		$data_servizio_sql="'".$data_servizio_formatted."'";
+	}
+	else {
+		$data_servizio_sql="NULL";
+	}
+
+
+	$sql="update servizi_erogati set id_servizio=".$params["id_servizio"].",note='".$params["note"]."', data=".$data_servizio_sql.", data_modifica='".date("Y-m-d H:i:s")."' where id=".$id_servizio_erogato;
+	echo($sql);
+	mysql_query($sql);
+
+
+
+
+
+
+
+	//echo("data_nascita_sql=".$data_nascita_sql);
+  //$sql='update assistiti set `data_modifica`=now(), `nome`="'.$params["nome"].'", `cognome`="'.$params["cognome"].'", `data_di_nascita`='.$data_nascita_sql.', `luogo_di_nascita`="'.$params["luogo_di_nascita"].'", `sesso`="'.$params["sesso"].'", `id_nazionalita`="'.$params["nazionalita"].'", `cellulare`="'.$params["cellulare"].'", `stato_civile`="'.$params["stato_civile"].'", `citta_residenza`="'.$params["citta_residenza"].'", `via_residenza`="'.$params["via_residenza"].'", `numero_residenza`="'.$params["numero_residenza"].'", `nazione_residenza`="'.$params["nazione_residenza"].'", `alloggio`="'.$params["alloggio"].'", `lingua_madre`="'.$params["lingua_madre"].'", `ha_lavorato`='.$params["ha_lavorato"].', `lavora`='.$params["lavora"].', `dove_lavora`="'.$params["dove_lavora"].'", `data_primo_ascolto`='.$data_primo_ascolto_sql.', `note`="'.$params["note"].'" where id='.$params["id_assistito"];
+
 }
 
 

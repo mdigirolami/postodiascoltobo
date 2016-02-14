@@ -77,8 +77,8 @@ if (isset($_GET['id_assistito'])) {
 													echo '<td class=" ">'.$a["cognome"]." ".$a["nome"].'</td>';
 													echo '<td class=" ">'.convertDateFromDbTo2It($a["data"]).'</td>';
 													echo '<td class=" ">
-                            <a href="dettagli_servizio.php?id_servizio='.$a["id_servizio_erogato"].'" title="Dettagli servizio"><span class="glyphicon glyphicon-assistiti-actions glyphicon-file" aria-hidden="true"></span></a>&nbsp;
-							<a href="rimuovi_servizio.php?id_servizio='.$a["id_servizio_erogato"].'" title="Rimuovi servizio" onclick="return confirm(\'Si sta per rimuovere il servizio '.$a["tipo"].' per '.$a["cognome"].' '.$a["nome"].'. I dati relativi al servizio non saranno più disponibili. Proseguire?\');"><span class="glyphicon glyphicon-assistiti-actions glyphicon-remove-circle" aria-hidden="true"></span></a>
+                            <a href="dettagli_servizio.php?id_assistito='.$id_assistito.'&id_servizio_erogato='.$a["id_servizio_erogato"].'" title="Dettagli servizio"><span class="glyphicon glyphicon-assistiti-actions glyphicon-file" aria-hidden="true"></span></a>&nbsp;
+							<a href="rimuovi_servizio.php?id_servizio_erogato='.$a["id_servizio_erogato"].'" title="Rimuovi servizio" onclick="return confirm(\'Si sta per rimuovere il servizio '.$a["tipo"].' per '.$a["cognome"].' '.$a["nome"].'. I dati relativi al servizio non saranno più disponibili. Proseguire?\');"><span class="glyphicon glyphicon-assistiti-actions glyphicon-remove-circle" aria-hidden="true"></span></a>
                             </td>';
 													echo '</tr>';
 												}
