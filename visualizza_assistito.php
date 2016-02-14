@@ -203,8 +203,11 @@ if (isset($_GET['id_assistito'])) {
 									  <tbody>
 									<?php
 									foreach ($documenti_assistito_array as $documento_assistito) {
-										if ($documento_assistito["FOTOCOPIA"]=="") {
+										if ($documento_assistito["FOTOCOPIA"]==0) {
 											$documento_assistito["FOTOCOPIA"]="NO";
+										}
+										else {
+											$documento_assistito["FOTOCOPIA"]="SI";
 										}
 										echo '<tr class=""even pointer">';
 										echo '<td class=" ">'.$documento_assistito["TIPO_DOC"].'</td>';

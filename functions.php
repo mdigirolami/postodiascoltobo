@@ -132,7 +132,7 @@ function inserisci_assistito($params) {
 
 function modifica_assistito($params) {
 
-	echo("modifica_assistito - params=".print_r($params,true));
+	//echo("modifica_assistito - params=".print_r($params,true));
 
     modifica_dati_anagrafici_assistito($params);
 	modifica_familiari_assistito($params,NULL);
@@ -195,7 +195,7 @@ function modifica_familiari_assistito($params,$id_assistito) {
 			$anno_nascita_key="anno_nascita_".$familiare_index;
 			$parentela_key="parentela_".$familiare_index;
 			$rimuovi_key="familiare_".$familiare_index."_rimuovi";
-			echo "familiare_pk=".$params[$familiare_pk]." anno_nascita=".$params[$anno_nascita_key]." parentela=".$params[$parentela_key]."\n";
+			//echo "familiare_pk=".$params[$familiare_pk]." anno_nascita=".$params[$anno_nascita_key]." parentela=".$params[$parentela_key]."\n";
 
 			$anno_nascita = $params[$anno_nascita_key];
 			if ($anno_nascita!="") {
@@ -224,7 +224,7 @@ function modifica_familiari_assistito($params,$id_assistito) {
 					//update
 					$sql='update familiari set `id_capofamiglia`="'.$params["id_assistito"].'", `anno_di_nascita`='.$anno_nascita_sql.', `parentela`="'.$params[$parentela_key].'" where id='.$params[$familiare_pk];
 					//$sql="update familiari (`id`, `id_capofamiglia`, `anno_di_nascita`, `parentela`) VALUES ('', ".$id_assistito.", ".$params[$anno_nascita_key].", '".$params[$parentela_key].'" where id='.$params["id_assistito"];
-					echo $sql;
+					//echo $sql;
 					mysql_query($sql);
 				}
 			}

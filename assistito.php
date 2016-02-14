@@ -236,55 +236,54 @@ if ($page_mode=='VISUALIZZA_MODIFICA') {
 									</div>
 
 									<div id="familiari">
+
+
+
                     <?php
                     if (!is_null($familiari_assistito_array)) {
                       $keys  = array_keys($familiari_assistito_array);
                     }
-
-                    for ($i = 0; $i < count($familiari_assistito_array)+1; ++$i) {
-                      $index = $keys[$i];
-                      $familiare = $familiari_assistito_array[$index];
+                    $num_familiari_db = count($familiari_assistito_array);
                     ?>
-                      <div id="familiare_input_<?php echo $i;?>" class="form-group">
-                        <input type="hidden" name="familiare_<?php echo $i;?>_pk" value="<?php echo $familiare["id"];?>" />
-                        <!--<input type="hidden" id="familiare_toremove_<?php echo $i;?>" name="familiare_toremove_<?php echo $i;?>" value="0" />-->
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Familiare <?php echo ($i+1);?> </label>
-                        <div class="col-md-3 col-sm-3 col-xs-6">
-                          <input id="parentela_<?php echo $i;?>" name="parentela_<?php echo $i;?>" class="form-control col-md-7 col-xs-12" placeholder="Grado di parentela" value="<?php echo $familiare["parentela"];?>">
-                        </div>
-                        <div class="col-md-2 col-sm-2 col-xs-6 item form-group">
-                          <div>
-                            <input id="anno_nascita_<?php echo $i;?>" name="anno_nascita_<?php echo $i;?>" required="required" class="form-control col-md-7 col-xs-12" placeholder="Anno di nascita" value="<?php echo $familiare["anno_di_nascita"];?>">
-                          </div>
-                        </div>
-                        <?php
-                        if ($i==count($familiari_assistito_array))
-                        {
-                        ?>
-                          <div>
-                            <button class="btn btn-primary button_remove_familiare" type="button" id="button_remove_familiare_<?php echo $i;?>" style="display:none;">X</button>
-                          </div>
-                          <div>
-                            <button class="btn btn-primary button_familiare" type="button" id="button_familiare_<?php echo $i;?>">Aggiungi familiare</button>
-                          </div>
-                        <?php
-                        }
-                        else {
-                        ?>
+                    <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Familiari</label>
+                    </div>
 
-                          <div class="col-md-1 col-sm-1 col-xs-1">
-                            <button class="btn btn-primary button_remove_familiare" type="button" id="button_remove_familiare_<?php echo $i;?>">X</button>
-                          </div>
-                        <?php
-                        }
-                        ?>
-                      </div>
                     <?php
+                      for ($i = 0; $i < count($familiari_assistito_array); ++$i) {
+                        $index = $keys[$i];
+                        $familiare = $familiari_assistito_array[$index];
+                      ?>
+                        <div id="familiare_input_<?php echo $i;?>" class="form-group familiare">
+
+                          <input type="hidden" name="familiare_<?php echo $i;?>_pk" value="<?php echo $familiare["id"];?>" />
+                          <!--<input type="hidden" id="familiare_toremove_<?php echo $i;?>" name="familiare_toremove_<?php echo $i;?>" value="0" />-->
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12"></label>
+                          <div class="col-md-3 col-sm-3 col-xs-6">
+                            <input id="parentela_<?php echo $i;?>" name="parentela_<?php echo $i;?>" class="form-control col-md-7 col-xs-12" placeholder="Grado di parentela" value="<?php echo $familiare["parentela"];?>">
+                          </div>
+                          <div class="col-md-3 col-sm-3 col-xs-6 item form-group">
+                            <div>
+                              <input id="anno_nascita_<?php echo $i;?>" name="anno_nascita_<?php echo $i;?>" required="required" class="form-control col-md-7 col-xs-12" placeholder="Anno di nascita" value="<?php echo $familiare["anno_di_nascita"];?>">
+                            </div>
+                          </div>
+
+                            <div>
+                              <button class="btn btn-primary button_remove_familiare" type="button" id="button_remove_familiare_<?php echo $i;?>">X</button>
+                            </div>
+
+                        </div>
+                      <?php
                     }
                     ?>
 
-
 									</div>
+                  <div class="form-group">
+                    <div class="col-md-3 col-sm-3 col-xs-6"></div>
+                    <div>
+                      <button class="btn btn-primary button_add_familiare" type="button" id="button_add_familiare">Aggiungi familiare</button>
+                    </div>
+                  </div>
 
 									<br />
 									<span class="section">Residenza</span>
@@ -487,15 +486,25 @@ if ($page_mode=='VISUALIZZA_MODIFICA') {
 										</div>
 									</div>
 									<div class="item form-group">
-                                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Strada</label>
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12">Strada</label>
 										<div class="col-md-6 col-sm-6 col-xs-12">
 											<p>
 												<input type="radio" class="flat" name="alloggio" id="strada" value="Strada" <?php if ($assistito["alloggio"]=="Strada") echo("checked");?> />
 											</p>
 										</div>
 									</div>
+                  <!--
+                  <div class="item form-group">
+                    <label class="control-label col-md-3 col-sm-3 col-xs-12"></label>
+										<div class="col-md-6 col-sm-6 col-xs-12">
+                      <div>
+                        <button class="btn btn-primary button_remove_alloggio" type="button" id="button_remove_alloggio">Rimuovi alloggio</button>
+                      </div>
+										</div>
+									</div>
+                  -->
 
-									<br />
+                  <br />
 									<span class="section">Lingue conosciute</span>
 									<div class="item form-group">
 										<div class="checkbox">
@@ -746,34 +755,34 @@ if ($page_mode=='VISUALIZZA_MODIFICA') {
 
 </div>
 
-
 <script type="text/javascript">
 
-	$(document).on('click', '.button_familiare', function (event) {
-		$('#'+event.target.id+'').hide();
-    idx_familiare_clicked = parseInt(event.target.id.substring(event.target.id.lastIndexOf('_') + 1));
-    idx_new_familiare = idx_familiare_clicked +1;
+	$(document).on('click', '.button_add_familiare', function (event) {
+		//$('#'+event.target.id+'').hide();
+    //idx_familiare_clicked = parseInt(event.target.id.substring(event.target.id.lastIndexOf('_') + 1));
+
+    $('#nessun_familiare').hide();
+    idx_new_familiare = current_num_familiari;
+    current_num_familiari++;
 
 		new_html='<div class="item form-group" id="familiare_input_'+idx_new_familiare+'">' +
                 '<input type="hidden" name="familiare_'+idx_new_familiare+'_pk"/>' +
-								'<label class="control-label col-md-3 col-sm-3 col-xs-12">Familiare '+(idx_new_familiare+1)+' </label>' +
+								//'<label class="control-label col-md-3 col-sm-3 col-xs-12">Familiare '+(idx_new_familiare+1)+' </label>' +
+                '<label class="control-label col-md-3 col-sm-3 col-xs-12"> </label>' +
 								'<div class="col-md-3 col-sm-3 col-xs-6">' +
 									'<input id="parentela_'+idx_new_familiare+'" name="parentela_'+idx_new_familiare+'" class="form-control col-md-7 col-xs-12" placeholder="Grado di parentela" >' +
 								'</div>' +
 								'<div class="col-md-3 col-sm-3 col-xs-6">' +
-									'<input id="anno_nascita_'+idx_new_familiare+'" name="anno_nascita_'+idx_new_familiare+'" class="form-control col-md-7 col-xs-12" placeholder="Anno di nascita" >' +
+									'<input id="anno_nascita_'+idx_new_familiare+'" name="anno_nascita_'+idx_new_familiare+'" required="required" class="form-control col-md-7 col-xs-12" placeholder="Anno di nascita" >' +
 								'</div>' +
                 '<div>' +
-                  '<button class="btn btn-primary button_remove_familiare" type="button" id="button_remove_familiare_'+idx_new_familiare+'" style="display:none;">X</button>' +
+                  '<button class="btn btn-primary button_remove_familiare" type="button" id="button_remove_familiare_'+idx_new_familiare+'">X</button>' +
                 '</div>'+
-								'<div>' +
-									'<button class="btn btn-primary button_familiare" type="button" id="button_familiare_'+idx_new_familiare+'">Aggiungi familiare</button>' +
-								'</div>' +
 							'</div>';
 		$('#familiari').append(new_html);
 
-    var elem = document.getElementById('button_remove_familiare_'+idx_familiare_clicked);
-    elem.setAttribute("style", "display: inline;");
+    //var elem = document.getElementById('button_remove_familiare_'+idx_familiare_clicked);
+    //elem.setAttribute("style", "display: inline;");
 
 	});
   $(document).on('click', '.button_remove_familiare', function (event) {
@@ -851,10 +860,25 @@ if ($page_mode=='VISUALIZZA_MODIFICA') {
     var elem = document.getElementById('documento_input_'+idx_documento_clicked);
     elem.setAttribute("style", "display: none;");
 	});
+  /*
+  $(document).on('click', '.button_remove_alloggio', function (event) {
+    //jQuery
+    //$('#strada').checked=false;
+    //$('#strada').prop("checked", false); //http://api.jquery.com/prop/
+    //$('#strada').removeAttr('checked');
 
+    //JS
+    var elem = document.getElementById('strada');
+    //elem.setAttribute("checked", "false");
+    elem.removeAttribute('checked');
+	});
+*/
 
 $(document).ready(function () {
 
+  current_num_familiari = $("div.familiare").length;
+
+  //configurazione daterangepickers
   $('#data_primo_ascolto_calendar').daterangepicker({
     format: 'DD/MM/YYYY',
     locale: {
@@ -1074,7 +1098,7 @@ $(document).ready(function () {
     validator.message['date'] = 'not a real date';
 
     // validate a field on "blur" event, a 'select' on 'change' event & a '.reuired' classed multifield on 'keyup':
-    $('form')
+    /*$('form')
         .on('blur', 'input[required], input.optional, select.required', validator.checkField)
         .on('change', 'select.required', validator.checkField)
         .on('keypress', 'input[required][pattern]', validator.keypress);
@@ -1083,7 +1107,7 @@ $(document).ready(function () {
         .on('keyup blur', 'input', function () {
             validator.checkField.apply($(this).siblings().last()[0]);
         });
-
+    */
     // bind the validation to the form submit event
     //$('#send').click('submit');//.prop('disabled', true);
 
