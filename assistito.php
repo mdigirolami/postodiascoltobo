@@ -848,6 +848,60 @@ if ($page_mode=='VISUALIZZA_MODIFICA') {
 							'</div>';
 		$('#documenti').append(new_html);
 
+
+    $('#rilascio_'+idx_new_documento).daterangepicker({
+      format: 'DD/MM/YYYY',
+      locale: {
+          format: 'DD/MM/YYYY',
+          monthNames: ['Gennaio',
+                'Febbraio',
+                'Marzo',
+                'Aprile',
+                'Maggio',
+                'Giugno',
+                'Luglio',
+                'Agosto',
+                'Settembre',
+                'Ottobre',
+                'Novembre',
+                'Dicembre'],
+            daysOfWeek: ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'],
+        },
+        showDropdowns: true,
+        minDate: '01-01-2000',
+        maxDate: new Date(),
+        singleDatePicker: true,
+        calender_style: "picker_4"
+    }, function (start, end, label) {
+        console.log(start.toISOString(), end.toISOString(), label);
+    });
+    $('#scadenza_'+idx_new_documento).daterangepicker({
+      format: 'DD/MM/YYYY',
+      locale: {
+          format: 'DD/MM/YYYY',
+          monthNames: ['Gennaio',
+                'Febbraio',
+                'Marzo',
+                'Aprile',
+                'Maggio',
+                'Giugno',
+                'Luglio',
+                'Agosto',
+                'Settembre',
+                'Ottobre',
+                'Novembre',
+                'Dicembre'],
+            daysOfWeek: ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'],
+        },
+        showDropdowns: true,
+        minDate: '01-01-2000',
+        maxDate: '31-12-2020',
+        singleDatePicker: true,
+        calender_style: "picker_4"
+    }, function (start, end, label) {
+        console.log(start.toISOString(), end.toISOString(), label);
+    });
+
     var elem = document.getElementById('button_remove_documento_'+idx_documento_clicked);
     elem.setAttribute("style", "display: inline;");
 
@@ -982,111 +1036,6 @@ $(document).ready(function () {
   }, function (start, end, label) {
       console.log(start.toISOString(), end.toISOString(), label);
   });
-  $('#rilascio_1').daterangepicker({
-    format: 'DD/MM/YYYY',
-    locale: {
-        format: 'DD/MM/YYYY',
-        monthNames: ['Gennaio',
-              'Febbraio',
-              'Marzo',
-              'Aprile',
-              'Maggio',
-              'Giugno',
-              'Luglio',
-              'Agosto',
-              'Settembre',
-              'Ottobre',
-              'Novembre',
-              'Dicembre'],
-          daysOfWeek: ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'],
-      },
-      showDropdowns: true,
-      minDate: '01-01-2000',
-      maxDate: new Date(),
-      singleDatePicker: true,
-      calender_style: "picker_4"
-  }, function (start, end, label) {
-      console.log(start.toISOString(), end.toISOString(), label);
-  });
-  $('#scadenza_1').daterangepicker({
-    format: 'DD/MM/YYYY',
-    locale: {
-        format: 'DD/MM/YYYY',
-        monthNames: ['Gennaio',
-              'Febbraio',
-              'Marzo',
-              'Aprile',
-              'Maggio',
-              'Giugno',
-              'Luglio',
-              'Agosto',
-              'Settembre',
-              'Ottobre',
-              'Novembre',
-              'Dicembre'],
-          daysOfWeek: ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'],
-      },
-      showDropdowns: true,
-      minDate: '01-01-2000',
-      maxDate: '31-12-2020',
-      singleDatePicker: true,
-      calender_style: "picker_4"
-  }, function (start, end, label) {
-      console.log(start.toISOString(), end.toISOString(), label);
-  });
-  $('#rilascio_2').daterangepicker({
-    format: 'DD/MM/YYYY',
-    locale: {
-        format: 'DD/MM/YYYY',
-        monthNames: ['Gennaio',
-              'Febbraio',
-              'Marzo',
-              'Aprile',
-              'Maggio',
-              'Giugno',
-              'Luglio',
-              'Agosto',
-              'Settembre',
-              'Ottobre',
-              'Novembre',
-              'Dicembre'],
-          daysOfWeek: ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'],
-      },
-      showDropdowns: true,
-      minDate: '01-01-2000',
-      maxDate: new Date(),
-      singleDatePicker: true,
-      calender_style: "picker_4"
-  }, function (start, end, label) {
-      console.log(start.toISOString(), end.toISOString(), label);
-  });
-  $('#scadenza_2').daterangepicker({
-    format: 'DD/MM/YYYY',
-    locale: {
-        format: 'DD/MM/YYYY',
-        monthNames: ['Gennaio',
-              'Febbraio',
-              'Marzo',
-              'Aprile',
-              'Maggio',
-              'Giugno',
-              'Luglio',
-              'Agosto',
-              'Settembre',
-              'Ottobre',
-              'Novembre',
-              'Dicembre'],
-          daysOfWeek: ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom'],
-      },
-      showDropdowns: true,
-      minDate: '01-01-2000',
-      maxDate: '31-12-2020',
-      singleDatePicker: true,
-      calender_style: "picker_4"
-  }, function (start, end, label) {
-      console.log(start.toISOString(), end.toISOString(), label);
-  });
-
 
     });
 </script>
@@ -1096,20 +1045,6 @@ $(document).ready(function () {
 <script>
     // initialize the validator function
     validator.message['date'] = 'not a real date';
-
-    // validate a field on "blur" event, a 'select' on 'change' event & a '.reuired' classed multifield on 'keyup':
-    /*$('form')
-        .on('blur', 'input[required], input.optional, select.required', validator.checkField)
-        .on('change', 'select.required', validator.checkField)
-        .on('keypress', 'input[required][pattern]', validator.keypress);
-
-    $('.multi.required')
-        .on('keyup blur', 'input', function () {
-            validator.checkField.apply($(this).siblings().last()[0]);
-        });
-    */
-    // bind the validation to the form submit event
-    //$('#send').click('submit');//.prop('disabled', true);
 
     $('form').submit(function (e) {
         e.preventDefault();
